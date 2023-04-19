@@ -9,6 +9,8 @@ app_server <- function(input, output, session) {
 
   analysis_server("id_analysis", coin, coin_full, input)
 
+  results_server("id_results", coin, coin_full, input)
+
 
 
 }
