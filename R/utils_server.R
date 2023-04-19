@@ -6,6 +6,12 @@ analysis_exists <- function(coin){
   !is.null(coin$Analysis$Raw$FlaggedStats)
 }
 
+# check for results
+# returns TRUE if results are present
+results_exist <- function(coin){
+  !is.null(coin$Data$Aggregated)
+}
+
 get_parent <- function(coin, iCode, at_level = 2, as_name = TRUE){
   pCode <- coin$Meta$Lineage[[at_level]][coin$Meta$Lineage[[1]] == iCode]
   if(as_name){
