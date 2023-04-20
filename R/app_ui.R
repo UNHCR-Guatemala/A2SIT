@@ -2,7 +2,8 @@
 #'
 #' @return Front end of app
 #'
-#' @importFrom shinydashboardPlus box
+#' @importFrom shinydashboardPlus box dashboardPage
+#' @importFrom shinydashboard menuItem menuSubItem tabItem
 #'
 #'
 #' @export
@@ -57,4 +58,24 @@ app_ui <- function() {
     title = "DashboardPage"
   )
 
+}
+
+
+#' @import shiny
+golem_add_external_resources <- function(){
+
+  addResourcePath(
+    'www', system.file('app/www', package = "A2SIT")
+  )
+
+  tags$head(
+    golem::activate_js(),
+    golem::favicon(),
+    tags$title("A2SIT")
+    # Add here all the external resources
+    # If you have a custom.css in the inst/app/www
+    # Or for example, you can add shinyalert::useShinyalert() here
+    #tags$link(rel="stylesheet", type="text/css", href="www/custom.css")
+
+  )
 }
