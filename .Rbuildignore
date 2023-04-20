@@ -2,5 +2,13 @@
 ^\.Rproj\.user$
 ^LICENSE\.md$
 ^A2SIT\.Rproj$
+^\.travis\.yml$
+^app\.R$
+^rsconnect$
+^.github
+^dev$
+$run_dev.*
+^app\.R$
+^rsconnect$
 ^.github$
 ^\.github$

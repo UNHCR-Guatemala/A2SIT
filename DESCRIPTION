@@ -12,6 +12,7 @@ RoxygenNote: 7.2.3
 Imports: 
     COINr (>= 1.1.3),
     DT,
+    golem,
     iCOINr (>= 0.2.0),
     plotly,
     readxl,
@@ -23,3 +24,13 @@ Imports:
 Remotes: 
     bluefoxr/iCOINr,
     bluefoxr/COINr
+Suggests: 
+    knitr,
+    rmarkdown,
+    spelling,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+VignetteBuilder: knitr
+Language: en-US
+URL: https://github.com/UNHCR-Guatemala/A2SIT
+BugReports: https://github.com/UNHCR-Guatemala/A2SIT/issues
