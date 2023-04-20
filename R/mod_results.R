@@ -3,19 +3,70 @@ results_UI <- function(id) {
   shinydashboard::tabItem(
     tabName = "results",
 
+    tags$style(HTML(
+      "
+    .label-left .form-group {
+      display: flex;              /* Use flexbox for positioning children */
+      flex-direction: row;        /* Place children on a row (default) */
+      width: 100%;                /* Set width for container */
+      max-width: 400px;
+    }
+
+    .label-left label {
+      margin-right: 2rem;         /* Add spacing between label and slider */
+      align-self: center;         /* Vertical align in center of row */
+      text-align: right;
+      flex-basis: 100px;          /* Target width for label */
+    }
+
+    .label-left .irs {
+      flex-basis: 50%;          /* Target width for slider */
+    }
+    "
+    )),
+
     fluidRow(
       shinydashboardPlus::box(
         id = NS(id, "map_box"),
-        title = "Map", width = 12,
+        title = "Results",
+        width = 12,
+        sidebar = shinydashboardPlus::boxSidebar(
+          id = NS(id, "map_sidebar"),
+          startOpen = TRUE,
+          icon = icon("gear"),
+          width = 25,
+          selectInput(NS(id, "map_plot_type"), label = "Show results as:", choices = c("Map", "Table"), width = "80%"),
+          selectInput(NS(id, "map_plot_icode"), label = "Plot on map:", choices = NULL, width = "80%"),
+          h4("Weights"),
+          div(
+            class = "label-left",
+            weights_slider(NS(id,"w1"), "Human Mobility"),
+            weights_slider(NS(id,"w2"), "Threats"),
+            weights_slider(NS(id,"w3"), "Socioec. Situation"),
+            weights_slider(NS(id,"w4"), "Response Capacity")
+          ),
+          selectInput(NS(id, "agg_method"), label = "Aggregate using:",
+                      choices = c("Arithmetic mean", "Geometric mean"),
+                      width = "80%"),
+          shinyWidgets::actionBttn(
+            inputId = NS(id, "regen"),
+            label = "Recalculate",
+            style = "jelly",
+            color = "success", icon = icon("calculator"), size = "sm"
+          )
+        ),
         leaflet::leafletOutput(NS(id, "map"), height = "60vh")
       )
     ),
+
     fluidRow(
       shinydashboardPlus::box(
         id = NS(id, "bar_box"),
-        title = "Bar", width = 12,
+        width = 12, headerBorder = FALSE,
         plotly::plotlyOutput(NS(id, "bar_plot"), height = "20vh")
-      )
+      ),
+      # remove header space in box
+      tags$head(tags$style(paste0("#", NS(id, "bar_box"), " .box-header{ display: none}")))
     )
 
   )
