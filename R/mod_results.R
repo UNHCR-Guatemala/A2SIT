@@ -46,7 +46,8 @@ results_UI <- function(id) {
             weights_slider(NS(id,"w4"), "Response Capacity")
           ),
           selectInput(NS(id, "agg_method"), label = "Aggregate using:",
-                      choices = c("Arithmetic mean", "Geometric mean"),
+                      choices = list("Arithmetic mean" = "a_amean",
+                                     "Geometric mean" = "a_gmean"),
                       width = "80%"),
           shinyWidgets::actionBttn(
             inputId = NS(id, "regen"),
@@ -127,30 +128,30 @@ results_server <- function(id, coin, coin_full, parent_input) {
         plotly::config(displayModeBar = FALSE)
 
     })
-    #
-    #
-    # # change aggregation method
-    # observeEvent(input$agg_method, {
-    #   req(coin())
-    #   req(results_exist(coin()))
-    #   coin(f_build_index(coin(), input$agg_method, only_aggregate = TRUE))
-    # })
-    #
-    # # change weights
-    # observeEvent(input$recalculate, {
-    #
-    #   req(results_exist(coin()))
-    #   # assemble weights into list
-    #   w <-  list(
-    #     Amenazas = input$w1,
-    #     Mov_Hum = input$w2,
-    #     Sit_SocEc = input$w3,
-    #     Cap_Resp = input$w4
-    #   )
-    #   # update with new weights
-    #   coin(f_change_weights(coin(), w))
-    #
-    # })
+
+
+    # change aggregation method
+    observeEvent(input$agg_method, {
+      req(coin())
+      req(results_exist(coin()))
+      coin(f_build_index(coin(), input$agg_method, only_aggregate = TRUE))
+    })
+
+    # change weights
+    observeEvent(input$regen, {
+
+      req(results_exist(coin()))
+      # assemble weights into list
+      w <-  list(
+        Amenazas = input$w1,
+        Mov_Hum = input$w2,
+        Sit_SocEc = input$w3,
+        Cap_Resp = input$w4
+      )
+      # update with new weights
+      coin(f_change_weights(coin(), w))
+
+    })
     #
     # # info panel
     # output$unit_name <- renderText({
