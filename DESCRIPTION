@@ -19,6 +19,7 @@ Imports:
     shiny,
     shinydashboard,
     shinydashboardPlus,
+    dashboardthemes,
     shinyWidgets,
     utils
 Remotes: 
