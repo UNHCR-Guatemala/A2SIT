@@ -11,6 +11,8 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3.9000
 Imports: 
     COINr (>= 1.1.3),
+    config,
+    dashboardthemes,
     DT,
     golem,
     iCOINr (>= 0.2.0),
