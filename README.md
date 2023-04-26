@@ -19,6 +19,8 @@ The aim will be to keep a working version of the app in the main branch of this 
 
 ## Running the app
 
+The prototype is accessible @ https://rstudio.unhcr.org/SeverityIndex/ 
+
 To run the app locally, after installing the A2SIT package, run:
 
 ```

@@ -13,6 +13,7 @@ app_ui <- function() {
   # enable alert messages
   shinyWidgets::useSweetAlert()
 
+
   # Sidebar -----------------------------------------------------------------
 
   db_sidebar <- shinydashboardPlus::dashboardSidebar(
@@ -34,6 +35,8 @@ app_ui <- function() {
   # Dashboard body ----------------------------------------------------------
 
   db_body <- shinydashboard::dashboardBody(
+
+    theme_dashboard(),
     shinydashboard::tabItems(
       input_UI("id_input"),
       analysis_UI("id_analysis"),
@@ -46,16 +49,18 @@ app_ui <- function() {
   # Assemble ----------------------------------------------------------------
 
   # define UNHCR logo
-  title_logo <- tags$div(tags$img(src="https://raw.githubusercontent.com/UNHCR-Guatemala/A2SIT/main/www/logo.svg", height ='30vh'), "  A2SIT")
+  title_logo <- tags$div(tags$img(src="https://raw.githubusercontent.com/UNHCR-Guatemala/A2SIT/main/inst/app/www/logo.svg", height ='30vh'), "  A2SIT")
 
-  shinydashboardPlus::dashboardPage(md = FALSE, skin = "blue",
+  shinydashboardPlus::dashboardPage(
+    md = FALSE,
+    #skin = "blue",
     options = list(sidebarExpandOnHover = TRUE),
     header = shinydashboardPlus::dashboardHeader(title = title_logo, titleWidth = "15vw", controlbarIcon = icon("gear")),
     footer = shinydashboardPlus::dashboardFooter(left = "Left content", right = "Right content"),
     sidebar = db_sidebar,
     body = db_body,
     controlbar = shinydashboardPlus::dashboardControlbar(disable = FALSE),
-    title = "DashboardPage"
+    title = "Admin2 Severity Index Tool"
   )
 
 }

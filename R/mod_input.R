@@ -4,8 +4,14 @@ input_UI <- function(id) {
     tabName = "upload",
     column(
       4,
-      box(title = "Data upload", width = NULL, collapsible = TRUE, status = "primary",
+      box(title = "Data upload",
+          width = NULL,
+          collapsible = TRUE,
+          status = "primary",
           "Browse to the location of your input data, which must be formatted according to the template.",
+          br(),
+          tags$a(href="https://github.com/UNHCR-Guatemala/A2SIT/raw/main/inst/data_module-input.xlsx", "For testing purpose, you can download & use this file"),
+
           br(),br(),
           fileInput(NS(id, "xlsx_file"), "Load Data", buttonLabel = "Browse...", accept = c("xls", "xlsx")),
           actionButton(NS(id, "load_click"), "Load")),
