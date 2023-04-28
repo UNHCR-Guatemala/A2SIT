@@ -26,38 +26,72 @@ results_UI <- function(id) {
     )),
 
     fluidRow(
-      shinydashboardPlus::box(
-        id = NS(id, "map_box"),
+
+      shinydashboard::tabBox(
         title = "Results",
-        width = 12,
-        sidebar = shinydashboardPlus::boxSidebar(
-          id = NS(id, "map_sidebar"),
-          startOpen = TRUE,
-          icon = icon("gear"),
-          width = 25,
-          selectInput(NS(id, "map_plot_type"), label = "Show results as:", choices = c("Map", "Table"), width = "80%"),
-          selectInput(NS(id, "map_plot_icode"), label = "Plot on map:", choices = NULL, width = "80%"),
-          h4("Weights"),
-          div(
-            class = "label-left",
-            weights_slider(NS(id,"w1"), "Human Mobility"),
-            weights_slider(NS(id,"w2"), "Threats"),
-            weights_slider(NS(id,"w3"), "Socioec. Situation"),
-            weights_slider(NS(id,"w4"), "Response Capacity")
-          ),
-          selectInput(NS(id, "agg_method"), label = "Aggregate using:",
-                      choices = list("Arithmetic mean" = "a_amean",
-                                     "Geometric mean" = "a_gmean"),
-                      width = "80%"),
-          shinyWidgets::actionBttn(
-            inputId = NS(id, "regen"),
-            label = "Recalculate",
-            style = "jelly",
-            color = "success", icon = icon("calculator"), size = "sm"
-          )
+        # The id lets us use input$tabset1 on the server to find the current tab
+        id = "tabset1", width = 10, side = "right",
+        tabPanel("Map", leaflet::leafletOutput(NS(id, "map"), height = "60vh")),
+        tabPanel("Table", DT::dataTableOutput(NS(id, "results_table")))
+      ),
+
+      shinydashboardPlus::box(
+        title = "Adjust",
+        width = 2, status = "warning",
+        selectInput(NS(id, "map_plot_icode"), label = "Plot on map:",
+                    choices = NULL, width = "80%"),
+        h5("Weights"),
+        div(
+          class = "label-left",
+          weights_slider(NS(id,"w1"), "Human Mobility"),
+          weights_slider(NS(id,"w2"), "Threats"),
+          weights_slider(NS(id,"w3"), "Socioec. Situation"),
+          weights_slider(NS(id,"w4"), "Response Capacity")
         ),
-        leaflet::leafletOutput(NS(id, "map"), height = "60vh")
+        selectInput(NS(id, "agg_method"), label = "Aggregate using:",
+                    choices = list("Arithmetic mean" = "a_amean",
+                                   "Geometric mean" = "a_gmean"),
+                    width = "80%"),
+        shinyWidgets::actionBttn(
+          inputId = NS(id, "regen"),
+          label = "Recalculate",
+          style = "jelly",
+          color = "success", icon = icon("calculator"), size = "sm"
+        )
       )
+
+      # shinydashboardPlus::box(
+      #   id = NS(id, "map_box"),
+      #   title = "Results",
+      #   width = 12,
+      #   sidebar = shinydashboardPlus::boxSidebar(
+      #     id = NS(id, "map_sidebar"),
+      #     startOpen = TRUE,
+      #     icon = icon("gear"),
+      #     width = 25,
+      #     selectInput(NS(id, "map_plot_type"), label = "Show results as:", choices = c("Map", "Table"), width = "80%"),
+      #     selectInput(NS(id, "map_plot_icode"), label = "Plot on map:", choices = NULL, width = "80%"),
+      #     h4("Weights"),
+      #     div(
+      #       class = "label-left",
+      #       weights_slider(NS(id,"w1"), "Human Mobility"),
+      #       weights_slider(NS(id,"w2"), "Threats"),
+      #       weights_slider(NS(id,"w3"), "Socioec. Situation"),
+      #       weights_slider(NS(id,"w4"), "Response Capacity")
+      #     ),
+      #     selectInput(NS(id, "agg_method"), label = "Aggregate using:",
+      #                 choices = list("Arithmetic mean" = "a_amean",
+      #                                "Geometric mean" = "a_gmean"),
+      #                 width = "80%"),
+      #     shinyWidgets::actionBttn(
+      #       inputId = NS(id, "regen"),
+      #       label = "Recalculate",
+      #       style = "jelly",
+      #       color = "success", icon = icon("calculator"), size = "sm"
+      #     )
+      #   ),
+      #   leaflet::leafletOutput(NS(id, "map"), height = "60vh")
+      # )
     ),
 
     fluidRow(
@@ -89,6 +123,9 @@ results_server <- function(id, coin, coin_full, parent_input) {
         }
       }
 
+      updateSelectInput(inputId = "map_plot_icode",
+                        choices = get_indicator_codes(coin(), with_levels = TRUE))
+
     })
 
     # Plot map
@@ -106,6 +143,14 @@ results_server <- function(id, coin, coin_full, parent_input) {
       f_plot_map(coin(), dset = "Aggregated", iCode = "MVI",
                  shp_path = shapefile_path)
 
+    })
+
+    # Results table
+    output$results_table <- DT::renderDataTable({
+      req(coin())
+      req(results_exist(coin()))
+
+      f_display_results_table(coin(), type = "scores")
     })
 
     # bar chart
