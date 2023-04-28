@@ -59,10 +59,30 @@ f_display_results_table <- function(coin, type = "scores"){
     abort("Can't find results in the coin. Did you forget to build the index first?")
   }
 
+  # find min and max of score ranges ----
+  all_columns <- names(df_results)
+  factor_columns <-  c("uCode", "uName", "Rank")
+  numeric_columns <- setdiff(all_columns, factor_columns)
+  df_numeric <- as.matrix(df_results[numeric_columns])
+  min_all <- min(df_numeric, na.rm = TRUE)
+  max_all <- max(df_numeric, na.rm = TRUE)
+
+  # generate colours ----
+  breaks <- seq(min_all, max_all, length.out = 12)[2:11]
+  colour_func <- grDevices::colorRampPalette(c("white", "aquamarine3"))
+  colour_palette <- colour_func(length(breaks) + 1)
+
+  # Create table
   df_results |>
-    DT::datatable() |>
-    DT::formatStyle(columns = ncol(df_results),
-                    fontSize = '50%')
+    DT::datatable(
+      options = list(scrollX = TRUE),
+      rownames = FALSE
+    ) |>
+    DT::formatStyle(
+      numeric_columns,
+      backgroundColor = DT::styleInterval(breaks, colour_palette)
+    )
+
 }
 
 
