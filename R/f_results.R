@@ -56,7 +56,7 @@ f_display_results_table <- function(coin, type = "scores"){
   }
 
   if(is.null(df_results)){
-    abort("Can't find results in the coin. Did you forget to build the index first?")
+    stop("Can't find results in the coin. Did you forget to build the index first?", call. = FALSE)
   }
 
   # find min and max of score ranges ----
@@ -76,7 +76,8 @@ f_display_results_table <- function(coin, type = "scores"){
   df_results |>
     DT::datatable(
       options = list(scrollX = TRUE),
-      rownames = FALSE
+      rownames = FALSE,
+      selection = "single",
     ) |>
     DT::formatStyle(
       numeric_columns,
@@ -185,12 +186,13 @@ f_generate_results <- function(coin){
 #
 # Outputs a coin.
 #
-f_change_weights <- function(coin, w){
+f_rebuild_index <- function(coin, w, agg_method){
 
-  stopifnot(is.coin(coin))
+  stopifnot(is.coin(coin),
+            agg_method %in% c("a_amean", "a_gmean"))
 
   if(is.null(coin$Data$Aggregated)){
-    abort("Can't find results in the coin. Did you forget to build the index first?")
+    stop("Can't find results in the coin. Did you forget to build the index first?", call. = FALSE)
   }
 
   # Get weights that were last used to aggregate ----
@@ -207,7 +209,7 @@ f_change_weights <- function(coin, w){
     }
 
     coin$Log$Aggregate$w <- w_new
-    return(Regen(coin, from = "Aggregate"))
+    COINr::Regen(coin, from = "Aggregate")
   }
 
   w_new <- f_get_last_weights(coin)
@@ -234,9 +236,10 @@ f_change_weights <- function(coin, w){
 
   }
 
-  # Regen with new weights ----
+  # Regen with new weights + agg method ----
 
   coin$Log$Aggregate$w <- w_new
+  coin$Log$Aggregate$f_ag <- agg_method
 
   # extract analysis
   ind_analysis <- coin$Analysis$Raw
@@ -288,7 +291,7 @@ f_get_last_weights <- function(coin){
 
     w_new <- w_log
   } else {
-    abort("Weights not recognised at coin$Log$Aggregate$w")
+    stop("Weights not recognised at coin$Log$Aggregate$w", call. = FALSE)
   }
 
   stopifnot(is.data.frame(w_new))
