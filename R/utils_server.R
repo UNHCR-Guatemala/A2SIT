@@ -12,6 +12,17 @@ results_exist <- function(coin){
   !is.null(coin$Data$Aggregated)
 }
 
+get_number_of_children <- function(coin, iCode){
+  sum(coin$Meta$Ind$Parent == iCode, na.rm = TRUE)
+}
+
+# get the highest level code
+get_index_code <- function(coin){
+  index_code <- coin$Meta$Ind$iCode[coin$Meta$Ind$Level == coin$Meta$maxlev]
+  index_code[!is.na(index_code)] |>
+    unique()
+}
+
 get_parent <- function(coin, iCode, at_level = 2, as_name = TRUE){
   pCode <- coin$Meta$Lineage[[at_level]][coin$Meta$Lineage[[1]] == iCode]
   if(as_name){
@@ -80,11 +91,20 @@ get_indicator_codes <- function(coin, code_types = "all",
 
   if (with_levels) {
 
-    codes_to_display <- if(use_names) imeta[['iName']] else imeta[['iCode']]
+    imeta_split <- split(imeta, imeta$Level)
 
-    l_out <- as.list(imeta[["iCode"]])
-    names(l_out) <- glue::glue("{imeta[['Level']]}: {codes_to_display}")
-    l_out
+    l_out <- lapply(imeta_split, function(df_level){
+      l <- as.list(df_level$iCode)
+      names(l) <- df_level$iName
+      l
+    })
+    names(l_out) <- paste0("Level ", names(l_out))
+
+    # codes_to_display <- if(use_names) imeta[['iName']] else imeta[['iCode']]
+    #
+    # l_out <- as.list(imeta[["iCode"]])
+    # names(l_out) <- glue::glue("{imeta[['Level']]}: {codes_to_display}")
+    rev(l_out)
 
 
   } else {
