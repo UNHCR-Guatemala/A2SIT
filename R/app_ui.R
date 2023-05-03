@@ -40,7 +40,7 @@ app_ui <- function() {
     shinydashboard::tabItems(
       input_UI("id_input"),
       analysis_UI("id_analysis"),
-      shinydashboard::tabItem(tabName = "results"),
+      results_UI("id_results"),
       shinydashboard::tabItem(tabName = "exports")
     )
   )

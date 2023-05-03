@@ -15,9 +15,14 @@ input_UI <- function(id) {
           br(),br(),
           fileInput(NS(id, "xlsx_file"), "Load Data", buttonLabel = "Browse...", accept = c("xls", "xlsx")),
           actionButton(NS(id, "load_click"), "Load")),
+      fluidRow(
+        shinydashboard::infoBoxOutput(NS(id, "n_indicators_box"), width = 6),
+        shinydashboard::infoBoxOutput(NS(id, "n_units_box"), width = 6)
+      ),
+
       box(title = "Messages", width = NULL, status = "info",
-          verbatimTextOutput(NS(id, "data_message")),
-          verbatimTextOutput(NS(id, "coin_print")))
+          verbatimTextOutput(NS(id, "data_message")))
+
     ),
     column(
       8,
@@ -67,8 +72,28 @@ input_server <- function(id, coin, coin_full) {
       iCOINr::iplot_framework(coin())
     })
 
-    # the coin is passed back out of the module for use in other modules
-    # return(reactive(coin()))
+    # value boxes
+    output$n_indicators_box <- shinydashboard::renderInfoBox({
+      req(coin())
+      shinydashboard::infoBox(
+        title = "Indicators",
+        value = get_n_indicators(coin()),
+        icon = icon("list"),
+        color = "blue"
+      )
+    })
+    # value boxes
+    output$n_units_box <- shinydashboard::renderInfoBox({
+      req(coin())
+      shinydashboard::infoBox(
+        title = "Regions",
+        value = get_n_units(coin()),
+        icon = icon("location-dot"),
+        color = "green"
+      )
+    })
+
+
   })
 
 }

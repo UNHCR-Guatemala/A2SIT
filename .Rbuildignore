@@ -2,6 +2,7 @@
 ^\.Rproj\.user$
 ^LICENSE\.md$
 ^A2SIT\.Rproj$
+not_package
 ^\.travis\.yml$
 ^app\.R$
 ^rsconnect$

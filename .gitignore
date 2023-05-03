@@ -2,5 +2,6 @@
 .Rhistory
 .RData
 .Ruserdata
+not_package
 inst/doc
 rsconnect
