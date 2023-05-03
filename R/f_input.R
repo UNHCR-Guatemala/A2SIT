@@ -70,7 +70,7 @@ f_data_input <- function(file_path){
   iMeta$Type <- "Indicator"
 
   # merge with aggregate levels
-  iMeta_aggs <- readRDS("./inst/iMeta_aggs.RDS")
+  iMeta_aggs <- readxl::read_excel(path = file_path, sheet = "iMeta_aggs")
   iMeta <- rbind(iMeta, iMeta_aggs)
 
 
@@ -83,35 +83,45 @@ f_data_input <- function(file_path){
   iMeta <- iMeta[!(iMeta$iCode %in% i_nodata), ]
 
   if(length(i_nodata) > 0){
-    message("Removed indicators with no data points: ",
-            paste0(i_nodata, collapse = ", "))
+    message("Removed indicators with no data points: \n --> ", toString(i_nodata))
   }
 
-  # remove any second-level groups with no children
+  # iteratively remove groups with no children, working upwards
+  for (Level in 2 : max(iMeta$Level, na.rm = TRUE)){
 
-  no_children_1 <- iMeta$iCode[iMeta$Level == 2 & !(iMeta$iCode %in% iMeta$Parent)]
-  iMeta <- iMeta[!(iMeta$iCode %in% no_children_1), ]
+    no_children <- iMeta$iCode[iMeta$Level == Level & !(iMeta$iCode %in% iMeta$Parent)]
+    iMeta <- iMeta[!(iMeta$iCode %in% no_children), ]
 
-  if(length(no_children_1) > 0){
-    message("Removed categories containing no indicators: ",
-            paste0(no_children_1, collapse = ", "))
+    if(length(no_children) > 0){
+      message("Removed ", length(no_children), " aggregate groups with no children or data at Level ", Level, ": \n --> ", toString(no_children))
+    }
+
   }
 
-  # remove any third-level groups with no children
-
-  no_children_2 <- iMeta$iCode[iMeta$Level == 3 & !(iMeta$iCode %in% iMeta$Parent)]
-  iMeta <- iMeta[!(iMeta$iCode %in% no_children_1), ]
-
-  if(length(no_children_2) > 0){
-    message("Removed dimensions containing no categories: ", no_children_2,
-            paste0(no_children_2, collapse = ", "))
-  }
+  # # remove any second-level groups with no children
+  #
+  # no_children_1 <- iMeta$iCode[iMeta$Level == 2 & !(iMeta$iCode %in% iMeta$Parent)]
+  # iMeta <- iMeta[!(iMeta$iCode %in% no_children_1), ]
+  #
+  # if(length(no_children_1) > 0){
+  #   message("Removed categories containing no indicators: ",
+  #           paste0(no_children_1, collapse = ", "))
+  # }
+  #
+  # # remove any third-level groups with no children
+  #
+  # no_children_2 <- iMeta$iCode[iMeta$Level == 3 & !(iMeta$iCode %in% iMeta$Parent)]
+  # iMeta <- iMeta[!(iMeta$iCode %in% no_children_2), ]
+  #
+  # if(length(no_children_2) > 0){
+  #   message("Removed dimensions containing no categories: ", no_children_2,
+  #           paste0(no_children_2, collapse = ", "))
+  # }
 
 
   # Build coin and output ----
 
-  COINr::new_coin(iData, iMeta, quietly = TRUE,
-                  level_names = c("Indicator", "Category", "Dimension", "Index"))
+  COINr::new_coin(iData, iMeta, quietly = TRUE)
 
 }
 
