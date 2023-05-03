@@ -38,7 +38,7 @@ results_UI <- function(id) {
         #unit_summary {
           background-color: #ffffff;
           font-size: 12px;
-          opacity: 0.5;
+          opacity: 0.7;
         }
         #unit_summary:hover{
           opacity: 0.9;
@@ -217,6 +217,7 @@ results_server <- function(id, coin, coin_full, parent_input) {
 
     # extract click data from bar chart
     eventbar <- reactive({
+      req()
       plotly::event_data(
         event = "plotly_click",
         source = "bar_chart",
