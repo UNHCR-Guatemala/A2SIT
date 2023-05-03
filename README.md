@@ -9,6 +9,7 @@ This is the repository for the Admin2 Severity Index Tool (A2SIT). The A2SIT is 
 Although the final aim is to host the A2SIT online, the A2SIT app is encapsulated in an R package, so it can be installed and run locally (as long as you have R installed). To do this, run (in R:
 
 ```
+devtools::install_github("bluefoxr/iCOINr")
 remotes::install_github("UNHCR-Guatemala/A2SIT")
 ```
 
@@ -17,6 +18,8 @@ Note this requires the 'remotes' package.
 The aim will be to keep a working version of the app in the main branch of this repo. Meanwhile, development will progress in branches which will be merged when relatively stable. Please keep in mind though that the development is in its early stages so also the main "working" version will likely contain bugs and is so far not formally tested.
 
 ## Running the app
+
+The prototype is accessible @ https://rstudio.unhcr.org/SeverityIndex/ 
 
 To run the app locally, after installing the A2SIT package, run:
 

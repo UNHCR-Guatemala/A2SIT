@@ -3,3 +3,14 @@
 ^LICENSE\.md$
 ^A2SIT\.Rproj$
 not_package
+^\.travis\.yml$
+^app\.R$
+^rsconnect$
+^.github
+^dev$
+^docs$
+$run_dev.*
+^app\.R$
+^rsconnect$
+^.github$
+^\.github$

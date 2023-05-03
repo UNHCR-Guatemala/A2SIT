@@ -8,11 +8,14 @@ Description: This package is the container for a shiny app which allows non R-us
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.2.3.9000
 Imports: 
     COINr (>= 1.1.4),
     DT,
     htmltools,
+    config,
+    dashboardthemes,
+    golem,
     iCOINr (>= 0.2.0),
     leaflet,
     plotly,
@@ -21,8 +24,19 @@ Imports:
     shiny,
     shinydashboard,
     shinydashboardPlus,
+    dashboardthemes,
     shinyWidgets,
     utils
 Remotes: 
     bluefoxr/iCOINr,
     bluefoxr/COINr
+Suggests: 
+    knitr,
+    rmarkdown,
+    spelling,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+VignetteBuilder: knitr
+Language: en-US
+URL: https://github.com/UNHCR-Guatemala/A2SIT
+BugReports: https://github.com/UNHCR-Guatemala/A2SIT/issues

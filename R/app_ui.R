@@ -2,7 +2,8 @@
 #'
 #' @return Front end of app
 #'
-#' @importFrom shinydashboardPlus box
+#' @importFrom shinydashboardPlus box dashboardPage
+#' @importFrom shinydashboard menuItem menuSubItem tabItem
 #'
 #'
 #' @export
@@ -11,6 +12,7 @@ app_ui <- function() {
 
   # enable alert messages
   shinyWidgets::useSweetAlert()
+
 
   # Sidebar -----------------------------------------------------------------
 
@@ -33,6 +35,8 @@ app_ui <- function() {
   # Dashboard body ----------------------------------------------------------
 
   db_body <- shinydashboard::dashboardBody(
+
+    theme_dashboard(),
     shinydashboard::tabItems(
       input_UI("id_input"),
       analysis_UI("id_analysis"),
@@ -45,16 +49,38 @@ app_ui <- function() {
   # Assemble ----------------------------------------------------------------
 
   # define UNHCR logo
-  title_logo <- tags$div(tags$img(src="https://raw.githubusercontent.com/UNHCR-Guatemala/A2SIT/main/www/logo.svg", height ='30vh'), "  A2SIT")
+  title_logo <- tags$div(tags$img(src="https://raw.githubusercontent.com/UNHCR-Guatemala/A2SIT/main/inst/app/www/logo.svg", height ='30vh'), "  A2SIT")
 
-  shinydashboardPlus::dashboardPage(md = FALSE, skin = "blue",
+  shinydashboardPlus::dashboardPage(
+    md = FALSE,
+    #skin = "blue",
     options = list(sidebarExpandOnHover = TRUE),
     header = shinydashboardPlus::dashboardHeader(title = title_logo, titleWidth = "15vw", controlbarIcon = icon("gear")),
     footer = shinydashboardPlus::dashboardFooter(left = "Left content", right = "Right content"),
     sidebar = db_sidebar,
     body = db_body,
     controlbar = shinydashboardPlus::dashboardControlbar(disable = FALSE),
-    title = "DashboardPage"
+    title = "Admin2 Severity Index Tool"
   )
 
+}
+
+
+#' @import shiny
+golem_add_external_resources <- function(){
+
+  addResourcePath(
+    'www', system.file('app/www', package = "A2SIT")
+  )
+
+  tags$head(
+    golem::activate_js(),
+    golem::favicon(),
+    tags$title("A2SIT")
+    # Add here all the external resources
+    # If you have a custom.css in the inst/app/www
+    # Or for example, you can add shinyalert::useShinyalert() here
+    #tags$link(rel="stylesheet", type="text/css", href="www/custom.css")
+
+  )
 }
