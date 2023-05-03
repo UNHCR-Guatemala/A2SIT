@@ -112,3 +112,12 @@ get_indicator_codes <- function(coin, code_types = "all",
   }
 
 }
+
+get_n_indicators <- function(coin){
+  coin$Meta$Ind$iCode[coin$Meta$Ind$Type == "Indicator"] |>
+    length()
+}
+
+get_n_units <- function(coin){
+  nrow(coin$Data$Raw)
+}
