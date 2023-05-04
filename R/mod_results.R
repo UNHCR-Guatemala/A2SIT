@@ -144,7 +144,9 @@ results_server <- function(id, coin, coin_full, parent_input) {
       slider_codes <- get_codes_at_level(coin(), maxlevel - 1)
       div(
         class = "label-left",
-        lapply(NS(id, slider_codes), weights_slider)
+        lapply(slider_codes, function(icode){
+          weights_slider(NS(id, icode), icode)
+        })
       )
 
     }) |> bindEvent(results_built)
