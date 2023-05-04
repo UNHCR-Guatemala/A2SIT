@@ -14,7 +14,7 @@ theme_dashboard <- function() {
   dashboardthemes::shinyDashboardThemeDIY(
 
     #general
-    appFontFamily = "Lato"
+    appFontFamily = "Arial"
     ,appFontColor = "#696969"
     ,primaryFontColor = "#696969"
     ,infoFontColor = "#696969"
@@ -52,7 +52,7 @@ theme_dashboard <- function() {
     ,sidebarSearchBorderColor = "rgb(55,72,80)"
 
     ,sidebarTabTextColor = "#696969"
-    ,sidebarTabTextSize = 13
+    ,sidebarTabTextSize = 16
     ,sidebarTabBorderStyle = "none none none solid"
     ,sidebarTabBorderColor = "transparent"
     ,sidebarTabBorderWidth = 5
