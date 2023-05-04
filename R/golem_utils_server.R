@@ -61,6 +61,12 @@ get_indicator_info <- function(coin_full, coin, isel){
 
 }
 
+get_codes_at_level <- function(coin, Level){
+  codes <- coin$Meta$Ind$iCode[coin$Meta$Ind$Level == Level]
+  codes[!is.na(codes)] |>
+    unique()
+}
+
 #' Get list of available indicator/aggregate codes
 #'
 #' This is for use in dropdown menus, e.g. in plotting.

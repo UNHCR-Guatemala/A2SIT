@@ -81,13 +81,7 @@ results_UI <- function(id) {
         width = 2, status = "warning",
         strong("Weights"),
         br(),br(),
-        div(
-          class = "label-left",
-          weights_slider(NS(id,"w1"), "Human Mobility"),
-          weights_slider(NS(id,"w2"), "Threats"),
-          weights_slider(NS(id,"w3"), "Socioec. Situation"),
-          weights_slider(NS(id,"w4"), "Response Capacity")
-        ),
+        uiOutput(NS(id, "weight_sliders")),
         selectInput(NS(id, "agg_method"), label = "Aggregate using:",
                     choices = list("Arithmetic mean" = "a_amean",
                                    "Geometric mean" = "a_gmean"),
@@ -122,6 +116,7 @@ results_server <- function(id, coin, coin_full, parent_input) {
     # create reactive value for selected unit
     # (updated by map and table clicks)
     unit_selected <- reactiveVal(NULL)
+    results_built <- reactiveVal(FALSE)
 
     # when user selects results tab, if not done so already, generate results
     observeEvent(parent_input$tab_selected, {
@@ -130,6 +125,7 @@ results_server <- function(id, coin, coin_full, parent_input) {
       if(parent_input$tab_selected == "results"){
 
         if(!results_exist(coin())){
+          results_built(TRUE)
           coin(f_build_index(coin()))
         }
       }
@@ -138,6 +134,20 @@ results_server <- function(id, coin, coin_full, parent_input) {
                         choices = get_indicator_codes(coin(), with_levels = TRUE))
 
     })
+
+    # render the weight sliders. has to be done server-side because depends on
+    # user input.
+    output$weight_sliders <- renderUI({
+
+      # render sliders at one level down from index
+      maxlevel <- coin()$Meta$maxlev
+      slider_codes <- get_codes_at_level(coin(), maxlevel - 1)
+      div(
+        class = "label-left",
+        lapply(NS(id, slider_codes), weights_slider)
+      )
+
+    }) |> bindEvent(results_built)
 
     # Plot map
     output$map <- leaflet::renderLeaflet({
@@ -244,13 +254,13 @@ results_server <- function(id, coin, coin_full, parent_input) {
     observeEvent(input$regen, {
 
       req(results_exist(coin()))
+
+      # since I have to access multiple values of input, I have to convert
+      # to a list - not sure if there is another way
+      l_input <- isolate(reactiveValuesToList(input))
       # assemble weights into list
-      w <-  list(
-        Amenazas = input$w1,
-        Mov_Hum = input$w2,
-        Sit_SocEc = input$w3,
-        Cap_Resp = input$w4
-      )
+      w <- l_input[get_codes_at_level(coin(), coin()$Meta$maxlev - 1)]
+
       # update with new weights
       coin(f_rebuild_index(coin(), w, input$agg_method))
 
