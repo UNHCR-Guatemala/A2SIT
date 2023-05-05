@@ -23,11 +23,7 @@ app_ui <- function() {
       shinydashboard::menuItem("Upload", tabName = "upload", icon = icon("upload")),
       shinydashboard::menuItem("Analyse", tabName = "analyse", icon = icon("magnifying-glass-chart")),
       shinydashboard::menuItem("Results", tabName = "results", icon = icon("square-poll-vertical")),
-      shinydashboard::menuItem("Export", tabName = "export", icon = icon("file-export")),
-      shinydashboard::menuItem("Save/load", icon = icon("floppy-disk"),
-                               shinydashboard::menuSubItem("Save session", tabName = "subitem1", icon = icon("angles-right")),
-                               shinydashboard::menuSubItem("Load session", tabName = "subitem2", icon = icon("angles-right"))
-      )
+      shinydashboard::menuItem("Export", tabName = "export", icon = icon("file-export"))
     )
   )
 
@@ -41,7 +37,7 @@ app_ui <- function() {
       input_UI("id_input"),
       analysis_UI("id_analysis"),
       results_UI("id_results"),
-      shinydashboard::tabItem(tabName = "exports")
+      export_UI("id_export")
     )
   )
 
@@ -55,11 +51,29 @@ app_ui <- function() {
     md = FALSE,
     #skin = "blue",
     options = list(sidebarExpandOnHover = TRUE),
-    header = shinydashboardPlus::dashboardHeader(title = title_logo, titleWidth = "15vw", controlbarIcon = icon("gear")),
-    footer = shinydashboardPlus::dashboardFooter(left = "Left content", right = "Right content"),
+    header = shinydashboardPlus::dashboardHeader(
+      title = title_logo,
+      titleWidth = "15vw",
+      controlbarIcon = icon("gears"),
+      leftUi = tagList(
+        shinydashboardPlus::dropdownBlock(
+          id = "save_session",
+          title = "Save session",
+          icon = icon("floppy-disk"), badgeStatus = NULL,
+          "To add"
+        ),
+        shinydashboardPlus::dropdownBlock(
+          id = "load_session",
+          title = "Load session",
+          icon = icon("folder-open"), badgeStatus = NULL,
+          "To add"
+        )
+      )
+    ),
+    footer = shinydashboardPlus::dashboardFooter(right = "2023 UNHCR"),
     sidebar = db_sidebar,
     body = db_body,
-    controlbar = shinydashboardPlus::dashboardControlbar(disable = FALSE),
+    controlbar = shinydashboardPlus::dashboardControlbar(disable = TRUE),
     title = "Admin2 Severity Index Tool"
   )
 

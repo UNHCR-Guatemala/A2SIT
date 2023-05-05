@@ -12,6 +12,6 @@ app_server <- function(input, output, session) {
 
   results_server("id_results", coin, coin_full, input)
 
-
+  export_server("id_export", coin, coin_full, input)
 
 }
