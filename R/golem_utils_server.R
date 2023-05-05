@@ -1,5 +1,12 @@
 # UTILITY FUNCTIONS FOR SERVER
 
+# named list of units, for dropdown menus
+get_unit_list <- function(coin){
+  l_units <- as.list(coin$Meta$Unit$uCode)
+  names(l_units) <- coin$Meta$Unit$uName
+  l_units
+}
+
 # check for indicator analysis
 # returns TRUE if analysis is present
 analysis_exists <- function(coin){
