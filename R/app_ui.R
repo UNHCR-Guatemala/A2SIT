@@ -23,7 +23,7 @@ app_ui <- function() {
       shinydashboard::menuItem("Upload", tabName = "upload", icon = icon("upload")),
       shinydashboard::menuItem("Analyse", tabName = "analyse", icon = icon("magnifying-glass-chart")),
       shinydashboard::menuItem("Results", tabName = "results", icon = icon("square-poll-vertical")),
-      shinydashboard::menuItem("Export", tabName = "export", icon = icon("file-export"))
+      shinydashboard::menuItem("Profiles", tabName = "profiles", icon = icon("location-dot"))
     )
   )
 
@@ -37,7 +37,7 @@ app_ui <- function() {
       input_UI("id_input"),
       analysis_UI("id_analysis"),
       results_UI("id_results"),
-      export_UI("id_export")
+      profiles_UI("id_profiles")
     )
   )
 
@@ -66,6 +66,12 @@ app_ui <- function() {
           id = "load_session",
           title = "Load session",
           icon = icon("folder-open"), badgeStatus = NULL,
+          "To add"
+        ),
+        shinydashboardPlus::dropdownBlock(
+          id = "export_to_excel",
+          title = "Export",
+          icon = icon("file-export"), badgeStatus = NULL,
           "To add"
         )
       )
