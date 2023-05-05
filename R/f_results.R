@@ -186,6 +186,20 @@ f_generate_results <- function(coin){
 #
 # Outputs a coin.
 #
+
+
+#' Regenerate results
+#'
+#' Regenerates results based on specified weights and aggregation method.
+#'
+#' @param coin The coin
+#' @param w can either be a named list with names as iCodes and values
+#' as the new weights, OR as a data frame with columns "iCode" and "Weight" with
+#' codes and corresponding weights.
+#' @param agg_method One of `c("a_amean", "a_gmean")` currently supported.
+#'
+#' @return Updated coin
+#' @export
 f_rebuild_index <- function(coin, w, agg_method){
 
   stopifnot(is.coin(coin),
