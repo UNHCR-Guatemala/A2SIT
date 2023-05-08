@@ -44,6 +44,20 @@ analysis_UI <- function(id) {
            )
     ),
     column(5,
+
+           shinydashboardPlus::box(
+             title = "Distribution",
+             collapsible = TRUE,
+             status = "info", width = 12,
+             sidebar = shinydashboardPlus::boxSidebar(
+               id = "violin_sidebar",
+               icon = icon("gear"),
+               width = 25,
+               selectInput(NS(id, "dist_plottype"), label = "Plot type", choices = c("Violin", "Histogram"))
+             ),
+             plotly::plotlyOutput(NS(id, "violin_plot"))
+           ),
+
            shinydashboardPlus::box(
              title = "Scatter plot",
              collapsible = TRUE,
@@ -57,18 +71,6 @@ analysis_UI <- function(id) {
                shinyWidgets::prettySwitch(NS(id, "scat_logy"), label = "Log Y")
              ),
              plotly::plotlyOutput(NS(id, "scatter_plot"))
-           ),
-           shinydashboardPlus::box(
-             title = "Distribution",
-             collapsible = TRUE,
-             status = "info", width = 12,
-             sidebar = shinydashboardPlus::boxSidebar(
-               id = "violin_sidebar",
-               icon = icon("gear"),
-               width = 25,
-               selectInput(NS(id, "dist_plottype"), label = "Plot type", choices = c("Violin", "Histogram"))
-             ),
-             plotly::plotlyOutput(NS(id, "violin_plot"))
            )
     )
   )
