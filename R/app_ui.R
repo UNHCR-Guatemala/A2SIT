@@ -32,6 +32,13 @@ app_ui <- function() {
 
   db_body <- shinydashboard::dashboardBody(
 
+    # increase width of dropdown menus
+    tags$head(tags$style(HTML('
+  .navbar-custom-menu>.navbar-nav>li>.dropdown-menu {
+  width:200px;
+  }
+  '))),
+
     theme_dashboard(),
     shinydashboard::tabItems(
       input_UI("id_input"),
@@ -48,6 +55,7 @@ app_ui <- function() {
   title_logo <- tags$div(tags$img(src="https://raw.githubusercontent.com/UNHCR-Guatemala/A2SIT/main/inst/app/www/logo.svg", height ='30vh'), "  A2SIT")
 
   shinydashboardPlus::dashboardPage(
+
     md = FALSE,
     #skin = "blue",
     options = list(sidebarExpandOnHover = TRUE),
@@ -72,7 +80,11 @@ app_ui <- function() {
           id = "export_to_excel",
           title = "Export",
           icon = icon("file-export"), badgeStatus = NULL,
-          "To add"
+          h5("Export to Excel"),
+          downloadButton("export_button_excel", "Excel"),
+          br(),
+          h5("Export to R"),
+          downloadButton("export_button_R", "R")
         )
       )
     ),
