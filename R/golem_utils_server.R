@@ -134,3 +134,21 @@ get_n_indicators <- function(coin){
 get_n_units <- function(coin){
   nrow(coin$Data$Raw)
 }
+
+get_index_rank <- function(coin, usel){
+  index_code <- get_index_code(coin)
+  coin$Results$FullRank[[index_code]][
+    coin$Results$FullRank$uCode == usel
+  ]
+}
+
+get_index_score <- function(coin, usel){
+  index_code <- get_index_code(coin)
+  coin$Data$Aggregated[[index_code]][
+    coin$Data$Aggregated$uCode == usel
+  ]
+}
+
+get_level_of_icode <- function(coin, iCode){
+  coin$Meta$Ind$Level[coin$Meta$Ind$iCode == iCode]
+}
