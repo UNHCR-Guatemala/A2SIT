@@ -8,13 +8,12 @@ Description: This package is the container for a shiny app which allows non R-us
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3.9000
+RoxygenNote: 7.2.3
 Imports: 
     COINr (>= 1.1.4),
     DT,
     htmltools,
     config,
-    dashboardthemes,
     golem,
     iCOINr (>= 0.2.0),
     leaflet,
@@ -26,7 +25,11 @@ Imports:
     shinydashboardPlus,
     dashboardthemes,
     shinyWidgets,
-    utils
+    utils,
+    RColorBrewer,
+    openxlsx,
+    shinyjs,
+    stats
 Remotes: 
     bluefoxr/iCOINr,
     bluefoxr/COINr
