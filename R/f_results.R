@@ -313,3 +313,51 @@ f_get_last_weights <- function(coin){
   w_new
 
 }
+
+#' Get admin2 polygons from API
+#'
+#' Queries the gis.unhcr.org sever to return admin2 shape files for a specific
+#' country. Some of the files returned are heavy, and the server also seems to
+#' fail or time out every now and then. Also, some admin2 codes are not in the
+#' expected format.
+#'
+#' @param ISO3 ISO3 code of country
+#' @param simplify Logical: whether to simplify or not
+#' @param dTolerance parameter passed to [sf::st_simplify()]
+#'
+#' @return sf object
+#' @export
+f_get_admin2_boundaries <- function(ISO3, simplify = TRUE, dTolerance = 500){
+
+  stopifnot(ISO3 %in% country_codes$ISO3)
+
+  # generate query string
+  # from: https://gis.unhcr.org/arcgis/rest/services/core_v2/wrl_polbnd_adm2_a_unhcr/MapServer/0/query
+  api_query <- paste0(
+    "https://gis.unhcr.org/arcgis/rest/services/core_v2/wrl_polbnd_adm2_a_unhcr/",
+    "MapServer/0/query?where=ISO3+%3D+%27", ISO3,
+    "%27&text=&objectIds=&time=&geometry=",
+    "&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects",
+    "&distance=&units=esriSRUnit_Foot&relationParam=",
+    "&outFields=pcode%2C+adm2_source_code%2C+gis_name&returnGeometry=true&",
+    "returnTrueCurves=false&maxAllowableOffset=&geometryPrecision=&outSR=&",
+    "havingClause=&returnIdsOnly=false&returnCountOnly=false&orderByFields=&",
+    "groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&",
+    "gdbVersion=&historicMoment=&returnDistinctValues=false&resultOffset=",
+    "&resultRecordCount=&returnExtentOnly=false&datumTransformation=&",
+    "parameterValues=&rangeValues=&quantizationParameters=&featureEncoding=esriDefault&f=geojson")
+
+  # read and create feature table
+  df_geom <- sf::st_read(api_query)
+
+  if(any(is.na(df_geom$adm2_source_code))){
+    warning("NAs found in Admin2 codes...")
+  }
+
+  if(simplify){
+    sf::st_simplify(df_geom, preserveTopology = TRUE, dTolerance = dTolerance)
+  }
+
+  df_geom
+
+}
