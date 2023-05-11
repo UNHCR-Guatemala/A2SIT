@@ -43,3 +43,6 @@ VignetteBuilder: knitr
 Language: en-US
 URL: https://github.com/UNHCR-Guatemala/A2SIT
 BugReports: https://github.com/UNHCR-Guatemala/A2SIT/issues
+Depends: 
+    R (>= 4.1.0)
+LazyData: true
