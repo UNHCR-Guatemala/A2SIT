@@ -356,8 +356,58 @@ f_get_admin2_boundaries <- function(ISO3, simplify = TRUE, dTolerance = 500){
 
   if(simplify){
     sf::st_simplify(df_geom, preserveTopology = TRUE, dTolerance = dTolerance)
+  } else {
+    df_geom
   }
 
-  df_geom
 
+
+}
+
+#' Retrieve and store geometry for countries
+#'
+#' Queries the UNHCR API to get Admin2 layer for the specified countries, then
+#' simplifies the geometry and stores in inst/geom. To enable quick retrieval
+#' of maps. This is intended to just be run occasionally.
+#'
+#' @param ISO3s Character vector of ISO3s to get maps for
+#' @param overwrite if TRUE overwrites any existing files
+#'
+#' @export
+cache_admin2_geometry <- function(ISO3s, overwrite = FALSE){
+
+  existing_ISO3s <- get_cached_countries()
+
+  if(!overwrite){
+    ISO3s <- setdiff(ISO3s, existing_ISO3s)
+  }
+
+  for(ISO3 in ISO3s){
+
+    geom_simplified <- f_get_admin2_boundaries(ISO3)
+
+    saveRDS(geom_simplified, file = paste0("./inst/geom/", ISO3, ".RDS"))
+
+  }
+
+}
+
+#' Get countries with cached maps
+#'
+#' Returns ISO3 codes of all countries for which simplified maps have been
+#' stored in inst/geom. Countries not in this list will have to have their
+#' maps downloaded from the server.
+#'
+#' @return Character vector of ISO3 codes
+#' @export
+get_cached_countries <- function(){
+
+  ISO3s <- list.files(system.file("geom", package = "A2SIT")) |>
+    substring(1,3)
+
+  if(!all(ISO3s %in% country_codes$ISO3)){
+    stop("One or more files in inst/geom with unrecognised ISO3 code?")
+  }
+
+  ISO3s
 }
