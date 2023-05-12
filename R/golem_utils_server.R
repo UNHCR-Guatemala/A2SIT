@@ -152,3 +152,15 @@ get_index_score <- function(coin, usel){
 get_level_of_icode <- function(coin, iCode){
   coin$Meta$Ind$Level[coin$Meta$Ind$iCode == iCode]
 }
+
+# Not in operator
+#
+# For convenience, rather than always `!(x, %in% y)`
+#
+# @param x A scalar or vector
+# @param y A scalar or vector
+#
+# @return TRUE if x is not in y, FALSE otherwise
+'%nin%' <- function(x,y){
+  !('%in%'(x,y))
+}
