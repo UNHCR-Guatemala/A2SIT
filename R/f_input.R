@@ -98,27 +98,6 @@ f_data_input <- function(file_path){
 
   }
 
-  # # remove any second-level groups with no children
-  #
-  # no_children_1 <- iMeta$iCode[iMeta$Level == 2 & !(iMeta$iCode %in% iMeta$Parent)]
-  # iMeta <- iMeta[!(iMeta$iCode %in% no_children_1), ]
-  #
-  # if(length(no_children_1) > 0){
-  #   message("Removed categories containing no indicators: ",
-  #           paste0(no_children_1, collapse = ", "))
-  # }
-  #
-  # # remove any third-level groups with no children
-  #
-  # no_children_2 <- iMeta$iCode[iMeta$Level == 3 & !(iMeta$iCode %in% iMeta$Parent)]
-  # iMeta <- iMeta[!(iMeta$iCode %in% no_children_2), ]
-  #
-  # if(length(no_children_2) > 0){
-  #   message("Removed dimensions containing no categories: ", no_children_2,
-  #           paste0(no_children_2, collapse = ", "))
-  # }
-
-
   # Build coin and output ----
 
   COINr::new_coin(iData, iMeta, quietly = TRUE)
@@ -194,4 +173,44 @@ f_print_coin <- function(coin){
   }
   cat("\n")
 
+}
+
+
+#' Generate Excel template for input data, for specified country
+#'
+#' Writes codes and names of Admin2 regions to an Excel template, for a specified
+#' country.
+#'
+#' @param ISO3 Valid ISO3 code with geometry available in inst/geom
+#' @param to_file_name Where to write to
+#' @export
+f_generate_input_template <- function(ISO3, to_file_name = NULL){
+
+  stopifnot(ISO3 %in% get_cached_countries())
+
+  if(is.null(to_file_name)){
+    to_file_name <- paste0("A2SIT_data_input_template_", ISO3, ".xlsx")
+  }
+
+  # load table for selected country
+  df_ISO3 <- system.file("geom", paste0(ISO3,".RDS"), package = "A2SIT") |>
+    readRDS()
+
+  # get cols of interest and sort
+  df_write <- data.frame(
+    admin2Pcode = df_ISO3$adm2_source_code,
+    Name = df_ISO3$gis_name
+  )
+  df_write <- df_write[order(df_write$admin2Pcode), ]
+
+  # load template
+  wb <- system.file("A2SIT_data_input_template.xlsx", package = "A2SIT") |>
+    openxlsx::loadWorkbook()
+
+  # write codes/names to wb
+  openxlsx::writeData(
+    wb, sheet = "Data", x = df_write, colNames = F, startCol = 1, startRow = 6)
+
+  # save
+  openxlsx::saveWorkbook(wb, to_file_name, overwrite = T)
 }
