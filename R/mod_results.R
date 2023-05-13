@@ -158,18 +158,12 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, sh
       req(results_exist(coin()))
       req(input$plot_icode)
 
-      shapefile_path <- system.file(
-        "shp",
-        "gtm_admbnda_adm2_ocha_conred_20190207.shp",
-        package = "A2SIT"
-      )
-
       icode_level <- get_level_of_icode(coin(), input$plot_icode)
 
       dset_plot <- if (icode_level == 1) "Raw" else "Aggregated"
 
-      f_plot_map(coin(), dset = dset_plot, iCode = input$plot_icode,
-                 shp_path = shapefile_path)
+      f_plot_map(coin(), dset = dset_plot, ISO3 = shared_reactives$ISO3,
+                 iCode = input$plot_icode)
 
     })
 
