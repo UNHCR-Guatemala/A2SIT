@@ -23,7 +23,7 @@
 #' @return coin-class object
 #'
 #' @export
-f_data_input <- function(file_path){
+f_data_input <- function(file_path, ISO3){
 
   # Settings ----
 
@@ -37,12 +37,22 @@ f_data_input <- function(file_path){
   uname_name <- "Name"
 
 
-  # Read in data ----
+  # Read in iData and validate ----
 
   iData <- readxl::read_excel(
     path = file_path, sheet = "Data",
     range = readxl::cell_limits(ul = idata_topleft, lr = c(NA, NA))
   )
+
+  iData_message <- validate_iData(iData)
+
+  if(!is.null(iData_message)){
+    message("Problem in Data tab: ", iData_message)
+    return(NULL)
+  }
+
+  # Read in iMeta and validate (only indicator level) ----
+
   iMeta <- readxl::read_excel(
     path = file_path, sheet = "Data",
     range = readxl::cell_limits(ul = imeta_topleft,
@@ -55,11 +65,31 @@ f_data_input <- function(file_path){
   names(iData)[names(iData) == ucode_name] <- "uCode"
   names(iData)[names(iData) == uname_name] <- "uName"
 
+  # check that uCodes correspond to admin2 codes in the geometry file
+  # get geom
+  admin2_geom <- system.file("geom", paste0(ISO3,".RDS"), package = "A2SIT") |>
+    readRDS()
+
+  rogue_ucodes <- iData$uCode[iData$uCode %nin% admin2_geom$adm2_source_code]
+  if(length(rogue_ucodes) > 1){
+    message("One or more codes in 'adm2_source_code' column in Data tab not valid codes: ",
+            toString(head(rogue_ucodes)))
+    message("Did you select the correct country?")
+    return(NULL)
+  }
 
   # Tidy and merge metadata ----
 
   # tidy existing
   iMeta <- as.data.frame(t(iMeta))
+
+  iMeta_message <- validate_iMeta(iMeta)
+
+  if(!is.null(iMeta_message)){
+    message("Problem in Data tab (with metadata rows): ", iMeta_message)
+    return(NULL)
+  }
+
   names(iMeta) <- c("Weight", "Direction", "Parent", "iName", "iCode")
   iMeta$Weight <- as.numeric(iMeta$Weight)
   iMeta$Direction <- as.numeric(iMeta$Direction)
@@ -70,9 +100,20 @@ f_data_input <- function(file_path){
   iMeta$Type <- "Indicator"
 
   # merge with aggregate levels
-  iMeta_aggs <- readxl::read_excel(path = file_path, sheet = "iMeta_aggs")
-  iMeta <- rbind(iMeta, iMeta_aggs)
+  iMeta_aggs <- readxl::read_excel(path = file_path, sheet = "Structure")
 
+  # check all groups specified in Data tab exist in meta
+  rogue_groups <- iMeta$Parent[iMeta$Parent %nin% iMeta_aggs$iCode]
+  if(length(rogue_groups) > 1){
+    message("One or more groups specified in the Data tab not found in the Structure tab: ", toString(rogue_groups))
+    return(NULL)
+  }
+
+  # add missing cols
+  iMeta_aggs$Direction <- 1
+  iMeta_aggs$Type <- "Aggregate"
+
+  iMeta <- rbind(iMeta, iMeta_aggs)
 
   # Further tidying ----
 
@@ -85,6 +126,16 @@ f_data_input <- function(file_path){
   if(length(i_nodata) > 0){
     message("Removed indicators with no data points: \n --> ", toString(i_nodata))
   }
+
+  # remove units with no data
+  iData_ <- iData[names(iData) %nin% c("uCode", "uName")]
+  empty_rows <- rowSums(!is.na(iData_)) == 0
+
+  if(sum(empty_rows) > 0){
+    message("Removed rows with no data points for admin2 codes: ", toString(iData$admin2Pcode[empty_rows]))
+    iData <- iData[!empty_rows, ]
+  }
+
 
   # iteratively remove groups with no children, working upwards
   for (Level in 2 : max(iMeta$Level, na.rm = TRUE)){
@@ -213,4 +264,142 @@ f_generate_input_template <- function(ISO3, to_file_name = NULL){
 
   # save
   openxlsx::saveWorkbook(wb, to_file_name, overwrite = T)
+}
+
+# checks and messages to pass to the user for basic errors in iData
+# Note COINr does many of these checks anyway, but the intention is to generate
+# some user-friendly versions here
+validate_iData <- function(iData){
+
+
+  # ID cols -----------------------------------------------------------------
+
+  if(!is.data.frame(iData)){
+    return("Cannot recognise your data as valid table - something very wrong!")
+  }
+
+  if("admin2Pcode" %nin% names(iData)){
+    return("Expected column 'admin2Pcode' not found in your data - did you change the column name or delete it?")
+  }
+
+  if("Name" %nin% names(iData)){
+    return("Expected column 'Name' not found in your data - did you change the column name or delete it?")
+  }
+
+  if(!is.character(iData$admin2Pcode)){
+    return("The 'admin2Pcode' column is expected to be formatted as text but it is not (did you enter numbers here?)")
+  }
+
+  if(!is.character(iData$Name)){
+    return("The 'Name' column is expected to be formatted as text but it is not (did you enter numbers here?)")
+  }
+
+  if(any(is.na(iData$admin2Pcode))){
+    return("Missing values found in 'admin2Pcode' column - please correct.")
+  }
+
+  if(any(is.na(iData$Name))){
+    return("Missing values found in 'Name' column - please correct.")
+  }
+
+
+  # Data cols ---------------------------------------------------------------
+
+  if(ncol(iData) < 3){
+    return("No data columns found in your data?")
+  }
+
+  # get only data cols (exclude those with all NAs which are removed later)
+  iData_ <- iData[(names(iData) %nin% c("admin2Pcode","Name")) &
+                    !(colSums(!is.na(iData)) == 0)]
+
+  not_numeric <- names(iData_)[!sapply(iData_, is.numeric)]
+  if(length(not_numeric) > 0){
+    return(paste0("One or more of your data columns have non-numeric entries: ", toString(not_numeric)))
+  }
+
+  duplicate_icodes <- names(iData)[duplicated(names(iData))]
+  if(length(duplicate_icodes) > 0){
+    return(paste0("Duplicate indicator codes detected: ", toString(duplicate_icodes)))
+  }
+
+  duplicate_ucodes <- iData$admin2Pcode[duplicated(iData$admin2Pcode)]
+  if(length(duplicate_ucodes) > 0){
+    return(paste0("Duplicate admin2 codes detected: ", toString(duplicate_ucodes)))
+  }
+
+  NULL
+
+}
+
+
+# checks and messages to pass to the user for basic errors in iMeta
+# Note COINr does many of these checks anyway, but the intention is to generate
+# some user-friendly versions here
+validate_iMeta <- function(iMeta){
+
+  if(!is.data.frame(iMeta)){
+    return("Cannot recognise indicator data as valid table - something very wrong!")
+  }
+
+  # weights
+  w_col <- iMeta[[1]]
+
+  if(any(is.na(w_col))){
+    return("One or more missing values in the 'weights' row - please fill in.")
+  }
+
+  if(!possibly_numeric(w_col)){
+    return("One or more entries in the 'weights' row are not numbers.")
+  }
+
+  if(any(as.numeric(w_col) < 0)){
+    return("Negative weights detected?")
+  }
+
+  # directions
+  d_col <- iMeta[[2]]
+
+  if(any(is.na(d_col))){
+    return("One or more missing values in the 'directions' row - please fill in.")
+  }
+
+  if(!possibly_numeric(d_col)){
+    return("One or more entries in the 'directions' row are not numbers.")
+  }
+
+  if(any(as.numeric(d_col) %nin% c(-1, 1))){
+    return("Values in the 'directions' row found that are not -1 or 1. Please fix.")
+  }
+
+  # parents
+  p_col <- iMeta[[3]]
+
+  if(any(is.na(p_col))){
+    return("One or more missing values in the 'Group' row - please fill in.")
+  }
+
+  if(possibly_numeric(p_col)){
+    return("One or more entries in the 'Group' row look like numbers - please ensure codes start with a letter.")
+  }
+
+  # names
+  n_col <- iMeta[[4]]
+
+  if(any(is.na(n_col))){
+    return("One or more missing values in the 'Indicator name' row - please fill in.")
+  }
+
+  if(possibly_numeric(n_col)){
+    return("One or more entries in the 'Indicator' row look like numbers - please ensure names start with a letter.")
+  }
+
+  NULL
+
+
+}
+
+# can a vector be coerced to numeric?
+possibly_numeric <- function(x){
+  suppressWarnings(all(!is.na(as.numeric(as.character(x)))))
 }
