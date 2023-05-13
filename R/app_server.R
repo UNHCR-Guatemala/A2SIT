@@ -10,13 +10,14 @@ app_server <- function(input, output, session) {
   coin <- reactiveVal(NULL)
   coin_full <- reactiveVal(NULL)
   shared_reactives <- reactiveValues(
+    ISO3 = NULL, # country of the data
     profile_unit = NULL, # unit to view in profiles
     results_built = FALSE # whether results (up to aggregation) built
   )
 
   # Modules -----------------------------------------------------------------
 
-  input_server("id_input", coin, coin_full)
+  input_server("id_input", coin, coin_full, shared_reactives)
   analysis_server("id_analysis", coin, coin_full, input)
   results_server("id_results", coin, coin_full, input, session, shared_reactives)
   profiles_server("id_profiles", coin, coin_full, input, shared_reactives)
