@@ -17,9 +17,10 @@ app_ui <- function() {
   # Sidebar -----------------------------------------------------------------
 
   db_sidebar <- shinydashboardPlus::dashboardSidebar(
-    minified = FALSE, collapsed = FALSE, width = "15vw",
+    minified = FALSE, collapsed = TRUE, width = "15vw",
     shinydashboard::sidebarMenu(
       id = "tab_selected",
+      shinydashboard::menuItem("Welcome", tabName = "welcome", icon = icon("house")),
       shinydashboard::menuItem("Upload", tabName = "upload", icon = icon("upload")),
       shinydashboard::menuItem("Analyse", tabName = "analyse", icon = icon("magnifying-glass-chart")),
       shinydashboard::menuItem("Results", tabName = "results", icon = icon("square-poll-vertical")),
@@ -41,6 +42,7 @@ app_ui <- function() {
 
     theme_dashboard(),
     shinydashboard::tabItems(
+      welcome_UI("id_welcome"),
       input_UI("id_input"),
       analysis_UI("id_analysis"),
       results_UI("id_results"),

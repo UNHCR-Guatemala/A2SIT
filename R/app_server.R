@@ -17,12 +17,22 @@ app_server <- function(input, output, session) {
 
   # Modules -----------------------------------------------------------------
 
+  welcome_server("id_welcome")
   input_server("id_input", coin, coin_full, shared_reactives)
   analysis_server("id_analysis", coin, coin_full, input)
   results_server("id_results", coin, coin_full, input, session, shared_reactives)
   profiles_server("id_profiles", coin, coin_full, input, shared_reactives)
 
   # Extras (not modules) ----------------------------------------------------
+
+  # # close sidebar for welcome screen
+  # observeEvent(input$tab_selected, {
+  #
+  #   browser()
+  #   if(input$tab_selected != "welcome"){
+  #     shinydashboardPlus::updateSidebar("tab_selected")
+  #   }
+  # })
 
   # Export to Excel
   output$export_button_excel <- downloadHandler(
