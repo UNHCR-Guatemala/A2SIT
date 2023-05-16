@@ -17,7 +17,8 @@ app_ui <- function() {
   # Sidebar -----------------------------------------------------------------
 
   db_sidebar <- shinydashboardPlus::dashboardSidebar(
-    minified = FALSE, collapsed = TRUE, width = "15vw",
+    #tags$style(".left-side, .main-sidebar {padding-top: 20px}"),
+    minified = FALSE, collapsed = TRUE, width = "30vw",
     shinydashboard::sidebarMenu(
       id = "tab_selected",
       shinydashboard::menuItem("Welcome", tabName = "welcome", icon = icon("house")),
@@ -40,7 +41,8 @@ app_ui <- function() {
   }
   '))),
 
-    theme_dashboard(),
+    includeCSS(system.file("app", "www", "custom.css", package = "A2SIT")),
+    fresh::use_theme(theme_UNHCR),
     shinydashboard::tabItems(
       welcome_UI("id_welcome"),
       input_UI("id_input"),
@@ -61,9 +63,11 @@ app_ui <- function() {
     md = FALSE,
     #skin = "blue",
     options = list(sidebarExpandOnHover = TRUE),
+
     header = shinydashboardPlus::dashboardHeader(
+
       title = title_logo,
-      titleWidth = "15vw",
+      titleWidth = "30vw",
       controlbarIcon = icon("gears"),
       leftUi = tagList(
         shinydashboardPlus::dropdownBlock(
@@ -106,6 +110,7 @@ golem_add_external_resources <- function(){
   addResourcePath(
     'www', system.file('app/www', package = "A2SIT")
   )
+  addResourcePath('img', system.file('app/img', package = 'A2SIT') )
 
   tags$head(
     golem::activate_js(),

@@ -23,13 +23,13 @@ Imports:
     shiny,
     shinydashboard,
     shinydashboardPlus,
-    dashboardthemes,
     shinyWidgets,
     utils,
     RColorBrewer,
     openxlsx,
     shinyjs,
-    stats
+    stats,
+    fresh
 Remotes: 
     bluefoxr/iCOINr,
     bluefoxr/COINr
