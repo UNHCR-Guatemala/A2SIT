@@ -7,7 +7,9 @@ welcome_UI <- function(id) {
           background-color: #0072BC;
           opacity: 1;
           text-align: center;
-          padding: 15%;
+          padding-top: 10%;
+          padding-right: 25%;
+          padding-left: 25%;
           color:white;
         }"),
     absolutePanel(
@@ -27,7 +29,7 @@ welcome_UI <- function(id) {
         column(3),
         column(
           3,
-          actionButton("id1", label = "Tour", width = "200px", style='font-size: 16px; color: #18375F', icon = icon("route")),
+          actionButton(NS(id, "go_to_tour"), label = "Tour", width = "150px", style='font-size: 16px; color: #18375F', icon = icon("route")),
           style = "font-size: 18px; text-align: right;"
         ),
         column(6, "Take a guided tour of the app", style = "font-size: 18px; text-align: left;")
@@ -38,7 +40,7 @@ welcome_UI <- function(id) {
         column(3),
         column(
           3,
-          actionButton("id2", label = "Data input", width = "200px", style='font-size: 16px; color: #18375F', icon = icon("upload")),
+          actionButton(NS(id, "go_to_datainput"), label = "Data input", width = "150px", style='font-size: 16px; color: #18375F', icon = icon("upload")),
           style = "font-size: 18px; text-align: right;"
         ),
         column(6, "Go straight to data input", style = "font-size: 18px; text-align: left;")
@@ -49,7 +51,7 @@ welcome_UI <- function(id) {
         column(3),
         column(
           3,
-          actionButton("id3", label = "Know more", width = "200px", style='font-size: 16px; color: #18375F', icon = icon("circle-info")),
+          actionButton(NS(id, "go_to_doc"), label = "Know more", width = "150px", style='font-size: 16px; color: #18375F', icon = icon("circle-info")),
           style = "font-size: 18px; text-align: right;"
         ),
         column(6, "Read the A2SIT documentation", style = "font-size: 18px; text-align: left;")
@@ -60,11 +62,18 @@ welcome_UI <- function(id) {
 
 }
 
-welcome_server <- function(id) {
+welcome_server <- function(id, parent_session) {
 
   moduleServer(id, function(input, output, session) {
 
-    #
+    # go to data input tab
+    observeEvent(input$go_to_datainput, {
+      shinydashboard::updateTabItems(
+        session = parent_session,
+        inputId = "tab_selected",
+        selected = "upload"
+      )
+    })
 
 
   })

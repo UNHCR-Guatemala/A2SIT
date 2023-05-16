@@ -17,7 +17,7 @@ app_server <- function(input, output, session) {
 
   # Modules -----------------------------------------------------------------
 
-  welcome_server("id_welcome")
+  welcome_server("id_welcome", session)
   input_server("id_input", coin, coin_full, shared_reactives)
   analysis_server("id_analysis", coin, coin_full, input)
   results_server("id_results", coin, coin_full, input, session, shared_reactives)

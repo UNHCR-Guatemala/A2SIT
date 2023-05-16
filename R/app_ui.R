@@ -18,7 +18,7 @@ app_ui <- function() {
 
   db_sidebar <- shinydashboardPlus::dashboardSidebar(
     #tags$style(".left-side, .main-sidebar {padding-top: 20px}"),
-    minified = FALSE, collapsed = TRUE, width = "30vw",
+    minified = TRUE, collapsed = FALSE, width = "30vw",
     shinydashboard::sidebarMenu(
       id = "tab_selected",
       shinydashboard::menuItem("Welcome", tabName = "welcome", icon = icon("house")),
