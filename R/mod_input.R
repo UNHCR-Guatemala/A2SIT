@@ -17,12 +17,15 @@ input_UI <- function(id) {
           "for testing/demo.",
           br(),br(),
 
-          country_dropdown(NS(id, "ISO3"), "Select country:"),
+          country_dropdown(NS(id, "ISO3"), "Select country:") |>
+            add_tooltip("If your country is not on this list please contact us."),
 
           downloadLink(NS(id, "download_country_template"), "Download country template"),
 
           br(),br(),
-          fileInput(NS(id, "xlsx_file"), "Load Data", buttonLabel = "Browse...", accept = c("xls", "xlsx")),
+          fileInput(NS(id, "xlsx_file"), "Load Data", buttonLabel = "Browse...", accept = c("xls", "xlsx")) |>
+            add_tooltip("Please upload the template spreadsheet compiled with your data."),
+
           actionButton(NS(id, "load_click"), "Load")),
 
       box(title = "Messages", width = NULL, status = "info",

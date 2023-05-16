@@ -31,3 +31,13 @@ country_dropdown <- function(id, label){
     ))
 
 }
+
+add_tooltip <- function(tag, message_to_add){
+  tag |>
+    bsplus::shinyInput_label_embed(
+      icon("info") |>
+        bsplus::bs_embed_tooltip(title = message_to_add)
+    )
+}
+
+

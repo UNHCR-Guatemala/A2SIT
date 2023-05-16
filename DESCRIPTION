@@ -29,7 +29,8 @@ Imports:
     openxlsx,
     shinyjs,
     stats,
-    fresh
+    fresh,
+    bsplus
 Remotes: 
     bluefoxr/iCOINr,
     bluefoxr/COINr
