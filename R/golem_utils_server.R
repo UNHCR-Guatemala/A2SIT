@@ -164,3 +164,17 @@ get_level_of_icode <- function(coin, iCode){
 '%nin%' <- function(x,y){
   !('%in%'(x,y))
 }
+
+
+# function that returns the present weights in the sliders in the UI
+get_slider_weights <- function(input, icodes){
+
+  l_input <- isolate(reactiveValuesToList(input))[icodes]
+  if(all(sapply(l_input, is.null))){
+    return(NULL)
+  }
+  w <- as.numeric(l_input)
+  names(w) <-  names(l_input)
+  w
+
+}
