@@ -3,19 +3,33 @@ analysis_UI <- function(id) {
   shinydashboard::tabItem(
     tabName = "analyse",
     column(7,
+
            shinydashboardPlus::box(
-             title = "Indicator analysis",
-             collapsible = TRUE, width = 12,
+             title = box_pop_title(
+               title = "Indicator analysis",
+               popover_text = "The table shows details about each indicator, with possible issues highlighted in orange. Please click the main help icon in the upper right for more information.",
+               placement = "bottom", px_from_right = 40
+             ),
+             collapsible = FALSE, width = 12,
              status = "info",
-             DT::DTOutput(NS(id, "analysis_table")),
-             checkboxInput(
-               NS(id, "filter_table"),
-               label = "Filter to flagged indicators",
-               value = FALSE)
+             sidebar = shinydashboardPlus::boxSidebar(
+               id = "analysis_table_sidebar",
+               icon = icon("gear"),
+               width = 25,
+               checkboxInput(
+                 NS(id, "filter_table"),
+                 label = "Filter to flagged indicators",
+                 value = FALSE)
+             ),
+             DT::DTOutput(NS(id, "analysis_table"))
            ),
+
            shinydashboardPlus::box(
              id = NS(id, "indbox"),
-             title = "Indicator information",
+             title = box_pop_title(
+               "Indicator information",
+               popover_text = "Info about the selected indicator. Optionally use the 'Remove' button to remove the indicator, and the 'Restore' button to restore it.",
+               placement = "top", px_from_right = 70),
              collapsible = TRUE, width = 12, closable = TRUE,
              status = "info",
 
@@ -28,7 +42,7 @@ analysis_UI <- function(id) {
                4,
                shinyWidgets::actionBttn(
                  inputId = NS(id, "add_indicator"),
-                 label = "Add",
+                 label = "Restore",
                  style = "jelly",
                  color = "success", icon = icon("plus"), size = "sm"
                ),
@@ -46,26 +60,32 @@ analysis_UI <- function(id) {
     column(5,
 
            shinydashboardPlus::box(
-             title = "Distribution",
+             title = box_pop_title(
+               "Distribution",
+               popover_text = "Distribution plot of the indicator selected in the analysis table. Click the 'gear' icon to the right to change the plot type.",
+               placement = "bottom", px_from_right = 70),
              collapsible = TRUE,
              status = "info", width = 12,
              sidebar = shinydashboardPlus::boxSidebar(
                id = "violin_sidebar",
                icon = icon("gear"),
-               width = 25,
+               width = 40,
                selectInput(NS(id, "dist_plottype"), label = "Plot type", choices = c("Violin", "Histogram"))
              ),
              plotly::plotlyOutput(NS(id, "violin_plot"))
            ),
 
            shinydashboardPlus::box(
-             title = "Scatter plot",
+             title = box_pop_title(
+               "Scatter plot",
+               popover_text = "The x axis is the indicator selected in the table. Click on the 'gear' icon to the right to select the indicator to plot on the y axis and to optionally use log axes.",
+               placement = "top", px_from_right = 70),
              collapsible = TRUE,
              status = "info", width = 12,
              sidebar = shinydashboardPlus::boxSidebar(
                id = "scatter_sidebar",
                icon = icon("gear"),
-               width = 25,
+               width = 40,
                selectInput(NS(id, "scat_v2"), label = "Plot against", choices = c("tmp_999")),
                shinyWidgets::prettySwitch(NS(id, "scat_logx"), label = "Log X"),
                shinyWidgets::prettySwitch(NS(id, "scat_logy"), label = "Log Y")
@@ -212,6 +232,15 @@ analysis_server <- function(id, coin, coin_full, parent_input) {
       } else {
 
         coin(f_add_indicators(coin(), icode_selected()))
+
+        shinyWidgets::show_toast(
+          title = "Indicator restored",
+          text = paste0("Indicator ", icode_selected(), " was successfully restored"),
+          type = "info",
+          timer = 5000,
+          position = "bottom-end"
+        )
+
         # update analysis tables
         l_analysis(
           coin()$Analysis$Raw[c("FlaggedStats", "Flags")]
