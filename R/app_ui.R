@@ -13,7 +13,6 @@ app_ui <- function() {
   # enable alert messages
   shinyWidgets::useSweetAlert()
 
-
   # Sidebar -----------------------------------------------------------------
 
   db_sidebar <- shinydashboardPlus::dashboardSidebar(
@@ -34,6 +33,17 @@ app_ui <- function() {
 
   db_body <- shinydashboard::dashboardBody(
 
+    # add modals (longer help in md format)
+    welcome_modal(),
+    upload_modal(),
+    analyse_modal(),
+    results_modal(),
+    profiles_modal(),
+
+    # some themeing (to improve)
+    includeCSS(system.file("app", "www", "custom.css", package = "A2SIT")),
+    fresh::use_theme(theme_UNHCR),
+
     # increase width of dropdown menus
     tags$head(tags$style(HTML('
   .navbar-custom-menu>.navbar-nav>li>.dropdown-menu {
@@ -41,8 +51,6 @@ app_ui <- function() {
   }
   '))),
 
-    includeCSS(system.file("app", "www", "custom.css", package = "A2SIT")),
-    fresh::use_theme(theme_UNHCR),
     shinydashboard::tabItems(
       welcome_UI("id_welcome"),
       input_UI("id_input"),
@@ -61,10 +69,12 @@ app_ui <- function() {
   shinydashboardPlus::dashboardPage(
 
     md = FALSE,
-    #skin = "blue",
     options = list(sidebarExpandOnHover = TRUE),
 
     header = shinydashboardPlus::dashboardHeader(
+
+      #header_help_icon("modal_help"),
+      uiOutput("header_help", inline = TRUE),
 
       title = title_logo,
       titleWidth = "30vw",
