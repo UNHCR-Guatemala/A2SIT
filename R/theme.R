@@ -6,7 +6,7 @@ theme_UNHCR <- fresh::create_theme(
   ),
   fresh::adminlte_sidebar(
     width = "300px",
-    #dark_bg = "#DCE9FF",
+    dark_bg = "#0063a3",
     #dark_hover_bg = "#81A1C1",
     #dark_color = "#2E3440"
   ),
