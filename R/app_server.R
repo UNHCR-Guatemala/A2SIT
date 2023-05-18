@@ -55,5 +55,11 @@ app_server <- function(input, output, session) {
     }
   )
 
+  # help icon
+  output$header_help <- renderUI({
+    selected_modal <- paste0(input$tab_selected, "_modal")
+    header_help_icon(selected_modal)
+  })
+
 
 }
