@@ -15,20 +15,21 @@ input_UI <- function(id) {
           tags$a(href="https://github.com/UNHCR-Guatemala/A2SIT/raw/main/inst/data_module-input.xlsx",
                  "download example data set"),
           "for testing/demo.",
+
           br(),br(),
 
           country_dropdown(NS(id, "ISO3"), "Select country:") |>
-            add_tooltip("If your country is not on this list please contact us."),
+            add_input_pop("If your country is not on this list please contact us."),
 
           downloadLink(NS(id, "download_country_template"), "Download country template"),
 
           br(),br(),
           fileInput(NS(id, "xlsx_file"), "Load Data", buttonLabel = "Browse...", accept = c("xls", "xlsx")) |>
-            add_tooltip("Please upload the template spreadsheet compiled with your data."),
+            add_input_pop("Please upload the template spreadsheet compiled with your data."),
 
           actionButton(NS(id, "load_click"), "Load")),
 
-      box(title = "Messages", width = NULL, status = "info",
+      box(title = box_pop_title("Messages", "Any messages from the data import process."), width = NULL, status = "info",
           verbatimTextOutput(NS(id, "data_message")))
 
     ),
@@ -37,14 +38,17 @@ input_UI <- function(id) {
       9,
 
       fluidRow(
-        column(1, uiOutput(NS(id, "flag"))),
-        column(5, h1(textOutput(NS(id, "country_name")))),
+        column(6, uiOutput(NS(id, "flag"))),
         column(3, shinydashboard::infoBoxOutput(NS(id, "n_indicators_box"), width = 12)),
         column(3, shinydashboard::infoBoxOutput(NS(id, "n_units_box"), width = 12))
       ),
 
-      box(title = "Index Framework", width = NULL, collapsible = TRUE, status = "success",
-          plotly::plotlyOutput(NS(id, "framework"), height = "80vh"))
+      box(title = box_pop_title(
+        "Index Framework",
+        "The framework plot shows the structure of the index. The outer ring shows the indicators, and each succesive ring inwards shows the groupings in the levels above. The size of each chunk is the relative weighing of each component in the index.",
+        placement = "bottom"),
+        width = NULL, collapsible = FALSE, status = "success",
+        plotly::plotlyOutput(NS(id, "framework"), height = "70vh"))
     )
   )
 
@@ -93,13 +97,20 @@ input_server <- function(id, coin, coin_full, shared_reactives) {
         # copy of full coin for plotting later
         coin_full(coin())
 
-        # render flag
+        c_name <- country_codes$CountryName[country_codes$ISO3 == input$ISO3]
+
+        # render flag + country name
         output$flag <- renderUI({
-          tags$img(
-            src = country_codes$FlagLink[country_codes$ISO3 == input$ISO3],
-            width = 100,
-            height = 75
+
+          tagList(
+            column(3, tags$img(
+              src = country_codes$FlagLink[country_codes$ISO3 == input$ISO3],
+              width = 100,
+              height = 75
+            )),
+            column(9, h1(c_name))
           )
+
         })
 
         shinyWidgets::sendSweetAlert(
@@ -120,13 +131,6 @@ input_server <- function(id, coin, coin_full, shared_reactives) {
     output$coin_print <- renderPrint({
       req(coin())
       f_print_coin(coin())
-    })
-
-    # country title
-    output$country_name <- renderText({
-      req(coin())
-      c_name <- country_codes$CountryName[country_codes$ISO3 == input$ISO3]
-      paste0(" ", c_name)
     })
 
     # plot framework
