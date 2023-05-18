@@ -1,7 +1,7 @@
 # slider for weights
-weights_slider <- function(id, label = NULL) {
+weights_slider <- function(id, label = NULL, value = 1) {
   if(is.null(label)) label <- id
-  sliderInput(id, label = label, min = 0, max = 1, value = 1, step = 0.1, ticks = FALSE)
+  sliderInput(id, label = label, min = 0, max = 1, value = value, step = NULL, ticks = FALSE)
 }
 
 # generates a dropdown menu of countries where we have available admin2 geometry
@@ -32,12 +32,92 @@ country_dropdown <- function(id, label){
 
 }
 
-add_tooltip <- function(tag, message_to_add){
+# shortcut for adding tooltip to a shiny input
+add_input_pop <- function(tag, popover_text, placement = "top"){
+
   tag |>
     bsplus::shinyInput_label_embed(
-      icon("info") |>
-        bsplus::bs_embed_tooltip(title = message_to_add)
+      icon("info-circle", class = "input-pop",
+           style = "color: #66c2ff;") |>
+        bsplus::bs_embed_tooltip(title = popover_text, placement = placement)
     )
+
+}
+
+# shortcut for adding an info icon to a box title
+box_pop_title <- function(title, popover_text, placement = "top", px_from_right = 10){
+
+  p(title,
+    icon("info-circle", class = "box-pop",
+         style = paste0("position: absolute; right: ", px_from_right, "px; color: #66c2ff;")) |>
+      bsplus::bs_embed_tooltip(title = popover_text, placement = placement))
+
+}
+
+# TO FINISH
+add_modal <- function(tag, message_to_add){
+  shiny_iconlink() |>
+    bs_attach_modal(id_modal = "modal_equation")
 }
 
 
+# function that creates a help pop up window (for each page?)
+header_help_icon <- function(id_modal){
+
+  tags$li(class = "dropdown",
+          tags$p(
+            bsplus::shiny_iconlink("info-circle", class = "title-help",
+                 style = "color: #FFFFFF; position: absolute; right: 40px; top: 0px; font-size: 30px;")
+          )
+  ) |>
+    bsplus::bs_attach_modal(id_modal = id_modal)
+
+}
+
+
+# Modal help --------------------------------------------------------------
+
+welcome_modal <- function(){
+  bsplus::bs_modal(
+    id = "welcome_modal",
+    title = "Welcome",
+    body = includeMarkdown(system.file("md-help", "welcome.md", package = "A2SIT")),
+    size = "medium"
+  )
+}
+
+upload_modal <- function(){
+  bsplus::bs_modal(
+    id = "upload_modal",
+    title = "Data input",
+    body = includeMarkdown(system.file("md-help", "input.md", package = "A2SIT")),
+    size = "medium"
+  )
+}
+
+analyse_modal <- function(){
+  bsplus::bs_modal(
+    id = "analyse_modal",
+    title = "Indicator analysis",
+    body = includeMarkdown(system.file("md-help", "analysis.md", package = "A2SIT")),
+    size = "medium"
+  )
+}
+
+results_modal <- function(){
+  bsplus::bs_modal(
+    id = "results_modal",
+    title = "Results explorer",
+    body = includeMarkdown(system.file("md-help", "results.md", package = "A2SIT")),
+    size = "medium"
+  )
+}
+
+profiles_modal <- function(){
+  bsplus::bs_modal(
+    id = "profiles_modal",
+    title = "Admin2 Profiles",
+    body = includeMarkdown(system.file("md-help", "profiles.md", package = "A2SIT")),
+    size = "medium"
+  )
+}
