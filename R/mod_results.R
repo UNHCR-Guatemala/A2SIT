@@ -46,10 +46,9 @@ results_UI <- function(id) {
 
       shinydashboard::tabBox(
         title = "Results",
-        # The id lets us use input$tabset1 on the server to find the current tab
-        id = NS(id, "tabset1"), width = 10, side = "right",
+        id = NS(id, "tabset1"), width = 9, side = "right",
         tabPanel(
-          "Map",
+          title = "Map",
           leaflet::leafletOutput(NS(id, "map"), height = "60vh"),
           absolutePanel(
             id = "controls",
@@ -68,6 +67,7 @@ results_UI <- function(id) {
             width = "25%",
             draggable = FALSE, height = "auto",
             h4(textOutput(NS(id, "unit_name"))),
+            h5(textOutput(NS(id, "index_score"))),
             h5(textOutput(NS(id, "index_rank"))),
             tableOutput(NS(id, "scores_table")),
             actionLink(NS(id, "go_to_profile"), label = ""),
@@ -78,15 +78,20 @@ results_UI <- function(id) {
       ),
 
       shinydashboardPlus::box(
-        title = "Adjust",
-        width = 2, status = "warning",
+        title = box_pop_title(
+          title = "Adjust",
+          popover_text = "Use the sliders to adjust dimension weights, and click 'Recalculate' to recalculate the results. Note that weights are constrained to sum to 1.",
+          placement = "bottom"
+        ),
+        width = 3, status = "warning",
         strong("Weights"),
         br(),br(),
         uiOutput(NS(id, "weight_sliders")),
         selectInput(NS(id, "agg_method"), label = "Aggregate using:",
                     choices = list("Arithmetic mean" = "a_amean",
                                    "Geometric mean" = "a_gmean"),
-                    width = "100%"),
+                    width = "100%") |>
+          add_input_pop("The formula used to aggregate indicators at each level. Please click the main help icon in the upper right for more information."),
         shinyWidgets::actionBttn(
           inputId = NS(id, "regen"),
           label = "Recalculate",
@@ -114,9 +119,15 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, sh
 
   moduleServer(id, function(input, output, session) {
 
+
+    # Initialise tab ----------------------------------------------------------
+
     # create reactive value for selected unit
     # (updated by map and table clicks)
     unit_selected <- reactiveVal(NULL)
+
+    # initial vector of slider weights: equal and sum to 1
+    slider_weights <- reactiveVal(NULL)
 
     # when user selects results tab, if not done so already, generate results
     observeEvent(parent_input$tab_selected, {
@@ -135,21 +146,33 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, sh
 
     })
 
+    top_icodes <- reactive({
+      maxlevel <- coin()$Meta$maxlev
+      get_codes_at_level(coin(), maxlevel - 1)
+    })
+
     # render the weight sliders. has to be done server-side because depends on
     # user input.
     output$weight_sliders <- renderUI({
 
-      # render sliders at one level down from index
-      maxlevel <- coin()$Meta$maxlev
-      slider_codes <- get_codes_at_level(coin(), maxlevel - 1)
+      req(coin())
+
+      n_sliders <- length(top_icodes())
+      weights <- rep(1/n_sliders, n_sliders)
+      names(weights) <- top_icodes()
+
+      slider_weights(weights)
+
       div(
         class = "label-left",
-        lapply(slider_codes, function(icode){
-          weights_slider(NS(id, icode), icode)
+        lapply(names(weights), function(icode){
+          weights_slider(NS(id, icode), icode, weights[[icode]])
         })
       )
 
     }) |> bindEvent(shared_reactives$results_built)
+
+    # Plots -------------------------------------------------------------------
 
     # Plot map
     output$map <- leaflet::renderLeaflet({
@@ -234,21 +257,8 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, sh
         priority = "event")
     })
 
-    # change weights or aggregation method
-    observeEvent(input$regen, {
 
-      req(results_exist(coin()))
-
-      # since I have to access multiple values of input, I have to convert
-      # to a list - not sure if there is another way
-      l_input <- isolate(reactiveValuesToList(input))
-      # assemble weights into list
-      w <- l_input[get_codes_at_level(coin(), coin()$Meta$maxlev - 1)]
-
-      # update with new weights
-      coin(f_rebuild_index(coin(), w, input$agg_method))
-
-    })
+    # Unit info ---------------------------------------------------------------
 
     # unit info: header
     output$unit_name <- renderText({
@@ -265,8 +275,29 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, sh
       req(unit_selected())
 
       index_rank <- get_index_rank(coin(), unit_selected())
+      n_units <- get_n_units(coin())
 
-      paste0("Index rank = ", index_rank)
+      paste0("Overall rank = ", index_rank, "/", n_units)
+    })
+
+    # mean score (avoid calculating repeatedly)
+    mean_index_score <- reactive({
+      coin()$Data$Aggregated[[
+        get_index_code(coin())]] |>
+        mean(na.rm = TRUE) |>
+        round(1)
+    })
+
+    # unit info: index score
+    output$index_score <- renderText({
+
+      req(unit_selected())
+
+      index_score <- get_index_score(coin(), unit_selected()) |>
+        round(1)
+      n_units <- get_n_units(coin())
+
+      paste0("Overall score = ", index_score, " (mean = ", mean_index_score(), ")")
     })
 
     # unit info: scores and ranks
@@ -306,8 +337,89 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, sh
       )
     })
 
+
+    # Constrain weight sliders ------------------------------------------------
+    # To add to 1. Note this was VERY tricky to implement due to the web of
+    # reactive dependencies, hence the slightly hacky-looking code.
+
+    w_old <- reactiveVal(NULL)
+    w_new <- reactiveVal(NULL)
+
+    observeEvent(reactiveValuesToList(input), {
+      w_new(get_slider_weights(input, top_icodes()))
+    })
+
+    observeEvent(w_new(), {
+
+      req(w_new())
+
+      # first time we see this - have to set w_old to w_new
+      if(is.null(w_old())) w_old(w_new())
+
+      # only update if there were changes
+      if(!identical(w_old(), w_new())){
+
+        # find which weight is different
+        i_diff <- which(w_old() != w_new())
+
+        # if more than one changed presume changed as update not by user, so skip
+        if(length(i_diff) == 1){
+
+          icodes <- names(w_new())
+
+          # the one that changed
+          icode_changed <- icodes[[i_diff]]
+
+          # factor to scale other weights by
+          w_fac <- (1 - w_new()[i_diff])/sum(w_old()[-i_diff])
+
+          # make copy because need to adjust one element at a time
+          w <- w_old()
+
+          # loop over weights that weren't changed
+          for (icode in icodes[-i_diff]) {
+
+            # update sliders
+            updateSliderInput(inputId = icode, value = as.numeric(w_old()[[icode]]*w_fac))
+
+            # update old weights
+            w[icode] <- as.numeric(w_old()[[icode]]*w_fac)
+
+          }
+
+          # update final value
+          w[i_diff] <- as.numeric(w_new()[i_diff])
+          w_old(w)
+
+        } else {
+          # if there was not a manual update, ensure old = new
+          w_old(w_new())
+        }
+
+      }
+
+    })
+
+
+
+    # Regenerate --------------------------------------------------------------
+
+    # change weights or aggregation method
+    observeEvent(input$regen, {
+
+      req(results_exist(coin()))
+
+      # since I have to access multiple values of input, I have to convert
+      # to a list - not sure if there is another way
+      l_input <- isolate(reactiveValuesToList(input))
+      # assemble weights into list
+      w <- l_input[top_icodes()]
+
+      # update with new weights
+      coin(f_rebuild_index(coin(), w, input$agg_method))
+
+    })
+
   })
-
-
 
 }
