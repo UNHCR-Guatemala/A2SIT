@@ -24,7 +24,9 @@ app_ui <- function() {
       shinydashboard::menuItem("Upload", tabName = "upload", icon = icon("upload")),
       shinydashboard::menuItem("Analyse", tabName = "analyse", icon = icon("magnifying-glass-chart")),
       shinydashboard::menuItem("Results", tabName = "results", icon = icon("square-poll-vertical")),
-      shinydashboard::menuItem("Profiles", tabName = "profiles", icon = icon("location-dot"))
+      shinydashboard::menuItem("Profiles", tabName = "profiles", icon = icon("location-dot")),
+      shinydashboard::menuItem("Compare scenarios", tabName = "scenarios", icon = icon("circle-half-stroke")),
+      shinydashboard::menuItem("Compare regions", tabName = "compare_units", icon = icon("code-compare"))
     )
   )
 
@@ -56,7 +58,9 @@ app_ui <- function() {
       input_UI("id_input"),
       analysis_UI("id_analysis"),
       results_UI("id_results"),
-      profiles_UI("id_profiles")
+      profiles_UI("id_profiles"),
+      compare_units_UI("id_compare_units"),
+      scenarios_UI("id_scenarios")
     )
   )
 
