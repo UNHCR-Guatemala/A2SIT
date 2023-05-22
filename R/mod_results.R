@@ -103,12 +103,24 @@ results_UI <- function(id) {
 
     fluidRow(
       shinydashboardPlus::box(
-        id = NS(id, "bar_box"),
-        width = 12, headerBorder = FALSE,
-        plotly::plotlyOutput(NS(id, "bar_plot"), height = "20vh")
+        id = NS(id, "bar_box"), title = "",
+        width = 12,
+        sidebar = shinydashboardPlus::boxSidebar(
+          id = "bar_sidebar",
+          icon = icon("gear"),
+          width = 25,
+          selectInput(
+            NS(id, "bar_subset"), "Regions to plot:",
+            choices = c("Top 50", "Bottom 50", "All")),
+          checkboxInput(
+            NS(id, "stack_children"),
+            label = "Show components of scores",
+            value = TRUE)
+        ),
+        plotly::plotlyOutput(NS(id, "bar_plot"), height = "25vh")
       ),
       # remove header space in box
-      tags$head(tags$style(paste0("#", NS(id, "bar_box"), " .box-header{ display: none}")))
+      #tags$head(tags$style(paste0("#", NS(id, "bar_box"), " .box-header{ display: none}")))
     )
 
   )
@@ -222,7 +234,20 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, sh
       req(input$plot_icode)
 
       # plot underlying dimensions only if have more than 1 child
-      stack_children <- get_number_of_children(coin(), input$plot_icode) > 1
+      can_stack <- get_number_of_children(coin(), input$plot_icode) > 1
+      stack_children <- input$stack_children && can_stack
+
+      # bar subset
+      if(input$bar_subset == "All"){
+        plot_subset <- NULL
+        showticks <- FALSE
+      } else if (input$bar_subset == "Top 50"){
+        plot_subset <- 50
+        showticks <- TRUE
+      } else if (input$bar_subset == "Bottom 50"){
+        plot_subset <- -50
+        showticks <- TRUE
+      }
 
       # get iName
       iName <- COINr::icodes_to_inames(coin(), input$plot_icode)
@@ -232,14 +257,15 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, sh
         iCode = input$plot_icode,
         orientation = "horizontal",
         usel = unit_selected(),
-        stack_children = stack_children
+        stack_children = stack_children,
+        plot_subset = plot_subset
       ) |>
         plotly::layout(
           plot_bgcolor = "rgba(0,0,0,0)",
           paper_bgcolor = "rgba(0,0,0,0)",
           yaxis = list(title = ""),
-          xaxis = list(showticklabels = FALSE),
-          title = list(text = iName, y = 0.9, x = 0.5, xanchor = 'center', yanchor =  'top'),
+          xaxis = list(showticklabels = showticks),
+          title = list(text = iName, y = 1, x = 0.5, xanchor = 'center', yanchor =  'top'),
           legend = list(x = 1, y = 1.1, orientation = 'h', xanchor = "right", yanchor = "top"),
           showlegend = TRUE,
           margin = list(b = 0, l = 0),
