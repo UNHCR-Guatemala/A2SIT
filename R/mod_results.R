@@ -97,6 +97,16 @@ results_UI <- function(id) {
           label = "Recalculate",
           style = "jelly",
           color = "success", icon = icon("calculator"), size = "sm"
+        ),
+
+        hr(),
+
+        textInput(inputId = NS(id,"scenario_name"), label = "Save scenario for comparison", placeholder = "Enter a name"),
+        shinyWidgets::actionBttn(
+          inputId = NS(id, "scenario_save"),
+          label = "Save",
+          style = "jelly",
+          color = "success", icon = icon("floppy-disk"), size = "sm"
         )
       )
     ),
@@ -446,6 +456,42 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, sh
       coin(f_rebuild_index(coin(), w, input$agg_method))
 
     })
+
+    # Save scenario -----------------------------------------------------------
+
+    observeEvent(input$scenario_save, {
+
+      req(coin())
+      req(req(results_exist(coin())))
+      req(input$scenario_name)
+
+      # extract things of interest
+      df_results <- coin()$Data$Aggregated
+      w <- get_slider_weights(input, top_icodes())
+      agg_method <- if(input$agg_method == "a_amean"){
+        "Arithmetic mean"
+      } else {
+        "Geometric mean"
+      }
+
+      # save to list
+      shared_reactives$scenarios[[input$scenario_name]] <- list(
+        df_results = df_results,
+        w = w,
+        agg_method = agg_method
+      )
+
+      # notify user
+      shinyWidgets::show_toast(
+        title = "Scenario saved",
+        text = paste0("Scenario '", input$scenario_name, "' was saved. Go to the 'Scenarios' tab to compare."),
+        type = "info",
+        timer = 5000,
+        position = "bottom-end"
+      )
+
+    })
+
 
   })
 

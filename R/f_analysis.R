@@ -194,7 +194,7 @@ f_highlight_DT <- function(Xd, Xh, table_caption = NULL, highlight_colour = "#FA
     rownames = FALSE,
     colnames = column_names,
     caption = table_caption,
-    selection = "single",
+    selection = list(mode = "single", target = "row"),
     options = list(
       scrollX = TRUE,
       columnDefs = list(

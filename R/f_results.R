@@ -69,7 +69,7 @@ f_display_results_table <- function(coin, type = "scores"){
 
   # generate colours ----
   breaks <- seq(min_all, max_all, length.out = 12)[2:11]
-  colour_func <- grDevices::colorRampPalette(c("white", "aquamarine3"))
+  colour_func <- grDevices::colorRampPalette(c("#DCE9FF", "#0072BC"))
   colour_palette <- colour_func(length(breaks) + 1)
 
   # Create table

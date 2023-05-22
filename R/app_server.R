@@ -12,7 +12,8 @@ app_server <- function(input, output, session) {
   shared_reactives <- reactiveValues(
     ISO3 = NULL, # country of the data
     profile_unit = NULL, # unit to view in profiles
-    results_built = FALSE # whether results (up to aggregation) built
+    results_built = FALSE, # whether results (up to aggregation) built
+    scenarios = NULL # list of saved scenarios for comparison
   )
 
   # Modules -----------------------------------------------------------------
@@ -22,6 +23,7 @@ app_server <- function(input, output, session) {
   analysis_server("id_analysis", coin, coin_full, input)
   results_server("id_results", coin, coin_full, input, session, shared_reactives)
   profiles_server("id_profiles", coin, coin_full, input, shared_reactives)
+  scenarios_server("id_scenarios", coin, input, shared_reactives)
 
   # Extras (not modules) ----------------------------------------------------
 
