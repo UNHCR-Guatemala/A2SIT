@@ -120,7 +120,10 @@ f_plot_map <- function(coin, dset = "Aggregated", iCode, ISO3){
   ]
 
   # colorBin is a leaflet function
-  pal <- leaflet::colorBin("YlOrRd", domain = admin2_geom$Indicator, bins = 7)
+  #pal <- leaflet::colorBin("YlOrRd", domain = admin2_geom$Indicator, bins = 7)
+  #palette <- rev(c("#044F85", "#0072BC", "#589BE5", "#8EBEFF", "#DCE9FF"))
+  palette <- c("#FFE7E8", "#B41C37")
+  pal <- leaflet::colorNumeric(palette , domain = admin2_geom$Indicator)
 
   # labels
   labels <- sprintf(
@@ -133,7 +136,7 @@ f_plot_map <- function(coin, dset = "Aggregated", iCode, ISO3){
   # now we can make the map
 
   mp <- leaflet::leaflet(admin2_geom) |>
-    leaflet::addTiles() |>
+    leaflet::addProviderTiles("CartoDB.Positron") |>
     leaflet::addPolygons(layerId = ~adm2_source_code,
                          fillColor = ~pal(Indicator),
                          weight = 2,

@@ -169,7 +169,7 @@ filter_to_flagged <- function(Xd, Xh){
 #
 # This is used for displaying the output of `f_analyse_indicators()`.
 #
-f_highlight_DT <- function(Xd, Xh, table_caption = NULL, highlight_colour = "#ffc266"){
+f_highlight_DT <- function(Xd, Xh, table_caption = NULL, highlight_colour = "#FAEB00"){
 
   stopifnot(identical(dim(Xd), dim(Xh)))
 

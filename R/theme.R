@@ -2,7 +2,8 @@
 theme_UNHCR <- fresh::create_theme(
   fresh::adminlte_color(
     light_blue = "#0072BC",
-    blue = "#0072BC"
+    blue = "#0072BC",
+    green = "#00B398"
   ),
   fresh::adminlte_sidebar(
     width = "300px",

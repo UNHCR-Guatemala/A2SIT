@@ -242,7 +242,8 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, sh
           title = list(text = iName, y = 0.9, x = 0.5, xanchor = 'center', yanchor =  'top'),
           legend = list(x = 1, y = 1.1, orientation = 'h', xanchor = "right", yanchor = "top"),
           showlegend = TRUE,
-          margin = list(b = 0, l = 0)
+          margin = list(b = 0, l = 0),
+          colorway = c("#18375F", "#0072BC", "#8EBEFF", "#00B398",  "#666666")
         ) |>
         plotly::config(displayModeBar = FALSE)
 

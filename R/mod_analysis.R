@@ -7,7 +7,7 @@ analysis_UI <- function(id) {
            shinydashboardPlus::box(
              title = box_pop_title(
                title = "Indicator analysis",
-               popover_text = "The table shows details about each indicator, with possible issues highlighted in orange. Please click the main help icon in the upper right for more information.",
+               popover_text = "The table shows details about each indicator, with possible issues highlighted in yellow. Please click the main help icon in the upper right for more information.",
                placement = "bottom", px_from_right = 40
              ),
              collapsible = FALSE, width = 12,

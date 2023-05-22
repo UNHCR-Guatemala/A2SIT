@@ -57,7 +57,7 @@ f_indicator_table <- function(coin, usel){
 
   # generate colours ----
   breaks <- seq(min_rank, max_rank, length.out = 12)[2:11]
-  colour_func <- grDevices::colorRampPalette(c("aquamarine3", "white"))
+  colour_func <- grDevices::colorRampPalette(c("#0072BC", "#DCE9FF"))
   colour_palette <- colour_func(length(breaks) + 1)
 
   # Create table
@@ -100,7 +100,9 @@ f_plot_radar <- function(coin, usel, plot_group){
     iCodes = plot_group,
     addstat = "median"
   )  |>
-    plotly::layout(title = "")
+    plotly::layout(
+      title = "",
+      colorway = c("#0072BC", "#FAEB00"))
 
 }
 

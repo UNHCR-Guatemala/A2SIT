@@ -106,7 +106,7 @@ profiles_server <- function(id, coin, coin_full, input, shared_reactives) {
         get_index_rank(coin(), input$selected_unit),
         "Rank",
         #icon = icon("ranking-star"),
-        color = "aqua"
+        color = "light-blue"
       )
     })
 
@@ -118,7 +118,7 @@ profiles_server <- function(id, coin, coin_full, input, shared_reactives) {
           round(1),
         "Score",
         #icon = icon("star"),
-        color = "orange"
+        color = "green"
       )
     })
 

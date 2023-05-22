@@ -133,10 +133,12 @@ input_server <- function(id, coin, coin_full, shared_reactives) {
       f_print_coin(coin())
     })
 
-    # plot framework
+    # plot framework (use UNHCR colours)
     output$framework <- plotly::renderPlotly({
       req(coin())
-      iCOINr::iplot_framework(coin())
+      iCOINr::iplot_framework(
+        coin(),
+        plotly_colorway = c("#18375F", "#0072BC", "#8EBEFF", "#00B398",  "#666666"))
     })
 
     # value boxes
