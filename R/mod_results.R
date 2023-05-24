@@ -70,6 +70,7 @@ results_UI <- function(id) {
             h4(textOutput(NS(id, "unit_name"))),
             h5(textOutput(NS(id, "index_rank"))),
             tableOutput(NS(id, "scores_table")),
+            actionLink(NS(id, "go_to_profile"), label = ""),
             style = "z-index: 20; padding-top: 10px; padding-left: 10px; padding-right: 10px;",
           ),
         ),
@@ -109,14 +110,13 @@ results_UI <- function(id) {
 
 }
 
-results_server <- function(id, coin, coin_full, parent_input) {
+results_server <- function(id, coin, coin_full, parent_input, parent_session, shared_reactives) {
 
   moduleServer(id, function(input, output, session) {
 
     # create reactive value for selected unit
     # (updated by map and table clicks)
     unit_selected <- reactiveVal(NULL)
-    results_built <- reactiveVal(FALSE)
 
     # when user selects results tab, if not done so already, generate results
     observeEvent(parent_input$tab_selected, {
@@ -125,7 +125,7 @@ results_server <- function(id, coin, coin_full, parent_input) {
       if(parent_input$tab_selected == "results"){
 
         if(!results_exist(coin())){
-          results_built(TRUE)
+          shared_reactives$results_built <- TRUE
           coin(f_build_index(coin()))
         }
       }
@@ -149,7 +149,7 @@ results_server <- function(id, coin, coin_full, parent_input) {
         })
       )
 
-    }) |> bindEvent(results_built)
+    }) |> bindEvent(shared_reactives$results_built)
 
     # Plot map
     output$map <- leaflet::renderLeaflet({
@@ -164,7 +164,11 @@ results_server <- function(id, coin, coin_full, parent_input) {
         package = "A2SIT"
       )
 
-      f_plot_map(coin(), dset = "Aggregated", iCode = input$plot_icode,
+      icode_level <- get_level_of_icode(coin(), input$plot_icode)
+
+      dset_plot <- if (icode_level == 1) "Raw" else "Aggregated"
+
+      f_plot_map(coin(), dset = dset_plot, iCode = input$plot_icode,
                  shp_path = shapefile_path)
 
     })
@@ -236,22 +240,6 @@ results_server <- function(id, coin, coin_full, parent_input) {
         priority = "event")
     })
 
-    # # radar chart
-    # output$radar_chart <- plotly::renderPlotly({
-    #   req(coin())
-    #   req(results_exist(coin()))
-    #   req(unit_selected())
-    #
-    #   iCOINr::iplot_radar(
-    #     coin(),
-    #     dset = "Aggregated",
-    #     usel = unit_selected(),
-    #     Level = coin()$Meta$maxlev - 1,
-    #     iCodes = get_index_code(coin()),
-    #     addstat = "median"
-    #   )
-    # })
-
     # change weights or aggregation method
     observeEvent(input$regen, {
 
@@ -282,10 +270,7 @@ results_server <- function(id, coin, coin_full, parent_input) {
 
       req(unit_selected())
 
-      index_code <- get_index_code(coin())
-      index_rank <- coin()$Results$FullRank[[index_code]][
-        coin()$Results$FullRank$uCode == unit_selected()
-      ]
+      index_rank <- get_index_rank(coin(), unit_selected())
 
       paste0("Index rank = ", index_rank)
     })
@@ -297,37 +282,35 @@ results_server <- function(id, coin, coin_full, parent_input) {
       req(results_exist(coin()))
       req(unit_selected())
 
-      df_info <- COINr::get_unit_summary(coin(), unit_selected(), Levels = 3, dset = "Aggregated")[-1]
+      df_info <- COINr::get_unit_summary(
+        coin(),
+        unit_selected(),
+        Levels = coin()$Meta$maxlev - 1,
+        dset = "Aggregated")[-1]
       df_info$Rank <- as.integer(df_info$Rank)
       names(df_info)[1] <- "Dimension"
       df_info
     })
 
-    #
-    # output$strengths_table <- renderTable({
-    #
-    #   req(coin())
-    #   req(results_exist(coin()))
-    #   req(input$map_shape_click$id)
-    #
-    #   X <- COINr::get_str_weak(coin(), usel = input$map_shape_click$id, dset = "Raw", topN = 3,
-    #                            withcodes = FALSE, unq_discard = 0.2, with_units = FALSE, sig_figs = NULL)$Strengths |>
-    #     format_sw()
-    #   names(X) <- c("Indicator", "Value (rank)")
-    #   X
-    # })
-    # output$weaks_table <- renderTable({
-    #
-    #   req(coin())
-    #   req(results_exist(coin()))
-    #   req(input$map_shape_click$id)
-    #
-    #   X <- COINr::get_str_weak(coin(), usel = input$map_shape_click$id, dset = "Raw", topN = 3,
-    #                            withcodes = FALSE, unq_discard = 0.2, with_units = FALSE, sig_figs = NULL)$Weaknesses |>
-    #     format_sw()
-    #   names(X) <- c("Indicator", "Value (rank)")
-    #   X
-    # })
+    # profile link - update text
+    observeEvent(unit_selected(), {
+      req(unit_selected())
+      updateActionLink(inputId = "go_to_profile", label = "Go to profile", icon = icon("location-dot"))
+    })
+
+    # profile link: go to profile
+    observeEvent(input$go_to_profile, {
+
+      # update selected unit reactive
+      shared_reactives$profile_unit <-  unit_selected()
+
+      # go to profile tab
+      shinydashboard::updateTabItems(
+        session = parent_session,
+        inputId = "tab_selected",
+        selected = "profiles"
+      )
+    })
 
   })
 

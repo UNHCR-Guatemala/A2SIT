@@ -204,7 +204,9 @@ f_highlight_DT <- function(Xd, Xh, table_caption = NULL, highlight_colour = "#ff
     DT::formatStyle(
       columns = 1:ncol_display,
       valueColumns = (ncol_display + 1):ncol(X),
-      backgroundColor = DT::styleEqual(c(0,1), styles))
+      backgroundColor = DT::styleEqual(c(0,1), styles)
+    ) |>
+    DT::formatPercentage(c("Frc.Avail", "Frc.Same"), 1)
 
 }
 
