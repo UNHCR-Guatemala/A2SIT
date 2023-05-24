@@ -7,16 +7,19 @@ welcome_UI <- function(id) {
           background-color: #0072BC;
           opacity: 1;
           text-align: center;
-          padding-top: 10%;
-          padding-right: 25%;
-          padding-left: 25%;
+          padding-top: 15%;
+          padding-right: 20%;
+          padding-left: 30%;
           color:white;
         }"),
     absolutePanel(
       id = "splash_panel", top = 0, left = 0, right = 0, bottom = 0,
-      img(src='https://raw.githubusercontent.com/UNHCR-Guatemala/A2SIT/main/inst/app/www/logo.svg', height ='70vh', align = "center"),
-      br(),br(),
-      p("Admin2 Severity Index Tool", style = "font-size: 60px"),
+      #img(src='https://raw.githubusercontent.com/UNHCR-Guatemala/A2SIT/main/inst/app/www/logo.svg', height ='70vh', align = "center"),
+      #br(),br(),
+      p(
+        tags$span("Admin2 Severity Index Tool", style = "font-size: 60px"),
+        tags$span("beta", style = "font-size: 24px")
+      ),
       br(),
       p(paste("Welcome to the Admin2 Severity Index Tool (A2SIT).",
       "The A2SIT builds a composite indicator from your admin2 data to analyse",
