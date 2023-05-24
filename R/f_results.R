@@ -344,7 +344,7 @@ f_get_last_weights <- function(coin){
 #' @export
 f_get_admin2_boundaries <- function(ISO3, simplify = TRUE, dTolerance = 500){
 
-  stopifnot(ISO3 %in% country_codes$ISO3)
+  stopifnot(ISO3 %in% A2SIT::country_codes$ISO3)
 
   # generate query string
   # from: https://gis.unhcr.org/arcgis/rest/services/core_v2/wrl_polbnd_adm2_a_unhcr/MapServer/0/query
@@ -434,7 +434,7 @@ get_cached_countries <- function(){
   ISO3s <- list.files(system.file("geom", package = "A2SIT")) |>
     substring(1,3)
 
-  if(!all(ISO3s %in% country_codes$ISO3)){
+  if(!all(ISO3s %in% A2SIT::country_codes$ISO3)){
     stop("One or more files in inst/geom with unrecognised ISO3 code?")
   }
 

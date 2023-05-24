@@ -53,7 +53,7 @@ f_make_comparison_table <- function(coin, l, base_scen, comp_with, tab_type){
     df_merged <- df_merged[order(df_merged[[base_scen]], decreasing = FALSE), ]
   } else {
     df_merged <- df_merged[order(df_merged[[base_scen]], decreasing = TRUE), ] |>
-      round_df(2)
+      COINr::round_df(2)
   }
 
   # convert to diffs or abs diffs if required

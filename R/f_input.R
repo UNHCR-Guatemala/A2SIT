@@ -19,6 +19,7 @@
 #' and can be modified in the app phase following further feedback.
 #'
 #' @param file_path path to the excel file where we have the raw data
+#' @param ISO3 ISO3 code of country to which the data belongs, e.g. `"GTM"`
 #'
 #' @return coin-class object
 #'
@@ -73,7 +74,7 @@ f_data_input <- function(file_path, ISO3){
   rogue_ucodes <- iData$uCode[iData$uCode %nin% admin2_geom$adm2_source_code]
   if(length(rogue_ucodes) > 1){
     message("One or more codes in 'adm2_source_code' column in Data tab not valid codes: ",
-            toString(head(rogue_ucodes)))
+            toString(utils::head(rogue_ucodes)))
     message("Did you select the correct country?")
     return(NULL)
   }
