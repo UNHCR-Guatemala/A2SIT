@@ -1,0 +1,37 @@
+project:
+  type: book
+
+book:
+  title: "Admin2 Severity Index Tool"
+  author: "William Becker"
+  date: "2023-05-24"
+  chapters:
+    - index.qmd
+    - intro.qmd
+    - summary.qmd
+    - part: "Using the app"
+      chapters:
+        - data_input.qmd
+        - analysis.qmd
+        - results.qmd
+        - profiles.qmd
+        - scenarios.qmd
+        - unit_comparison.qmd
+    - part: "Methodology"
+      chapters:
+        - meth_overview.qmd
+        - data_processing.qmd
+        - aggregation_weighting.qmd
+        - technical_implementation.qmd
+    - references.qmd
+
+bibliography: references.bib
+
+format:
+  html:
+    theme: cosmo
+  pdf:
+    documentclass: scrreprt
+
+
+

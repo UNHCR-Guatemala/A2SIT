@@ -1,0 +1,10 @@
+# Welcome  {.unnumbered}
+
+This is the detailed documentation of the Admin2 Severity Index Tool (A2SIT), which was developed by the UNCHR.
+
+The aim of this documentation is to explain in detail:
+
+* How to use the app
+* The methodology behind the A2SIT
+
+*This documentation is under development!*
