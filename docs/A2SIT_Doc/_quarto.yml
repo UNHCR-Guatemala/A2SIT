@@ -1,5 +1,6 @@
 project:
   type: book
+  output-dir: ../book
 
 book:
   title: "Admin2 Severity Index Tool"
