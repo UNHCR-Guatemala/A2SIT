@@ -97,14 +97,14 @@ input_server <- function(id, coin, coin_full, shared_reactives) {
         # copy of full coin for plotting later
         coin_full(coin())
 
-        c_name <- country_codes$CountryName[country_codes$ISO3 == input$ISO3]
+        c_name <- A2SIT::country_codes$CountryName[A2SIT::country_codes$ISO3 == input$ISO3]
 
         # render flag + country name
         output$flag <- renderUI({
 
           tagList(
             column(3, tags$img(
-              src = country_codes$FlagLink[country_codes$ISO3 == input$ISO3],
+              src = A2SIT::country_codes$FlagLink[A2SIT::country_codes$ISO3 == input$ISO3],
               width = 100,
               height = 75
             )),

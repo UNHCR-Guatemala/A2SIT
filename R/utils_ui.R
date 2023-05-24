@@ -8,9 +8,9 @@ weights_slider <- function(id, label = NULL, value = 1) {
 # stored in inst/geom. Adds flags.
 country_dropdown <- function(id, label){
 
-  # country_codes already has codes plus flag URLs for all countries, we just
+  # A2SIT::country_codes already has codes plus flag URLs for all countries, we just
   # filter to what we have available
-  df_countries <- country_codes[country_codes$ISO3 %in% get_cached_countries(),]
+  df_countries <- A2SIT::country_codes[A2SIT::country_codes$ISO3 %in% get_cached_countries(),]
 
   l_countries <- as.list(df_countries$ISO3)
   names(l_countries) <- df_countries$CountryName
@@ -56,8 +56,8 @@ box_pop_title <- function(title, popover_text, placement = "top", px_from_right 
 
 # TO FINISH
 add_modal <- function(tag, message_to_add){
-  shiny_iconlink() |>
-    bs_attach_modal(id_modal = "modal_equation")
+  bsplus::shiny_iconlink() |>
+    bsplus::bs_attach_modal(id_modal = "modal_equation")
 }
 
 
