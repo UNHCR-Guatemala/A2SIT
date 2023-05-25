@@ -30,7 +30,8 @@ Imports:
     shinyjs,
     stats,
     fresh,
-    bsplus
+    bsplus,
+    cicerone
 Remotes: 
     bluefoxr/iCOINr,
     bluefoxr/COINr
