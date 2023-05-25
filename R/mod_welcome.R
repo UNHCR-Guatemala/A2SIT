@@ -3,7 +3,7 @@ welcome_UI <- function(id) {
   shinydashboard::tabItem(
     tabName = "welcome",
     tags$style("
-        #splash_panel {
+        #id_welcome-splash_panel {
           background-color: #0072BC;
           opacity: 1;
           text-align: center;
@@ -12,8 +12,9 @@ welcome_UI <- function(id) {
           padding-left: 25%;
           color:white;
         }"),
+    cicerone::use_cicerone(),
     absolutePanel(
-      id = "splash_panel", top = 0, left = 0, right = 0, bottom = 0,
+      id = NS(id, "splash_panel"), top = 0, left = 0, right = 0, bottom = 0,
       img(src='https://raw.githubusercontent.com/UNHCR-Guatemala/A2SIT/main/inst/app/www/logo.svg', height ='70vh', align = "center"),
       br(),br(),
       p("Admin2 Severity Index Tool", style = "font-size: 60px"),
@@ -51,7 +52,9 @@ welcome_UI <- function(id) {
         column(3),
         column(
           3,
-          actionButton(NS(id, "go_to_doc"), label = "Know more", width = "150px", style='font-size: 16px; color: #18375F', icon = icon("circle-info")),
+          actionButton(NS(id, "go_to_doc"), label = "Know more", width = "150px",
+                       style='font-size: 16px; color: #18375F', icon = icon("circle-info"),
+                       onclick ="window.open('https://unhcr-guatemala.github.io/A2SIT/book/index.html', '_blank')"),
           style = "font-size: 18px; text-align: right;"
         ),
         column(6, "Read the A2SIT documentation", style = "font-size: 18px; text-align: left;")
@@ -65,6 +68,13 @@ welcome_UI <- function(id) {
 welcome_server <- function(id, parent_session) {
 
   moduleServer(id, function(input, output, session) {
+
+
+    observeEvent(input$go_to_tour, {
+      guide <- create_guide(id)
+      guide$init()$start()
+    })
+
 
     # go to data input tab
     observeEvent(input$go_to_datainput, {
