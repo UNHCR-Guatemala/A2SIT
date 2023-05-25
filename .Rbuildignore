@@ -14,3 +14,4 @@ $run_dev.*
 ^rsconnect$
 ^.github$
 ^\.github$
+^A2SIT_Doc$

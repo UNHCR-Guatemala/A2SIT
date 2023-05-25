@@ -6,5 +6,6 @@ The aim of this documentation is to explain in detail:
 
 * How to use the app
 * The methodology behind the A2SIT
+* Technical details
 
 *This documentation is under development!*
