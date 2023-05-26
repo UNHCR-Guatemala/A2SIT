@@ -10,18 +10,29 @@ app_server <- function(input, output, session) {
   coin <- reactiveVal(NULL)
   coin_full <- reactiveVal(NULL)
   shared_reactives <- reactiveValues(
+    ISO3 = NULL, # country of the data
     profile_unit = NULL, # unit to view in profiles
     results_built = FALSE # whether results (up to aggregation) built
   )
 
   # Modules -----------------------------------------------------------------
 
-  input_server("id_input", coin, coin_full)
+  welcome_server("id_welcome", session)
+  input_server("id_input", coin, coin_full, shared_reactives)
   analysis_server("id_analysis", coin, coin_full, input)
   results_server("id_results", coin, coin_full, input, session, shared_reactives)
   profiles_server("id_profiles", coin, coin_full, input, shared_reactives)
 
   # Extras (not modules) ----------------------------------------------------
+
+  # # close sidebar for welcome screen
+  # observeEvent(input$tab_selected, {
+  #
+  #   browser()
+  #   if(input$tab_selected != "welcome"){
+  #     shinydashboardPlus::updateSidebar("tab_selected")
+  #   }
+  # })
 
   # Export to Excel
   output$export_button_excel <- downloadHandler(
@@ -43,6 +54,12 @@ app_server <- function(input, output, session) {
       save("coin_export", file = file)
     }
   )
+
+  # help icon
+  output$header_help <- renderUI({
+    selected_modal <- paste0(input$tab_selected, "_modal")
+    header_help_icon(selected_modal)
+  })
 
 
 }

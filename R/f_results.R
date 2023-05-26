@@ -97,32 +97,44 @@ f_display_results_table <- function(coin, type = "scores"){
 # shp_path is currently at "shp/gtm_admbnda_adm2_ocha_conred_20190207.shp"
 #
 #
-f_plot_map <- function(coin, dset = "Aggregated", iCode = "MVI", shp_path){
+f_plot_map <- function(coin, dset = "Aggregated", iCode, ISO3){
 
-  shp <- sf::read_sf(shp_path)
+  available_ISO3s <- get_cached_countries()
+
+  if(ISO3 %nin% available_ISO3s){
+    stop("Cannot render map because geometry for country ", ISO3,
+         " not available in inst/geom. Run f_get_admin2_boundaries() to get",
+         " and store the required file.")
+  }
+
+  # get geom
+  admin2_geom <- system.file("geom", paste0(ISO3,".RDS"), package = "A2SIT") |>
+    readRDS()
 
   # get data first
   df_plot <- COINr::get_data(coin, dset = dset, iCodes = iCode)
 
   # merge into shape df
-  shp$Indicator <- df_plot[[iCode]][match(shp$ADM2_PCODE, df_plot$uCode)]
+  admin2_geom$Indicator <- df_plot[[iCode]][
+    match(admin2_geom$adm2_source_code, df_plot$uCode)
+  ]
 
   # colorBin is a leaflet function
-  pal <- leaflet::colorBin("YlOrRd", domain = shp$Indicator, bins = 7)
+  pal <- leaflet::colorBin("YlOrRd", domain = admin2_geom$Indicator, bins = 7)
 
   # labels
   labels <- sprintf(
     "<strong>%s</strong><br/>%g",
-    shp$ADM2_ES, round(shp$Indicator, 1)
+    admin2_geom$gis_name, round(admin2_geom$Indicator, 1)
   ) |>
     lapply(htmltools::HTML)
 
 
   # now we can make the map
 
-  mp <- leaflet::leaflet(shp) |>
+  mp <- leaflet::leaflet(admin2_geom) |>
     leaflet::addTiles() |>
-    leaflet::addPolygons(layerId = ~ADM2_PCODE,
+    leaflet::addPolygons(layerId = ~adm2_source_code,
                          fillColor = ~pal(Indicator),
                          weight = 2,
                          opacity = 1,
@@ -313,3 +325,119 @@ f_get_last_weights <- function(coin){
   w_new
 
 }
+
+#' Get admin2 polygons from API
+#'
+#' Queries the gis.unhcr.org sever to return admin2 shape files for a specific
+#' country. Some of the files returned are heavy, and the server also seems to
+#' fail or time out every now and then. Also, some admin2 codes are not in the
+#' expected format.
+#'
+#' @param ISO3 ISO3 code of country
+#' @param simplify Logical: whether to simplify or not
+#' @param dTolerance parameter passed to [sf::st_simplify()]
+#'
+#' @return sf object
+#' @export
+f_get_admin2_boundaries <- function(ISO3, simplify = TRUE, dTolerance = 500){
+
+  stopifnot(ISO3 %in% A2SIT::country_codes$ISO3)
+
+  # generate query string
+  # from: https://gis.unhcr.org/arcgis/rest/services/core_v2/wrl_polbnd_adm2_a_unhcr/MapServer/0/query
+  api_query <- paste0(
+    "https://gis.unhcr.org/arcgis/rest/services/core_v2/wrl_polbnd_adm2_a_unhcr/",
+    "MapServer/0/query?where=ISO3+%3D+%27", ISO3,
+    "%27&text=&objectIds=&time=&geometry=",
+    "&geometryType=esriGeometryEnvelope&inSR=&spatialRel=esriSpatialRelIntersects",
+    "&distance=&units=esriSRUnit_Foot&relationParam=",
+    "&outFields=pcode%2C+adm2_source_code%2C+gis_name&returnGeometry=true&",
+    "returnTrueCurves=false&maxAllowableOffset=&geometryPrecision=&outSR=&",
+    "havingClause=&returnIdsOnly=false&returnCountOnly=false&orderByFields=&",
+    "groupByFieldsForStatistics=&outStatistics=&returnZ=false&returnM=false&",
+    "gdbVersion=&historicMoment=&returnDistinctValues=false&resultOffset=",
+    "&resultRecordCount=&returnExtentOnly=false&datumTransformation=&",
+    "parameterValues=&rangeValues=&quantizationParameters=&featureEncoding=esriDefault&f=geojson")
+
+  # read and create feature table
+  df_geom <- sf::st_read(api_query)
+
+  if(any(is.na(df_geom$adm2_source_code))){
+    warning("NAs found in Admin2 codes...")
+  }
+
+  if(simplify){
+    sf::st_simplify(df_geom, preserveTopology = TRUE, dTolerance = dTolerance)
+  } else {
+    df_geom
+  }
+
+
+
+}
+
+#' Retrieve and store geometry for countries
+#'
+#' Queries the UNHCR API to get Admin2 layer for the specified countries, then
+#' simplifies the geometry and stores in inst/geom. To enable quick retrieval
+#' of maps. This is intended to just be run occasionally.
+#'
+#' @param ISO3s Character vector of ISO3s to get maps for
+#' @param overwrite if TRUE overwrites any existing files
+#'
+#' @export
+cache_admin2_geometry <- function(ISO3s, overwrite = FALSE){
+
+  existing_ISO3s <- get_cached_countries()
+
+  for(ISO3 in ISO3s){
+
+    if(!overwrite && (ISO3 %in% existing_ISO3s)){
+      message(ISO3, " already cached - skipping this (set overwrite = TRUE to change overwrite next time if needed)")
+      next
+    }
+
+    message("Fetching geometry for ", ISO3, "........")
+
+    tryCatch(
+      expr = {
+        geom_simplified <- f_get_admin2_boundaries(ISO3)
+        if(nrow(geom_simplified) == 0){
+          warning("No rows returned for ", ISO3, " - can't save anything here...")
+        } else {
+          saveRDS(geom_simplified, file = paste0("./inst/geom/", ISO3, ".RDS"))
+        }
+      },
+      error = function(e){
+        message("Cannot get geometry for some reason for: ", ISO3)
+        print(e)
+      }
+    )
+
+  }
+
+}
+
+#' Get countries with cached maps
+#'
+#' Returns ISO3 codes of all countries for which simplified maps have been
+#' stored in inst/geom. Countries not in this list will have to have their
+#' maps downloaded from the server.
+#'
+#' @return Character vector of ISO3 codes
+#' @export
+get_cached_countries <- function(){
+
+  ISO3s <- list.files(system.file("geom", package = "A2SIT")) |>
+    substring(1,3)
+
+  if(!all(ISO3s %in% A2SIT::country_codes$ISO3)){
+    stop("One or more files in inst/geom with unrecognised ISO3 code?")
+  }
+
+  ISO3s
+}
+
+# Codes cached so far (or tried to...!)
+#ISO3s_2get <- c("ARG", "BLZ", "BRA", "BOL", "CHL", "COL", "CRI", "DOM", "ECU", "SLV", "GTM", "GUY", "HND", "MEX", "PAN", "PRY", "PER", "URY", "VEN")
+#Argentina,  Belize, Brazil, Bolivia, Chile, Colombia, Costa Rica, Dominican Republic, Ecuador, El Salvador, Guatemala, Guyana, Honduras, Mexico, Panama, Paraguay, Peru, Uruguay, Venezuela.

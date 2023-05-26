@@ -13,13 +13,14 @@ app_ui <- function() {
   # enable alert messages
   shinyWidgets::useSweetAlert()
 
-
   # Sidebar -----------------------------------------------------------------
 
   db_sidebar <- shinydashboardPlus::dashboardSidebar(
-    minified = FALSE, collapsed = FALSE, width = "15vw",
+    #tags$style(".left-side, .main-sidebar {padding-top: 20px}"),
+    minified = TRUE, collapsed = FALSE, width = "30vw",
     shinydashboard::sidebarMenu(
       id = "tab_selected",
+      shinydashboard::menuItem("Welcome", tabName = "welcome", icon = icon("house")),
       shinydashboard::menuItem("Upload", tabName = "upload", icon = icon("upload")),
       shinydashboard::menuItem("Analyse", tabName = "analyse", icon = icon("magnifying-glass-chart")),
       shinydashboard::menuItem("Results", tabName = "results", icon = icon("square-poll-vertical")),
@@ -32,6 +33,17 @@ app_ui <- function() {
 
   db_body <- shinydashboard::dashboardBody(
 
+    # add modals (longer help in md format)
+    welcome_modal(),
+    upload_modal(),
+    analyse_modal(),
+    results_modal(),
+    profiles_modal(),
+
+    # some themeing (to improve)
+    includeCSS(system.file("app", "www", "custom.css", package = "A2SIT")),
+    fresh::use_theme(theme_UNHCR),
+
     # increase width of dropdown menus
     tags$head(tags$style(HTML('
   .navbar-custom-menu>.navbar-nav>li>.dropdown-menu {
@@ -39,8 +51,8 @@ app_ui <- function() {
   }
   '))),
 
-    theme_dashboard(),
     shinydashboard::tabItems(
+      welcome_UI("id_welcome"),
       input_UI("id_input"),
       analysis_UI("id_analysis"),
       results_UI("id_results"),
@@ -53,15 +65,20 @@ app_ui <- function() {
 
   # define UNHCR logo
   title_logo <- tags$div(tags$img(src="https://raw.githubusercontent.com/UNHCR-Guatemala/A2SIT/main/inst/app/www/logo.svg", height ='30vh'), "  A2SIT")
+  title_beta <- tags$div(tags$span("A2SIT", style = "font-size: 30px"), tags$span("beta", style = "font-size: 12px"))
 
   shinydashboardPlus::dashboardPage(
 
     md = FALSE,
-    #skin = "blue",
     options = list(sidebarExpandOnHover = TRUE),
+
     header = shinydashboardPlus::dashboardHeader(
-      title = title_logo,
-      titleWidth = "15vw",
+
+      #header_help_icon("modal_help"),
+      uiOutput("header_help", inline = TRUE),
+
+      title = title_beta,
+      titleWidth = "30vw",
       controlbarIcon = icon("gears"),
       leftUi = tagList(
         shinydashboardPlus::dropdownBlock(
@@ -104,6 +121,7 @@ golem_add_external_resources <- function(){
   addResourcePath(
     'www', system.file('app/www', package = "A2SIT")
   )
+  addResourcePath('img', system.file('app/img', package = 'A2SIT') )
 
   tags$head(
     golem::activate_js(),

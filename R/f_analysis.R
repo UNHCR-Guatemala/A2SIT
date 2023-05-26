@@ -187,12 +187,16 @@ f_highlight_DT <- function(Xd, Xh, table_caption = NULL, highlight_colour = "#ff
 
   styles <- c("white", highlight_colour)
 
+  column_names <- c("Indicator", "% Availability", "% Same", "Skew/kurtosis", "Collinear with", "Negatively correlated with", "Status")
+
   DT::datatable(
     X,
     rownames = FALSE,
+    colnames = column_names,
     caption = table_caption,
     selection = "single",
     options = list(
+      scrollX = TRUE,
       columnDefs = list(
         list(
           visible=FALSE,

@@ -3,35 +3,73 @@ profiles_UI <- function(id) {
   shinydashboard::tabItem(
     shinyjs::useShinyjs(),
     tabName = "profiles",
-    column(6,
-      box(title = "Select a region", width = 12, status = "info",
-          selectInput(NS(id, "selected_unit"), label = NULL,
-                      choices = NULL, width = "100%")
+    column(
+      6,
+
+      box(
+        id = "title_box",
+        title = NULL,
+        width = 12,
+        height = "25px",
+        headerBorder = FALSE,
+        h1(textOutput(NS(id, "unit_name"))),
+        selectInput(NS(id, "selected_unit"), label = "Select a region",
+                    choices = NULL, width = "100%") |>
+          add_input_pop("Regions can also be selected from the map.")
       ),
-      br(),br(),
-      h2(textOutput(NS(id, "unit_name"))),
-      br(),br(),
+      tags$head(tags$style('#title_box .box-header{ display: none}')),
+
       shinydashboard::valueBoxOutput(NS(id, "rank_box")),
       shinydashboard::valueBoxOutput(NS(id, "score_box")),
-      box(title = "Details", width = 12, status = "info",
-          DT::dataTableOutput(NS(id, "df_indicators")))
+
+      box(
+        title = box_pop_title(
+          title = "Details",
+          popover_text = "The scores and ranks of each indicator and aggregate for the selected region. The table is ordered from the highest level downwards.",
+          placement = "top"
+        ),
+        width = 12, status = "info",
+        DT::dataTableOutput(NS(id, "df_indicators")))
     ),
-    column(6,
-           box(id = NS(id, "radar_box"), title = "Dimensions",
-               width = 12, status = "info", collapsible = TRUE,
-               sidebar = shinydashboardPlus::boxSidebar(
-                 id = "radar_sidebar",
-                 icon = icon("gear"),
-                 width = 40,
-                 selectInput(NS(id, "radar_group"), label = "Show group", choices = NULL),
-                 shinyWidgets::prettySwitch(NS(id, "plot_radar"), label = "Toggle radar/table", value = TRUE)
-               ),
-               plotly::plotlyOutput(NS(id, "radar_chart")),
-               DT::dataTableOutput(NS(id, "radar_table"))),
-           box(title = "Top-ranked indicators", width = 12, status = "info",
-               tableOutput(NS(id, "df_strengths"))),
-           box(title = "Bottom-ranked indicators", width = 12, status = "info",
-               tableOutput(NS(id, "df_weaknesses"))))
+    column(
+      6,
+      box(
+        id = NS(id, "radar_box"),
+        title = box_pop_title(
+          title = "Dimensions",
+          popover_text = "The dimension scores of the selected unit, compared to the median. Click the 'gear' icon to change the group to plot and to toggle to a table.",
+          placement = "bottom",
+          px_from_right = 70
+        ),
+        width = 12, status = "info", collapsible = TRUE,
+        sidebar = shinydashboardPlus::boxSidebar(
+          id = "radar_sidebar",
+          icon = icon("gear"),
+          width = 40,
+          selectInput(NS(id, "radar_group"), label = "Show group", choices = NULL),
+          shinyWidgets::prettySwitch(NS(id, "plot_radar"), label = "Toggle radar/table", value = TRUE)
+        ),
+        plotly::plotlyOutput(NS(id, "radar_chart")),
+        DT::dataTableOutput(NS(id, "radar_table"))
+      ),
+
+      box(
+        title = box_pop_title(
+          title = "Highest-ranked indicators",
+          popover_text = "The five indicators with the highest ranks (after direction adjustment).",
+          placement = "top"
+        ),
+        width = 12, status = "info",
+        tableOutput(NS(id, "df_strengths"))),
+
+      box(
+        title = box_pop_title(
+          title = "Lowest-ranked indicators",
+          popover_text = "The five indicators with the lowest ranks (after direction adjustment).",
+          placement = "top"
+        ),
+        width = 12, status = "info",
+        tableOutput(NS(id, "df_weaknesses"))))
 
   )
 
@@ -67,7 +105,7 @@ profiles_server <- function(id, coin, coin_full, input, shared_reactives) {
       shinydashboard::valueBox(
         get_index_rank(coin(), input$selected_unit),
         "Rank",
-        icon = icon("ranking-star"),
+        #icon = icon("ranking-star"),
         color = "aqua"
       )
     })
@@ -79,7 +117,7 @@ profiles_server <- function(id, coin, coin_full, input, shared_reactives) {
         get_index_score(coin(), input$selected_unit) |>
           round(1),
         "Score",
-        icon = icon("star"),
+        #icon = icon("star"),
         color = "orange"
       )
     })
