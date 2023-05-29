@@ -27,15 +27,6 @@ app_server <- function(input, output, session) {
 
   # Extras (not modules) ----------------------------------------------------
 
-  # # close sidebar for welcome screen
-  # observeEvent(input$tab_selected, {
-  #
-  #   browser()
-  #   if(input$tab_selected != "welcome"){
-  #     shinydashboardPlus::updateSidebar("tab_selected")
-  #   }
-  # })
-
   # Export to Excel
   output$export_button_excel <- downloadHandler(
     filename = function() {
