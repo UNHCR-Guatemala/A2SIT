@@ -15,7 +15,7 @@ Imports:
     htmltools,
     config,
     golem,
-    iCOINr (>= 0.2.3),
+    iCOINr (>= 0.2.6),
     leaflet,
     plotly,
     readxl,
