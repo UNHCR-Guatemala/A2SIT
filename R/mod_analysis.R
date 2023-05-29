@@ -87,6 +87,7 @@ analysis_UI <- function(id) {
                icon = icon("gear"),
                width = 40,
                selectInput(NS(id, "scat_v2"), label = "Plot against", choices = c("tmp_999")),
+               shinyWidgets::prettySwitch(NS(id, "scat_trend"), label = "Trendline"),
                shinyWidgets::prettySwitch(NS(id, "scat_logx"), label = "Log X"),
                shinyWidgets::prettySwitch(NS(id, "scat_logy"), label = "Log Y")
              ),
@@ -266,7 +267,8 @@ analysis_server <- function(id, coin, coin_full, parent_input) {
         dsets = "Raw",
         iCodes = c(icode_selected(), input$scat_v2),
         Levels = 1,
-        log_axes = c(input$scat_logx, input$scat_logy)
+        log_axes = c(input$scat_logx, input$scat_logy),
+        trendline = input$scat_trend
       )
     })
 
