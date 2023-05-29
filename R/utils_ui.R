@@ -61,14 +61,13 @@ add_modal <- function(tag, message_to_add){
 }
 
 
-# function that creates a help pop up window (for each page?)
+# function that creates a help pop up window for each page
 header_help_icon <- function(id_modal){
 
   tags$li(class = "dropdown",
-          tags$p(
-            bsplus::shiny_iconlink("info-circle", class = "title-help",
-                 style = "color: #FFFFFF; position: absolute; right: 40px; top: 0px; font-size: 30px;")
-          )
+          htmltools::tags$a(shiny::icon("info-circle", id = "header_help_icon"),
+                            style = "color: #FFFFFF; position: absolute; right: 40px; top: 5px; font-size: 30px;",
+                            href = "#")
   ) |>
     bsplus::bs_attach_modal(id_modal = id_modal)
 
