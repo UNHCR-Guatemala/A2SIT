@@ -12,46 +12,30 @@ format_sw <-  function(X){
 
 }
 
-# function for adjusting figures on different scales
-# outputs a character vector...
-round_values <- function(x, as_character = TRUE){
-
-  if(as_character){
-    ifelse(
-      (is.wholenumber(x)) | (x > 1000),
-      as.character(round(x)),
-      as.character(signif(x, 3))
-    )
-  } else {
-    ifelse(
-      (is.wholenumber(x)) | (x > 1000),
-      round(x),
-      signif(x, 3)
-    )
-  }
-
-}
-
-# function to check if whole number (as opposed to integer)
-is.wholenumber <- function(x, tol = .Machine$double.eps^0.5){
-  abs(x - round(x)) < tol
-}
-
 # display formatted indicator table for a selected unit
 f_indicator_table <- function(coin, usel){
 
+  # get indicator table for selected unit
   df_out <- COINr::get_unit_summary(
     coin,
     usel = usel,
     Levels = coin$Meta$maxlev:1
   )
 
+  # add level column
   imeta <- coin$Meta$Ind
   df_out$Level <- imeta$Level[match(df_out$Code, imeta$iCode)]
-  df_out$Level <- paste0("Level ", df_out$Level)
-  df_out <- df_out[c(5,2,3,4)]
+  #df_out$Level <- paste0("Level ", df_out$Level)
 
-  # find min and max of score ranges ----
+  # add severity column
+  df_out$Severity <- coin$Data$Severity[
+    coin$Data$Severity$uCode == usel,
+    match(df_out$Code, names(coin$Data$Severity))
+  ] |> as.integer()
+
+  df_out <- df_out[c("Level", "Name", "Rank", "Score", "Severity")]
+
+  # find min and max of ranks ----
   min_rank <- min(df_out$Rank, na.rm = TRUE)
   max_rank <- max(df_out$Rank, na.rm = TRUE)
 
@@ -60,24 +44,38 @@ f_indicator_table <- function(coin, usel){
   colour_func <- grDevices::colorRampPalette(c("#0072BC", "#DCE9FF"))
   colour_palette <- colour_func(length(breaks) + 1)
 
+  # same now for severity
+  min_sev <- 1
+  max_sev <- 5
+
+  # generate colours ----
+  breaks_sev <- seq(min_sev, max_sev, length.out = 5)
+  colour_func <- grDevices::colorRampPalette(c("#DCE9FF", "#0072BC"))
+  colour_palette_sev <- colour_func(length(breaks_sev) + 1)
+
   # Create table
   df_out |>
     DT::datatable(
       rownames = FALSE,
       selection = "none",
-      extensions = 'RowGroup',
-      options = list(
-        rowGroup = list(dataSrc = 0),
-        columnDefs = list(
-          list(
-            visible=FALSE,
-            targets=0)
-        )
-      )
+      filter = 'top'
+      # extensions = 'RowGroup',
+      # options = list(
+      #   rowGroup = list(dataSrc = 0),
+      #   columnDefs = list(
+      #     list(
+      #       visible=FALSE,
+      #       targets=0)
+      #   )
+      # )
     ) |>
     DT::formatStyle(
       columns = "Rank",
       backgroundColor = DT::styleInterval(breaks, colour_palette)
+    ) |>
+    DT::formatStyle(
+      columns = "Severity",
+      backgroundColor = DT::styleInterval(breaks_sev, colour_palette_sev)
     )
 
 }
