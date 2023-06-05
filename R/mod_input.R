@@ -10,24 +10,27 @@ input_UI <- function(id) {
           collapsible = TRUE,
           status = "primary",
 
-          "Select the country you want to analyse, then upload your Admin2 data.",
-          "Use the link below to download a template for your selected country, or",
-          tags$a(href="https://github.com/UNHCR-Guatemala/A2SIT/raw/main/inst/data_module-input.xlsx",
-                 "download example data set"),
-          "for testing/demo.",
-
-          br(),br(),
-
-          country_dropdown(NS(id, "ISO3"), "Select country:") |>
+          h4("1. Select your country"),
+          country_dropdown(NS(id, "ISO3"), "Country") |>
             add_input_pop("If your country is not on this list please contact us."),
+          hr(),
 
-          downloadLink(NS(id, "download_country_template"), "Download country template"),
+          h4("2. Download country template"),
+          p("Download the template for the selected country:"),
+          downloadButton(NS(id, "download_country_template"), "Download country template"),
+          hr(),
 
-          br(),br(),
-          fileInput(NS(id, "xlsx_file"), "Load Data", buttonLabel = "Browse...", accept = c("xls", "xlsx")) |>
+          h4("3. Upload your data"),
+          p("Upload your compiled template here and click the 'Load' button."),
+          fileInput(NS(id, "xlsx_file"), NULL, buttonLabel = "Browse...", accept = c("xls", "xlsx")) |>
             add_input_pop("Please upload the template spreadsheet compiled with your data."),
+          actionButton(NS(id, "load_click"), "Load"),
+          hr(),
 
-          actionButton(NS(id, "load_click"), "Load")),
+          p("An example data set is available to download ",
+            tags$a(href="https://github.com/UNHCR-Guatemala/A2SIT/raw/main/inst/A2SIT_data_input_template_GTM.xlsx",
+                   "here."))
+      ),
 
       box(title = box_pop_title("Messages", "Any messages from the data import process."), width = NULL, status = "info",
           verbatimTextOutput(NS(id, "data_message")))
