@@ -41,18 +41,52 @@ f_build_index <- function(coin, agg_method = "a_amean", only_aggregate = FALSE){
   # generate results tables
   coin <- f_generate_results(coin)
 
+  # add severity level df
+  coin <- f_make_severity_level_dset(coin)
+
   coin
+}
+
+#
+f_make_severity_level_dset <- function(coin){
+
+  iData <- COINr::get_dset(coin, "Aggregated")
+  agg_codes <- get_indicator_codes(coin, "Aggregate", with_levels = FALSE,
+                                   use_names = FALSE)
+
+  agg_cols <- lapply(agg_codes, function(iCode){
+    direction <- get_indicator_direction(coin, iCode)
+    to_discrete_scale(iData[[iCode]], direction)
+  }) |> as.data.frame()
+  names(agg_cols) <- agg_codes
+
+  iData[agg_codes] <- agg_cols
+
+  coin$Data$Severity <- iData
+
+  df_results <- COINr::get_results(coin, "Severity", tab_type = "Full",
+                                   also_get = "uName", nround = 1, out2 = "df")
+  df_results <- df_results[names(df_results) != "Rank"]
+
+  coin$Results$Severity <- df_results
+
+  coin
+
 }
 
 # Outputs an interactive results table suitable for HTML documents and the app.
 # set type = "scores" or "ranks".
 #
-f_display_results_table <- function(coin, type = "scores"){
+f_display_results_table <- function(coin, type = "scores", as_discrete = FALSE){
 
-  if(type == "scores"){
-    df_results <- coin$Results$FullScore
-  } else if (type == "ranks"){
-    df_results <- coin$Results$FullRank
+  if(as_discrete){
+    df_results <- coin$Results$Severity
+  } else {
+    if(type == "scores"){
+      df_results <- coin$Results$FullScore
+    } else if (type == "ranks"){
+      df_results <- coin$Results$FullRank
+    }
   }
 
   if(is.null(df_results)){
@@ -60,12 +94,19 @@ f_display_results_table <- function(coin, type = "scores"){
   }
 
   # find min and max of score ranges ----
-  all_columns <- names(df_results)
-  factor_columns <-  c("uCode", "uName", "Rank")
-  numeric_columns <- setdiff(all_columns, factor_columns)
-  df_numeric <- as.matrix(df_results[numeric_columns])
-  min_all <- min(df_numeric, na.rm = TRUE)
-  max_all <- max(df_numeric, na.rm = TRUE)
+  if(!as_discrete){
+    all_columns <- names(df_results)
+    factor_columns <-  c("uCode", "uName", "Rank")
+    numeric_columns <- setdiff(all_columns, factor_columns)
+    df_numeric <- as.matrix(df_results[numeric_columns])
+    min_all <- min(df_numeric, na.rm = TRUE)
+    max_all <- max(df_numeric, na.rm = TRUE)
+  } else {
+    numeric_columns <- get_indicator_codes(coin, "Aggregate", with_levels = FALSE,
+                                           use_names = FALSE)
+    min_all <- 1
+    max_all <- 5
+  }
 
   # generate colours ----
   breaks <- seq(min_all, max_all, length.out = 12)[2:11]
@@ -87,7 +128,6 @@ f_display_results_table <- function(coin, type = "scores"){
 }
 
 
-# NOTE to plot bar charts just use the dedicated COINr function.
 
 
 
@@ -97,7 +137,7 @@ f_display_results_table <- function(coin, type = "scores"){
 # shp_path is currently at "shp/gtm_admbnda_adm2_ocha_conred_20190207.shp"
 #
 #
-f_plot_map <- function(coin, dset = "Aggregated", iCode, ISO3){
+f_plot_map <- function(coin, iCode, ISO3, as_discrete = TRUE){
 
   available_ISO3s <- get_cached_countries()
 
@@ -111,29 +151,51 @@ f_plot_map <- function(coin, dset = "Aggregated", iCode, ISO3){
   admin2_geom <- system.file("geom", paste0(ISO3,".RDS"), package = "A2SIT") |>
     readRDS()
 
+  # find dset
+  dset_plot <- get_plot_dset(coin, iCode)
+
   # get data first
-  df_plot <- COINr::get_data(coin, dset = dset, iCodes = iCode)
+  df_plot <- COINr::get_data(coin, dset = dset_plot, iCodes = iCode)
+  iValues <- df_plot[[2]]
+
+  if(as_discrete){
+    icode_direction <- get_indicator_direction(coin, iCode)
+    df_plot[["Indicator"]] <- to_discrete_scale(iValues, icode_direction)
+  } else {
+    names(df_plot)[2] <- "Indicator" # just for convenience later
+  }
 
   # merge into shape df
-  admin2_geom$Indicator <- df_plot[[iCode]][
-    match(admin2_geom$adm2_source_code, df_plot$uCode)
-  ]
+  admin2_geom <- base::merge(admin2_geom, df_plot, by.x = "adm2_source_code", by.y = "uCode")
+
+  # Colours and labels ------------------------------------------------------
 
   # colorBin is a leaflet function
-  #pal <- leaflet::colorBin("YlOrRd", domain = admin2_geom$Indicator, bins = 7)
-  #palette <- rev(c("#044F85", "#0072BC", "#589BE5", "#8EBEFF", "#DCE9FF"))
   palette <- c("#FFE7E8", "#B41C37")
-  pal <- leaflet::colorNumeric(palette , domain = admin2_geom$Indicator)
 
-  # labels
-  labels <- sprintf(
-    "<strong>%s</strong><br/>%g",
-    admin2_geom$gis_name, round(admin2_geom$Indicator, 1)
-  ) |>
-    lapply(htmltools::HTML)
+  if(as_discrete){
+    pal <- leaflet::colorFactor(palette, levels = 1:5)
+    labels <- paste0(
+      "<strong>", admin2_geom$gis_name, "</strong><br/>",
+      round(admin2_geom$Indicator, 1)
+    )
+    # if plotting at indicator level we also add the value
+    if(dset_plot == "Raw"){
+      labels <- paste0(labels, " (value: ", round(admin2_geom[[iCode]], 1), ")")
+    }
+
+  } else {
+    pal <- leaflet::colorNumeric(palette, domain = iValues)
+    labels <- paste0(
+      "<strong>", admin2_geom$gis_name, "</strong><br/>",
+      round(admin2_geom$Indicator, 1)
+    )
+  }
+
+  labels <- lapply(labels, htmltools::HTML)
 
 
-  # now we can make the map
+  # Plot --------------------------------------------------------------------
 
   mp <- leaflet::leaflet(admin2_geom) |>
     leaflet::addProviderTiles("CartoDB.Positron") |>
@@ -283,49 +345,11 @@ f_rebuild_index <- function(coin, w, agg_method){
   # generate results tables again
   coin <- f_generate_results(coin)
 
+  # add severity level results
+  coin <- f_make_severity_level_dset(coin)
+
+
   coin
-
-}
-
-
-# returns a data frame of equal weights
-f_get_equal_weights <- function(coin){
-
-  w <- coin$Meta$Weights$Original
-  stopifnot(!is.null(w))
-
-  w$Weight <- 1
-
-  w
-}
-
-# Returns the last set of weights used when aggregating the index.
-f_get_last_weights <- function(coin){
-
-  if(is.null(coin$Log$Aggregate)){
-    return(NULL)
-  }
-
-  w_log <- coin$Log$Aggregate$w
-
-  if(is.null(w_log)){
-
-    w_new <- coin$Meta$Weights$Original
-
-  } else if (is.character(w_log)){
-
-    w_new <- coin$Meta$Weights[[w_log]]
-
-  } else if (is.data.frame(w_log)){
-
-    w_new <- w_log
-  } else {
-    stop("Weights not recognised at coin$Log$Aggregate$w", call. = FALSE)
-  }
-
-  stopifnot(is.data.frame(w_new))
-
-  w_new
 
 }
 
