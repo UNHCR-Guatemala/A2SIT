@@ -81,7 +81,7 @@ welcome_modal <- function(){
     id = "welcome_modal",
     title = "Welcome",
     body = includeMarkdown(system.file("md-help", "welcome.md", package = "A2SIT")),
-    size = "medium"
+    size = "large"
   )
 }
 
@@ -90,7 +90,7 @@ upload_modal <- function(){
     id = "upload_modal",
     title = "Data input",
     body = includeMarkdown(system.file("md-help", "input.md", package = "A2SIT")),
-    size = "medium"
+    size = "large"
   )
 }
 
@@ -99,7 +99,7 @@ analyse_modal <- function(){
     id = "analyse_modal",
     title = "Indicator analysis",
     body = includeMarkdown(system.file("md-help", "analysis.md", package = "A2SIT")),
-    size = "medium"
+    size = "large"
   )
 }
 
@@ -108,7 +108,7 @@ results_modal <- function(){
     id = "results_modal",
     title = "Results explorer",
     body = includeMarkdown(system.file("md-help", "results.md", package = "A2SIT")),
-    size = "medium"
+    size = "large"
   )
 }
 
@@ -117,6 +117,6 @@ profiles_modal <- function(){
     id = "profiles_modal",
     title = "Admin2 Profiles",
     body = includeMarkdown(system.file("md-help", "profiles.md", package = "A2SIT")),
-    size = "medium"
+    size = "large"
   )
 }
