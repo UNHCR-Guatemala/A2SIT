@@ -32,28 +32,25 @@ analysis_UI <- function(id) {
                placement = "top", px_from_right = 70),
              collapsible = TRUE, width = 12, closable = TRUE,
              status = "info",
-
-             column(
-               8,
-               htmlOutput(NS(id, "indicator_summary"))
-             ),
-
-             column(
-               4,
-               shinyWidgets::actionBttn(
-                 inputId = NS(id, "add_indicator"),
-                 label = "Restore",
-                 style = "jelly",
-                 color = "success", icon = icon("plus"), size = "sm"
+               column(
+                 7,
+                 htmlOutput(NS(id, "indicator_summary"))
                ),
-
-               shinyWidgets::actionBttn(
-                 inputId = NS(id, "remove_indicator"),
-                 label = "Remove",
-                 style = "jelly",
-                 color = "danger", icon = icon("minus"), size = "sm"
+               column(
+                 4,
+                 shinyWidgets::actionBttn(
+                   inputId = NS(id, "remove_indicator"),
+                   label = "Remove",
+                   style = "jelly",
+                   color = "danger", icon = icon("minus"), size = "sm"
+                 ),
+                 shinyWidgets::actionBttn(
+                   inputId = NS(id, "add_indicator"),
+                   label = "Restore",
+                   style = "jelly",
+                   color = "success", icon = icon("plus"), size = "sm"
+                 )
                )
-             )
 
            )
     ),
