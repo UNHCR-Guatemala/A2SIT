@@ -399,8 +399,3 @@ validate_iMeta <- function(iMeta){
 
 
 }
-
-# can a vector be coerced to numeric?
-possibly_numeric <- function(x){
-  suppressWarnings(all(!is.na(as.numeric(as.character(x)))))
-}
