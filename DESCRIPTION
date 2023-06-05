@@ -31,7 +31,8 @@ Imports:
     stats,
     fresh,
     bsplus,
-    cicerone
+    cicerone,
+    mapview
 Remotes: 
     bluefoxr/iCOINr,
     bluefoxr/COINr
