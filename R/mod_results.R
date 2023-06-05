@@ -56,9 +56,15 @@ results_UI <- function(id) {
             top = "6vh", right = "2vw", left = "auto", bottom = "auto",
             width = "25%",
             draggable = TRUE, height = "auto",
-            selectInput(NS(id, "plot_icode"), label = "Plot indicator:",
+            selectInput(NS(id, "plot_icode"), label = NULL,
                         choices = NULL, width = "100%"),
-            style = "z-index: 20; padding-top: 10px; padding-left: 10px; padding-right: 10px;",
+            selectInput(NS(id, "as_discrete"), label = NULL,
+                        choices = list("1-5 scale" = TRUE, "1-100 scale" = FALSE), width = "100%"),
+            div(
+              downloadLink(NS(id, "download_map"), label = "Download map"),
+              style = "text-align: right;"
+            ),
+            style = "z-index: 20; padding: 10px; font-size: 0.8em;",
           ),
           absolutePanel(
             id = "unit_summary",
@@ -72,7 +78,7 @@ results_UI <- function(id) {
             tableOutput(NS(id, "scores_table")),
             actionLink(NS(id, "go_to_profile"), label = ""),
             style = "z-index: 20; padding-top: 10px; padding-left: 10px; padding-right: 10px;",
-          ),
+          )
         ),
         tabPanel("Table", DT::dataTableOutput(NS(id, "results_table")))
       ),
@@ -80,16 +86,23 @@ results_UI <- function(id) {
       shinydashboardPlus::box(
         title = box_pop_title(
           title = "Adjust",
-          popover_text = "Use the sliders to adjust dimension weights, and click 'Recalculate' to recalculate the results. Note that weights are constrained to sum to 1.",
-          placement = "bottom"
+          popover_text = "Select a scenario and click 'Recalculate'. See 'gear' icon in the top right for advanced options.",
+          placement = "bottom", px_from_right = 40
         ),
         width = 3, status = "warning",
-        strong("Weights"),
-        br(),br(),
+        sidebar = shinydashboardPlus::boxSidebar(
+          id = "adjust_sidebar",
+          icon = icon("gear"),
+          width = 40,
+          checkboxInput(
+            NS(id, "show_weights"),
+            label = "Enable weight adjustment",
+            value = FALSE)
+        ),
         uiOutput(NS(id, "weight_sliders")),
-        selectInput(NS(id, "agg_method"), label = "Aggregate using:",
-                    choices = list("Arithmetic mean" = "a_amean",
-                                   "Geometric mean" = "a_gmean"),
+        selectInput(NS(id, "agg_method"), label = "Scenarios",
+                    choices = list("Scenario 1: Arithmetic mean" = "a_amean",
+                                   "Scenario 2: Geometric mean" = "a_gmean"),
                     width = "100%") |>
           add_input_pop("The formula used to aggregate indicators at each level. Please click the main help icon in the upper right for more information."),
         shinyWidgets::actionBttn(
@@ -97,17 +110,16 @@ results_UI <- function(id) {
           label = "Recalculate",
           style = "jelly",
           color = "success", icon = icon("calculator"), size = "sm"
-        ),
-
-        hr(),
-
-        textInput(inputId = NS(id,"scenario_name"), label = "Save scenario for comparison", placeholder = "Enter a name"),
-        shinyWidgets::actionBttn(
-          inputId = NS(id, "scenario_save"),
-          label = "Save",
-          style = "jelly",
-          color = "success", icon = icon("floppy-disk"), size = "sm"
-        )
+        )#,
+        # hr(),
+        #
+        # textInput(inputId = NS(id,"scenario_name"), label = "Save scenario for comparison", placeholder = "Enter a name"),
+        # shinyWidgets::actionBttn(
+        #   inputId = NS(id, "scenario_save"),
+        #   label = "Save",
+        #   style = "jelly",
+        #   color = "success", icon = icon("floppy-disk"), size = "sm"
+        # )
       )
     ),
 
@@ -179,6 +191,10 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, sh
 
       req(coin())
 
+      if(!input$show_weights){
+        return(NULL)
+      }
+
       n_sliders <- length(top_icodes())
       weights <- rep(1/n_sliders, n_sliders)
       names(weights) <- top_icodes()
@@ -192,24 +208,51 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, sh
         })
       )
 
-    }) |> bindEvent(shared_reactives$results_built)
+    })
 
     # Plots -------------------------------------------------------------------
 
-    # Plot map
-    output$map <- leaflet::renderLeaflet({
-
+    # create map
+    current_map <- reactive({
       req(coin())
       req(results_exist(coin()))
       req(input$plot_icode)
 
-      icode_level <- get_level_of_icode(coin(), input$plot_icode)
+      f_plot_map(coin(), ISO3 = shared_reactives$ISO3,
+                 iCode = input$plot_icode, as_discrete = as.logical(input$as_discrete))
+    })
 
-      dset_plot <- if (icode_level == 1) "Raw" else "Aggregated"
+    # Plot map
+    output$map <- leaflet::renderLeaflet({
+      current_map()
+    })
 
-      f_plot_map(coin(), dset = dset_plot, ISO3 = shared_reactives$ISO3,
-                 iCode = input$plot_icode)
+    # user map (for download)
+    user_map <- reactive({
+      leaflet::setView(
+        current_map(),
+        lng = input$map_center$lng,
+        lat = input$map_center$lat,
+        zoom = input$map_zoom
+      )
+    })
 
+    # download map
+    output$download_map <- downloadHandler(
+      filename = "A2SIT_map.png",
+
+      content = function(file) {
+        mapview::mapshot(
+          x = user_map(),
+          file = file,
+          cliprect = "viewport",
+          selfcontained = FALSE
+        )
+      }
+    )
+
+    observeEvent(input$check_ns,{
+      browser()
     })
 
     # Results table
@@ -217,7 +260,7 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, sh
       req(coin())
       req(results_exist(coin()))
 
-      f_display_results_table(coin(), type = "scores")
+      f_display_results_table(coin(), type = "scores", as_discrete = input$as_discrete)
     })
 
     # update selected unit for table
@@ -262,8 +305,10 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, sh
       # get iName
       iName <- COINr::icodes_to_inames(coin(), input$plot_icode)
 
+      dset_plot <- get_plot_dset(coin(), input$plot_icode)
+
       iCOINr::iplot_bar(
-        coin(), dset = "Aggregated",
+        coin(), dset = dset_plot,
         iCode = input$plot_icode,
         orientation = "horizontal",
         usel = unit_selected(),
@@ -334,7 +379,7 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, sh
         round(1)
       n_units <- get_n_units(coin())
 
-      paste0("Overall score = ", index_score, " (mean = ", mean_index_score(), ")")
+      paste0("Overall score = ", index_score, " (mean ", mean_index_score(), ")")
     })
 
     # unit info: scores and ranks
