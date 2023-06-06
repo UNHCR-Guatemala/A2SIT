@@ -4,7 +4,7 @@ input_UI <- function(id) {
     tabName = "upload",
     tags$style(type='text/css', '#id_input-data_message {white-space: pre-wrap;}'),
     column(
-      3,
+      4,
       box(title = "Data upload",
           width = NULL,
           collapsible = TRUE,
@@ -38,7 +38,7 @@ input_UI <- function(id) {
     ),
 
     column(
-      9,
+      8,
 
       fluidRow(
         column(6, uiOutput(NS(id, "flag"))),
