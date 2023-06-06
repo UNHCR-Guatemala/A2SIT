@@ -25,7 +25,7 @@ f_make_comparison_table <- function(coin, l, base_scen, comp_with, tab_type){
   # Merging -----------------------------------------------------------------
 
   # create base df
-  df_merged <- l[[1]]$df_results[c("uCode", icode_compare)]
+  df_merged <- l[[1]][c("uCode", icode_compare)]
   # add names
   df_merged <- base::merge(df_merged, coin$Meta$Unit[c("uCode", "uName")], by = "uCode")
   # reorder
@@ -35,7 +35,7 @@ f_make_comparison_table <- function(coin, l, base_scen, comp_with, tab_type){
   if(n_scen > 1){
     for(ii in 2:n_scen){
 
-      dfi <- l[[ii]]$df_results[c("uCode", icode_compare)]
+      dfi <- l[[ii]][c("uCode", icode_compare)]
       df_merged <- base::merge(df_merged, dfi, by = "uCode")
 
     }
@@ -52,8 +52,10 @@ f_make_comparison_table <- function(coin, l, base_scen, comp_with, tab_type){
     df_merged <- COINr::rank_df(df_merged)
     df_merged <- df_merged[order(df_merged[[base_scen]], decreasing = FALSE), ]
   } else {
+    saved_names <- names(df_merged)
     df_merged <- df_merged[order(df_merged[[base_scen]], decreasing = TRUE), ] |>
       COINr::round_df(2)
+    names(df_merged) <- saved_names
   }
 
   # convert to diffs or abs diffs if required
