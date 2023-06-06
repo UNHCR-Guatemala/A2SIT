@@ -1,5 +1,44 @@
 # Results back end functions
 
+f_get_scenarios <- function(coin){
+
+  current_agg_method <- coin$Log$Aggregate$f_ag
+  agg_methods <- c("a_amean", "a_gmean")
+  stopifnot(!is.null(current_agg_method),
+            current_agg_method %in% agg_methods)
+
+  # get current scenario (should be arithmetic mean)
+  l <- list(
+    #coin$Data$Aggregated
+    COINr::get_results(coin, dset = "Aggregated", tab_type = "Full",
+                               also_get = "uName", nround = 2, out2 = "df")
+  )
+  names(l) <- get_aggregation_name(coin$Log$Aggregate$f_ag)
+
+  # run remaining scenarios
+  agg_methods <- setdiff(agg_methods, current_agg_method)
+
+  for(agg_method in agg_methods){
+    coin_new <- f_build_index(coin, agg_method = agg_method, only_aggregate = TRUE) |>
+      suppressMessages()
+    agg_name <- get_aggregation_name(agg_method)
+    l[[agg_name]] <- COINr::get_results(coin_new, dset = "Aggregated", tab_type = "Full",
+                                        also_get = "uName", nround = 2, out2 = "df")
+  }
+
+  l
+
+}
+
+# translates from aggregation function name to display name
+get_aggregation_name <- function(f_ag){
+  switch(f_ag,
+         "a_amean" = "Arithmetic mean",
+         "a_gmean" = "Geometric mean",
+         stop("Aggregation method type not recognised")
+  )
+}
+
 # this function builds the MVI. Assumes that at this point you have imported
 # your data and built the MVI coin. Also optionally you have analysed and
 # possibly removed indicators, but taken no further steps.
