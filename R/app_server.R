@@ -24,6 +24,7 @@ app_server <- function(input, output, session) {
   results_server("id_results", coin, coin_full, input, session, shared_reactives)
   profiles_server("id_profiles", coin, coin_full, input, shared_reactives)
   scenarios_server("id_scenarios", coin, input, shared_reactives)
+  compare_units_server("id_compare_units", coin, input, shared_reactives)
 
   # Extras (not modules) ----------------------------------------------------
 
@@ -33,7 +34,7 @@ app_server <- function(input, output, session) {
       "index_export.xlsx"
     },
     content = function(file) {
-      f_export_to_excel(coin(), file)
+      f_export_to_excel(coin(), shared_reactives$scenarios, file)
     }
   )
 
