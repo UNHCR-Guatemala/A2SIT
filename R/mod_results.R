@@ -164,6 +164,7 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, sh
     slider_weights <- reactiveVal(NULL)
 
     # when user selects results tab, if not done so already, generate results
+    # and generate scenarios (alt. aggregation methods)
     observeEvent(parent_input$tab_selected, {
 
       req(coin())
@@ -172,6 +173,7 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, sh
         if(!results_exist(coin())){
           shared_reactives$results_built <- TRUE
           coin(f_build_index(coin()))
+          shared_reactives$scenarios <- f_get_scenarios(coin())
         }
       }
 

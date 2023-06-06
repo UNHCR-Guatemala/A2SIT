@@ -4,7 +4,6 @@ scenarios_UI <- function(id) {
     shinyjs::useShinyjs(),
     tabName = "scenarios",
 
-    fluidRow(
       shinydashboardPlus::box(
         id = NS(id, "comp_box"),
         title = box_pop_title(
@@ -12,7 +11,7 @@ scenarios_UI <- function(id) {
           popover_text = "Scenarios are columns in the table. Click the 'gear' icon to adjust the table.",
           placement = "bottom", px_from_right = 40
         ),
-        width = 12,
+        width = 8,
         sidebar = shinydashboardPlus::boxSidebar(
           id = "comp_sidebar",
           icon = icon("gear"),
@@ -31,20 +30,6 @@ scenarios_UI <- function(id) {
         textOutput(NS(id, "no_scen_text")),
 
         DT::DTOutput(NS(id, "comp_table"))
-      )
-    ),
-
-    fluidRow(
-
-      shinydashboardPlus::box(
-        id = NS(id, "meta_box"),
-        title = box_pop_title(
-          title = "Metadata",
-          popover_text = "The weights and aggregation methods of your saved scenarios.",
-          placement = "top", px_from_right = 40
-        ),
-        width = 7,
-        DT::DTOutput(NS(id, "meta_table"))
       ),
 
       shinydashboardPlus::box(
@@ -57,7 +42,7 @@ scenarios_UI <- function(id) {
         sidebar = shinydashboardPlus::boxSidebar(
           id = "scat_sidebar",
           icon = icon("gear"),
-          width = 30,
+          width = 50,
           selectInput(
             NS(id, "scat_x"), "Plot on x-axis:",
             choices = NULL),
@@ -65,12 +50,20 @@ scenarios_UI <- function(id) {
             NS(id, "scat_y"), "Plot on y-axis:",
             choices = NULL)
         ),
-        width = 5,
+        width = 4,
         plotly::plotlyOutput(NS(id, "scenario_scatter"))
       )
 
-
-    )
+      # shinydashboardPlus::box(
+      #   id = NS(id, "meta_box"),
+      #   title = box_pop_title(
+      #     title = "Metadata",
+      #     popover_text = "The weights and aggregation methods of your saved scenarios.",
+      #     placement = "top", px_from_right = 40
+      #   ),
+      #   width = 7,
+      #   DT::DTOutput(NS(id, "meta_table"))
+      # ),
 
 
   )
