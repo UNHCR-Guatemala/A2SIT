@@ -12,8 +12,8 @@ format_sw <-  function(X){
 
 }
 
-# display formatted indicator table for a selected unit
-f_indicator_table <- function(coin, usel){
+# data frame of score, ranks etc for specific unit
+f_indicator_df <- function(coin, usel){
 
   # get indicator table for selected unit
   df_out <- COINr::get_unit_summary(
@@ -34,6 +34,15 @@ f_indicator_table <- function(coin, usel){
   ] |> as.integer()
 
   df_out <- df_out[c("Level", "Name", "Rank", "Score", "Severity")]
+
+  df_out
+
+}
+
+# display formatted indicator table for a selected unit
+f_indicator_table <- function(coin, usel){
+
+  df_out <- f_indicator_df(coin, usel)
 
   # find min and max of ranks ----
   min_rank <- min(df_out$Rank, na.rm = TRUE)
@@ -77,6 +86,42 @@ f_indicator_table <- function(coin, usel){
       columns = "Severity",
       backgroundColor = DT::styleInterval(breaks_sev, colour_palette_sev)
     )
+
+}
+
+f_compare_units_df <- function(coin, usel1, usel2){
+
+  df1 <- f_indicator_df(coin, usel1)
+  df2 <- f_indicator_df(coin, usel2)
+
+  # rename
+  names(df1)[3:5] <- paste0(names(df1)[3:5], " (1)")
+  names(df2)[3:5] <- paste0(names(df2)[3:5], " (2)")
+
+  # merge
+  df12 <- base::merge(df1, df2, by = c("Level", "Name"), sort = FALSE)
+
+  # parent
+  df12$Parent <- coin$Meta$Ind$Parent[match(df12$Name, coin$Meta$Ind$iName)]
+
+  # reorder
+  df12 <- df12[c("Level", "Name", "Parent",
+                 names(df12)[startsWith(names(df12), "Rank")],
+                 names(df12)[startsWith(names(df12), "Score")],
+                 names(df12)[startsWith(names(df12), "Severity")])]
+
+}
+
+f_compare_units_table <- function(coin, usel1, usel2){
+
+  dfc <- f_compare_units_df(coin, usel1, usel2)
+
+  DT::datatable(
+    dfc,
+    options = list(scrollX = TRUE),
+    rownames = FALSE,
+    selection = "none",
+  )
 
 }
 
