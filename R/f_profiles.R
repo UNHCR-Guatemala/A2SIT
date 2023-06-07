@@ -94,9 +94,12 @@ f_compare_units_df <- function(coin, usel1, usel2){
   df1 <- f_indicator_df(coin, usel1)
   df2 <- f_indicator_df(coin, usel2)
 
+  uname1 <- COINr::ucodes_to_unames(coin, usel1)
+  uname2 <- COINr::ucodes_to_unames(coin, usel2)
+
   # rename
-  names(df1)[3:5] <- paste0(names(df1)[3:5], " (1)")
-  names(df2)[3:5] <- paste0(names(df2)[3:5], " (2)")
+  names(df1)[3:5] <- paste0(names(df1)[3:5], " (", uname1,")")
+  names(df2)[3:5] <- paste0(names(df2)[3:5], " (", uname2,")")
 
   # merge
   df12 <- base::merge(df1, df2, by = c("Level", "Name"), sort = FALSE)
@@ -116,12 +119,43 @@ f_compare_units_table <- function(coin, usel1, usel2){
 
   dfc <- f_compare_units_df(coin, usel1, usel2)
 
+  # flags used for highlighting cells in table
+  compare_cols <- data.frame(
+    r1 = as.numeric(dfc[[4]] < dfc[[5]]),
+    r2 = as.numeric(dfc[[5]] < dfc[[4]]),
+    sc1 = as.numeric(dfc[[6]] > dfc[[7]]),
+    sc2 = as.numeric(dfc[[7]] > dfc[[6]]),
+    sv1 = as.numeric(dfc[[8]] > dfc[[9]]),
+    sv2 = as.numeric(dfc[[9]] > dfc[[8]])
+  )
+
+  ncol_display <- ncol(dfc)
+
+  # compare_cols will be hidden inside the DT call next
+  dfc <- cbind(dfc, compare_cols)
+
+  # highlight colours
+  styles <- c("white", "#8EBEFF")
+
   DT::datatable(
     dfc,
-    options = list(scrollX = TRUE),
+    options = list(
+      scrollX = TRUE,
+      columnDefs = list(
+        list(
+          visible=FALSE,
+          targets=ncol_display:(ncol(dfc)-1)
+        )
+      )),
     rownames = FALSE,
     selection = "none",
-  )
+    filter = 'top'
+  ) |>
+    DT::formatStyle(
+      columns = 4:ncol_display,
+      valueColumns = (ncol_display + 1):ncol(dfc),
+      backgroundColor = DT::styleEqual(c(0,1), styles)
+    )
 
 }
 

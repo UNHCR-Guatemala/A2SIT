@@ -6,16 +6,17 @@ compare_units_UI <- function(id) {
 
     shinydashboardPlus::box(
       title = "Compare",
-      width = 4,
-      selectInput(NS(id, "selected_unit1"), label = "Region 1",
-                  choices = NULL, width = "100%"),
-      selectInput(NS(id, "selected_unit2"), label = "Region 2",
-                  choices = NULL, width = "100%")
+      width = 12,
+      col_4(selectInput(NS(id, "selected_unit1"), label = NULL,
+                        choices = NULL, width = "100%")),
+      col_4(p("with", style = "text-align: center;")),
+      col_4(selectInput(NS(id, "selected_unit2"), label = NULL,
+                        choices = NULL, width = "100%"))
     ),
 
     shinydashboardPlus::box(
       title = NULL,
-      width = 8,
+      width = 12,
       DT::DTOutput(NS(id, "df_indicators"))
     ),
 
