@@ -27,9 +27,9 @@ input_UI <- function(id) {
           actionButton(NS(id, "load_click"), "Load"),
           hr(),
 
-          p("An example data set is available to download ",
+          p("Or download the ",
             tags$a(href="https://github.com/UNHCR-Guatemala/A2SIT/raw/main/inst/A2SIT_data_input_template_GTM.xlsx",
-                   "here."))
+                   "example data set for Guatemala."))
       ),
 
       box(title = box_pop_title("Messages", "Any messages from the data import process."), width = NULL, status = "info",
