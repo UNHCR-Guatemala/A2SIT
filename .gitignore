@@ -6,3 +6,4 @@ not_package
 inst/doc
 rsconnect
 .Rprofile
+shiny_bookmarks
