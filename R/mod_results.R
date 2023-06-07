@@ -149,7 +149,7 @@ results_UI <- function(id) {
 
 }
 
-results_server <- function(id, coin, coin_full, parent_input, parent_session, shared_reactives) {
+results_server <- function(id, coin, coin_full, parent_input, parent_session, r_shared) {
 
   moduleServer(id, function(input, output, session) {
 
@@ -158,7 +158,7 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, sh
 
     # create reactive value for selected unit
     # (updated by map and table clicks)
-    unit_selected <- reactiveVal(NULL)
+    #unit_selected <- reactiveVal(NULL)
 
     # initial vector of slider weights: equal and sum to 1
     slider_weights <- reactiveVal(NULL)
@@ -171,15 +171,19 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, sh
       if(parent_input$tab_selected == "results"){
 
         if(!results_exist(coin())){
-          shared_reactives$results_built <- TRUE
+          r_shared$results_built <- TRUE
           coin(f_build_index(coin()))
-          shared_reactives$scenarios <- f_get_scenarios(coin())
+          r_shared$scenarios <- f_get_scenarios(coin())
         }
       }
 
+    })
+
+    # populate map dropdown
+    observe({
+      req(coin())
       updateSelectInput(inputId = "plot_icode",
                         choices = get_indicator_codes(coin(), with_levels = TRUE))
-
     })
 
     top_icodes <- reactive({
@@ -220,7 +224,7 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, sh
       req(results_exist(coin()))
       req(input$plot_icode)
 
-      f_plot_map(coin(), ISO3 = shared_reactives$ISO3,
+      f_plot_map(coin(), ISO3 = r_shared$ISO3,
                  iCode = input$plot_icode, as_discrete = as.logical(input$as_discrete))
     })
 
@@ -262,23 +266,21 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, sh
       req(coin())
       req(results_exist(coin()))
 
-      f_display_results_table(coin(), type = "scores", as_discrete = input$as_discrete)
+      f_display_results_table(coin(), type = "scores", as_discrete = as.logical(input$as_discrete))
     })
 
     # update selected unit for table
     observeEvent(input$results_table_rows_selected, {
       df_results <- coin()$Results$FullScore
-      unit_selected(
-        df_results$uCode[input$results_table_rows_selected]
-      )
+      r_shared$usel <- df_results$uCode[input$results_table_rows_selected]
     })
     # update selected unit for map
     observeEvent(input$map_shape_click$id, {
-      unit_selected(input$map_shape_click$id)
+      r_shared$usel <- input$map_shape_click$id
     })
     # update selected unit for bar
     observeEvent(eventbar(),{
-      unit_selected(eventbar()$key)
+      r_shared$usel <- eventbar()$key
     })
 
     # bar chart
@@ -313,7 +315,7 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, sh
         coin(), dset = dset_plot,
         iCode = input$plot_icode,
         orientation = "horizontal",
-        usel = unit_selected(),
+        usel = r_shared$usel,
         stack_children = stack_children,
         plot_subset = plot_subset
       ) |>
@@ -346,19 +348,19 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, sh
 
     # unit info: header
     output$unit_name <- renderText({
-      if(is.null(unit_selected())){
+      if(is.null(r_shared$usel)){
         "Select a region..."
       } else {
-        COINr::ucodes_to_unames(coin(), unit_selected())
+        COINr::ucodes_to_unames(coin(), r_shared$usel)
       }
     })
 
     # unit info: index rank
     output$index_rank <- renderText({
 
-      req(unit_selected())
+      req(r_shared$usel)
 
-      index_rank <- get_index_rank(coin(), unit_selected())
+      index_rank <- get_index_rank(coin(), r_shared$usel)
       n_units <- get_n_units(coin())
 
       paste0("Overall rank = ", index_rank, "/", n_units)
@@ -375,9 +377,9 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, sh
     # unit info: index score
     output$index_score <- renderText({
 
-      req(unit_selected())
+      req(r_shared$usel)
 
-      index_score <- get_index_score(coin(), unit_selected()) |>
+      index_score <- get_index_score(coin(), r_shared$usel) |>
         round(1)
       n_units <- get_n_units(coin())
 
@@ -389,11 +391,11 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, sh
 
       req(coin())
       req(results_exist(coin()))
-      req(unit_selected())
+      req(r_shared$usel)
 
       df_info <- COINr::get_unit_summary(
         coin(),
-        unit_selected(),
+        r_shared$usel,
         Levels = coin()$Meta$maxlev - 1,
         dset = "Aggregated")[-1]
       df_info$Rank <- as.integer(df_info$Rank)
@@ -402,8 +404,8 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, sh
     })
 
     # profile link - update text
-    observeEvent(unit_selected(), {
-      req(unit_selected())
+    observeEvent(r_shared$usel, {
+      req(r_shared$usel)
       updateActionLink(inputId = "go_to_profile", label = "Go to profile", icon = icon("location-dot"))
     })
 
@@ -411,7 +413,7 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, sh
     observeEvent(input$go_to_profile, {
 
       # update selected unit reactive
-      shared_reactives$profile_unit <-  unit_selected()
+      r_shared$profile_unit <-  r_shared$usel
 
       # go to profile tab
       shinydashboard::updateTabItems(
@@ -522,7 +524,7 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, sh
       }
 
       # save to list
-      shared_reactives$scenarios[[input$scenario_name]] <- list(
+      r_shared$scenarios[[input$scenario_name]] <- list(
         df_results = df_results,
         w = w,
         agg_method = agg_method

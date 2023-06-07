@@ -24,13 +24,13 @@ compare_units_UI <- function(id) {
 
 }
 
-compare_units_server <- function(id, coin, input, shared_reactives) {
+compare_units_server <- function(id, coin, input, r_shared) {
 
   moduleServer(id, function(input, output, session) {
 
     # populate dropdown for selecting unit
     observe({
-      req(shared_reactives$results_built)
+      req(r_shared$results_built)
       updateSelectInput(inputId = "selected_unit1", choices = get_unit_list(coin()))
       updateSelectInput(inputId = "selected_unit2", choices = get_unit_list(coin()))
     })
@@ -38,7 +38,7 @@ compare_units_server <- function(id, coin, input, shared_reactives) {
 
     # summary table of scores/ranks for each indicator
     output$df_indicators <- DT::renderDataTable({
-      req(shared_reactives$results_built)
+      req(r_shared$results_built)
       f_compare_units_table(coin(), input$selected_unit1, input$selected_unit2)
     })
 

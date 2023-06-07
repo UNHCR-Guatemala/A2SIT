@@ -92,12 +92,6 @@ app_ui <- function() {
           bookmarkButton()
         ),
         shinydashboardPlus::dropdownBlock(
-          id = "load_session",
-          title = "Load session",
-          icon = icon("folder-open"), badgeStatus = NULL,
-          "To add"
-        ),
-        shinydashboardPlus::dropdownBlock(
           id = "export_to_excel",
           title = "Export",
           icon = icon("file-export"), badgeStatus = NULL,

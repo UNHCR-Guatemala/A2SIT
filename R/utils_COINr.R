@@ -100,3 +100,10 @@ f_get_last_weights <- function(coin){
   w_new
 
 }
+
+# reset coin so that all indicators are included
+reset_coin <- function(coin){
+  stopifnot(is.coin(coin))
+  coin$Log$new_coin$exclude <- NULL
+  COINr::Regen(coin, quietly = TRUE)
+}

@@ -57,13 +57,13 @@ input_UI <- function(id) {
 
 }
 
-input_server <- function(id, coin, coin_full, shared_reactives) {
+input_server <- function(id, coin, coin_full, r_shared) {
 
   moduleServer(id, function(input, output, session) {
 
     # update shared reactive for other modules
     observeEvent(input$ISO3, {
-      shared_reactives$ISO3 <- input$ISO3
+      r_shared$ISO3 <- input$ISO3
     })
 
     # Download template

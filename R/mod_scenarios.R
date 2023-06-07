@@ -70,15 +70,15 @@ scenarios_UI <- function(id) {
 
 }
 
-scenarios_server <- function(id, coin, input, shared_reactives) {
+scenarios_server <- function(id, coin, input, r_shared) {
 
   moduleServer(id, function(input, output, session) {
 
     # update the sidebar dropdown and hide message if we have scenarios
     observe({
-      req(shared_reactives$scenarios)
+      req(r_shared$scenarios)
       updateSelectInput(inputId = "base_scen",
-                        choices = names(shared_reactives$scenarios))
+                        choices = names(r_shared$scenarios))
       shinyjs::hide("no_scen_text")
     })
 
@@ -91,7 +91,7 @@ scenarios_server <- function(id, coin, input, shared_reactives) {
       req(input$comp_with)
 
       # gather scenarios
-      l <- shared_reactives$scenarios
+      l <- r_shared$scenarios
       if(is.null(l)){
         return(NULL)
       }
@@ -124,7 +124,7 @@ scenarios_server <- function(id, coin, input, shared_reactives) {
       req(req(results_exist(coin())))
 
       # gather scenarios
-      l <- shared_reactives$scenarios
+      l <- r_shared$scenarios
       if(is.null(l)){
         return(NULL)
       }

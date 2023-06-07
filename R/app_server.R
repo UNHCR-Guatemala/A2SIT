@@ -9,22 +9,24 @@ app_server <- function(input, output, session) {
 
   coin <- reactiveVal(NULL)
   coin_full <- reactiveVal(NULL)
-  shared_reactives <- reactiveValues(
+  r_shared <- reactiveValues(
     ISO3 = NULL, # country of the data
     profile_unit = NULL, # unit to view in profiles
     results_built = FALSE, # whether results (up to aggregation) built
-    scenarios = NULL # list of saved scenarios for comparison
+    scenarios = NULL, # list of saved scenarios for comparison
+    l_analysis = NULL,
+    l_analysis_f = NULL
   )
 
   # Modules -----------------------------------------------------------------
 
   welcome_server("id_welcome", session)
-  input_server("id_input", coin, coin_full, shared_reactives)
-  analysis_server("id_analysis", coin, coin_full, input)
-  results_server("id_results", coin, coin_full, input, session, shared_reactives)
-  profiles_server("id_profiles", coin, coin_full, input, shared_reactives)
-  scenarios_server("id_scenarios", coin, input, shared_reactives)
-  compare_units_server("id_compare_units", coin, input, shared_reactives)
+  input_server("id_input", coin, coin_full, r_shared)
+  analysis_server("id_analysis", coin, coin_full, input, r_shared)
+  results_server("id_results", coin, coin_full, input, session, r_shared)
+  profiles_server("id_profiles", coin, coin_full, input, r_shared)
+  scenarios_server("id_scenarios", coin, input, r_shared)
+  compare_units_server("id_compare_units", coin, input, r_shared)
 
   # Exports -----------------------------------------------------------------
 
@@ -34,7 +36,7 @@ app_server <- function(input, output, session) {
       "index_export.xlsx"
     },
     content = function(file) {
-      f_export_to_excel(coin(), shared_reactives$scenarios, file)
+      f_export_to_excel(coin(), r_shared$scenarios, file)
     }
   )
 
@@ -65,7 +67,7 @@ app_server <- function(input, output, session) {
   # The coin and other things have to be added to the bookmark state$value
   onBookmark(function(state){
     state$values$coin_saved <- coin()
-    state$values$r_shared <- shared_reactives
+    state$values$r_shared <- reactiveValuesToList(r_shared)
   })
 
   # When session is restored we have to:
@@ -74,21 +76,15 @@ app_server <- function(input, output, session) {
   # - make a copy of the coin with no indicators removed, for plotting
   onRestored(function(state){
 
+    # restore coin
     coin(state$values$coin_saved)
-    shared_reactives <- state$values$r_shared
+    # restore reactive values list (has to be done in loop unfortunately)
+    for(rname in names(state$values$r_shared)){
+      r_shared[[rname]] <- state$values$r_shared[[rname]]
+    }
 
-    # # extract analysis tables
-    # if(!is.null(coin()$Analysis$Raw)){
-    #   l_analysis(
-    #     coin()$Analysis$Raw[c("FlaggedStats", "Flags")]
-    #   )
-    #   l_analysis_f(
-    #     filter_to_flagged(l_analysis())
-    #   )
-    # }
-    #
-    # # make "full" coin with all indicators in (for plotting)
-    # coin_full(reset_coin(coin()))
+    # make "full" coin with all indicators in (for plotting)
+    coin_full(reset_coin(coin()))
 
   })
 
