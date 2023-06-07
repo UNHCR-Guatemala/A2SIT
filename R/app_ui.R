@@ -87,9 +87,9 @@ app_ui <- function() {
       leftUi = tagList(
         shinydashboardPlus::dropdownBlock(
           id = "save_session",
-          title = "Save session",
+          title = "Bookmark session",
           icon = icon("floppy-disk"), badgeStatus = NULL,
-          "To add"
+          bookmarkButton()
         ),
         shinydashboardPlus::dropdownBlock(
           id = "load_session",

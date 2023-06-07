@@ -26,7 +26,7 @@ app_server <- function(input, output, session) {
   scenarios_server("id_scenarios", coin, input, shared_reactives)
   compare_units_server("id_compare_units", coin, input, shared_reactives)
 
-  # Extras (not modules) ----------------------------------------------------
+  # Exports -----------------------------------------------------------------
 
   # Export to Excel
   output$export_button_excel <- downloadHandler(
@@ -49,11 +49,47 @@ app_server <- function(input, output, session) {
     }
   )
 
+  # Help --------------------------------------------------------------------
+
   # help icon
   output$header_help <- renderUI({
     selected_modal <- paste0(input$tab_selected, "_modal")
     header_help_icon(selected_modal)
   })
 
+  # Bookmarking -------------------------------------------------------------
+
+  # things NOT to bookmark otherwise they trigger recreating the coin
+  setBookmarkExclude(c("id_input-load_click"))
+
+  # The coin and other things have to be added to the bookmark state$value
+  onBookmark(function(state){
+    state$values$coin_saved <- coin()
+    state$values$r_shared <- shared_reactives
+  })
+
+  # When session is restored we have to:
+  # - restore the coin from the state$values
+  # - extract analysis tables again
+  # - make a copy of the coin with no indicators removed, for plotting
+  onRestored(function(state){
+
+    coin(state$values$coin_saved)
+    shared_reactives <- state$values$r_shared
+
+    # # extract analysis tables
+    # if(!is.null(coin()$Analysis$Raw)){
+    #   l_analysis(
+    #     coin()$Analysis$Raw[c("FlaggedStats", "Flags")]
+    #   )
+    #   l_analysis_f(
+    #     filter_to_flagged(l_analysis())
+    #   )
+    # }
+    #
+    # # make "full" coin with all indicators in (for plotting)
+    # coin_full(reset_coin(coin()))
+
+  })
 
 }

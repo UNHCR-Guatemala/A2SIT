@@ -100,22 +100,6 @@ input_server <- function(id, coin, coin_full, shared_reactives) {
         # copy of full coin for plotting later
         coin_full(coin())
 
-        c_name <- A2SIT::country_codes$CountryName[A2SIT::country_codes$ISO3 == input$ISO3]
-
-        # render flag + country name
-        output$flag <- renderUI({
-
-          tagList(
-            column(3, tags$img(
-              src = A2SIT::country_codes$FlagLink[A2SIT::country_codes$ISO3 == input$ISO3],
-              width = 100,
-              height = 75
-            )),
-            column(9, h1(c_name))
-          )
-
-        })
-
         shinyWidgets::sendSweetAlert(
           session = session,
           title = "Data uploaded",
@@ -127,6 +111,25 @@ input_server <- function(id, coin, coin_full, shared_reactives) {
 
       # Outputs
       output$data_message <- renderText(data_message, sep = "\n")
+
+    })
+
+    # render flag + country name
+    output$flag <- renderUI({
+
+      req(coin())
+
+      c_name <- A2SIT::country_codes$CountryName[
+        A2SIT::country_codes$ISO3 == input$ISO3]
+
+      tagList(
+        column(3, tags$img(
+          src = A2SIT::country_codes$FlagLink[A2SIT::country_codes$ISO3 == input$ISO3],
+          width = 100,
+          height = 75
+        )),
+        column(9, h1(c_name))
+      )
 
     })
 
