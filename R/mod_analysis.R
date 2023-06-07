@@ -197,9 +197,7 @@ analysis_server <- function(id, coin, coin_full, parent_input, r_shared) {
         )
 
         # update analysis tables
-        l_analysis(
-          coin()$Analysis$Raw[c("FlaggedStats", "Flags")]
-        )
+        r_shared$l_analysis <- coin()$Analysis$Raw[c("FlaggedStats", "Flags")]
 
       }
 
@@ -231,9 +229,7 @@ analysis_server <- function(id, coin, coin_full, parent_input, r_shared) {
         )
 
         # update analysis tables
-        l_analysis(
-          coin()$Analysis$Raw[c("FlaggedStats", "Flags")]
-        )
+        r_shared$l_analysis <- coin()$Analysis$Raw[c("FlaggedStats", "Flags")]
 
       }
     })

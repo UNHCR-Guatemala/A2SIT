@@ -6,6 +6,7 @@
 #'
 #'
 #' @param coin The coin, with results present.
+#' @param l_scen List of scenario data frames
 #' @param fname file name to write the results to.
 #'
 #' @importFrom RColorBrewer brewer.pal
