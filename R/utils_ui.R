@@ -8,7 +8,7 @@ weights_slider <- function(id, label = NULL, value = 1) {
 # stored in inst/geom. Adds flags.
 country_dropdown <- function(id, label){
 
-  # country_codes already has codes plus flag URLs for all countries, we just
+  # A2SIT::country_codes already has codes plus flag URLs for all countries, we just
   # filter to what we have available
   df_countries <- A2SIT::country_codes[A2SIT::country_codes$ISO3 %in% get_cached_countries(),]
 

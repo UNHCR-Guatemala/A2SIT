@@ -16,3 +16,4 @@ $run_dev.*
 ^\.github$
 .Rprofile
 shiny_bookmarks
+^A2SIT_Doc$

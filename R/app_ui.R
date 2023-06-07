@@ -70,6 +70,7 @@ app_ui <- function() {
 
   # define UNHCR logo
   title_logo <- tags$div(tags$img(src="https://raw.githubusercontent.com/UNHCR-Guatemala/A2SIT/main/inst/app/www/logo.svg", height ='30vh'), "  A2SIT")
+  title_beta <- tags$div(tags$span("A2SIT", style = "font-size: 30px"), tags$span("beta", style = "font-size: 12px"))
 
   shinydashboardPlus::dashboardPage(
 
@@ -81,7 +82,7 @@ app_ui <- function() {
       #header_help_icon("modal_help"),
       uiOutput("header_help", inline = TRUE),
 
-      title = title_logo,
+      title = title_beta,
       titleWidth = "30vw",
       controlbarIcon = icon("gears"),
       leftUi = tagList(
