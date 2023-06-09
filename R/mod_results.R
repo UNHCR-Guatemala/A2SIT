@@ -56,9 +56,15 @@ results_UI <- function(id) {
             top = "6vh", right = "2vw", left = "auto", bottom = "auto",
             width = "25%",
             draggable = TRUE, height = "auto",
-            selectInput(NS(id, "plot_icode"), label = "Plot indicator:",
+            selectInput(NS(id, "plot_icode"), label = NULL,
                         choices = NULL, width = "100%"),
-            style = "z-index: 20; padding-top: 10px; padding-left: 10px; padding-right: 10px;",
+            selectInput(NS(id, "as_discrete"), label = NULL,
+                        choices = list("1-5 scale" = TRUE, "1-100 scale" = FALSE), width = "100%"),
+            div(
+              downloadLink(NS(id, "download_map"), label = "Download map"),
+              style = "text-align: right;"
+            ),
+            style = "z-index: 20; padding: 10px; font-size: 0.8em;",
           ),
           absolutePanel(
             id = "unit_summary",
@@ -72,7 +78,7 @@ results_UI <- function(id) {
             tableOutput(NS(id, "scores_table")),
             actionLink(NS(id, "go_to_profile"), label = ""),
             style = "z-index: 20; padding-top: 10px; padding-left: 10px; padding-right: 10px;",
-          ),
+          )
         ),
         tabPanel("Table", DT::dataTableOutput(NS(id, "results_table")))
       ),
@@ -80,16 +86,23 @@ results_UI <- function(id) {
       shinydashboardPlus::box(
         title = box_pop_title(
           title = "Adjust",
-          popover_text = "Use the sliders to adjust dimension weights, and click 'Recalculate' to recalculate the results. Note that weights are constrained to sum to 1.",
-          placement = "bottom"
+          popover_text = "Select a scenario and click 'Recalculate'. See 'gear' icon in the top right for advanced options.",
+          placement = "bottom", px_from_right = 40
         ),
         width = 3, status = "warning",
-        strong("Weights"),
-        br(),br(),
+        sidebar = shinydashboardPlus::boxSidebar(
+          id = "adjust_sidebar",
+          icon = icon("gear"),
+          width = 40,
+          checkboxInput(
+            NS(id, "show_weights"),
+            label = "Enable weight adjustment",
+            value = FALSE)
+        ),
         uiOutput(NS(id, "weight_sliders")),
-        selectInput(NS(id, "agg_method"), label = "Aggregate using:",
-                    choices = list("Arithmetic mean" = "a_amean",
-                                   "Geometric mean" = "a_gmean"),
+        selectInput(NS(id, "agg_method"), label = "Scenarios",
+                    choices = list("Scenario 1: Arithmetic mean" = "a_amean",
+                                   "Scenario 2: Geometric mean" = "a_gmean"),
                     width = "100%") |>
           add_input_pop("The formula used to aggregate indicators at each level. Please click the main help icon in the upper right for more information."),
         shinyWidgets::actionBttn(
@@ -97,25 +110,46 @@ results_UI <- function(id) {
           label = "Recalculate",
           style = "jelly",
           color = "success", icon = icon("calculator"), size = "sm"
-        )
+        )#,
+        # hr(),
+        #
+        # textInput(inputId = NS(id,"scenario_name"), label = "Save scenario for comparison", placeholder = "Enter a name"),
+        # shinyWidgets::actionBttn(
+        #   inputId = NS(id, "scenario_save"),
+        #   label = "Save",
+        #   style = "jelly",
+        #   color = "success", icon = icon("floppy-disk"), size = "sm"
+        # )
       )
     ),
 
     fluidRow(
       shinydashboardPlus::box(
-        id = NS(id, "bar_box"),
-        width = 12, headerBorder = FALSE,
-        plotly::plotlyOutput(NS(id, "bar_plot"), height = "20vh")
+        id = NS(id, "bar_box"), title = "",
+        width = 12,
+        sidebar = shinydashboardPlus::boxSidebar(
+          id = "bar_sidebar",
+          icon = icon("gear"),
+          width = 25,
+          selectInput(
+            NS(id, "bar_subset"), "Regions to plot:",
+            choices = c("Top 50", "Bottom 50", "All")),
+          checkboxInput(
+            NS(id, "stack_children"),
+            label = "Show components of scores",
+            value = TRUE)
+        ),
+        plotly::plotlyOutput(NS(id, "bar_plot"), height = "25vh")
       ),
       # remove header space in box
-      tags$head(tags$style(paste0("#", NS(id, "bar_box"), " .box-header{ display: none}")))
+      #tags$head(tags$style(paste0("#", NS(id, "bar_box"), " .box-header{ display: none}")))
     )
 
   )
 
 }
 
-results_server <- function(id, coin, coin_full, parent_input, parent_session, shared_reactives) {
+results_server <- function(id, coin, coin_full, parent_input, parent_session, r_shared) {
 
   moduleServer(id, function(input, output, session) {
 
@@ -124,26 +158,32 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, sh
 
     # create reactive value for selected unit
     # (updated by map and table clicks)
-    unit_selected <- reactiveVal(NULL)
+    #unit_selected <- reactiveVal(NULL)
 
     # initial vector of slider weights: equal and sum to 1
     slider_weights <- reactiveVal(NULL)
 
     # when user selects results tab, if not done so already, generate results
+    # and generate scenarios (alt. aggregation methods)
     observeEvent(parent_input$tab_selected, {
 
       req(coin())
       if(parent_input$tab_selected == "results"){
 
         if(!results_exist(coin())){
-          shared_reactives$results_built <- TRUE
+          r_shared$results_built <- TRUE
           coin(f_build_index(coin()))
+          r_shared$scenarios <- f_get_scenarios(coin())
         }
       }
 
+    })
+
+    # populate map dropdown
+    observe({
+      req(coin())
       updateSelectInput(inputId = "plot_icode",
                         choices = get_indicator_codes(coin(), with_levels = TRUE))
-
     })
 
     top_icodes <- reactive({
@@ -156,6 +196,10 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, sh
     output$weight_sliders <- renderUI({
 
       req(coin())
+
+      if(!input$show_weights){
+        return(NULL)
+      }
 
       n_sliders <- length(top_icodes())
       weights <- rep(1/n_sliders, n_sliders)
@@ -170,24 +214,51 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, sh
         })
       )
 
-    }) |> bindEvent(shared_reactives$results_built)
+    })
 
     # Plots -------------------------------------------------------------------
 
-    # Plot map
-    output$map <- leaflet::renderLeaflet({
-
+    # create map
+    current_map <- reactive({
       req(coin())
       req(results_exist(coin()))
       req(input$plot_icode)
 
-      icode_level <- get_level_of_icode(coin(), input$plot_icode)
+      f_plot_map(coin(), ISO3 = r_shared$ISO3,
+                 iCode = input$plot_icode, as_discrete = as.logical(input$as_discrete))
+    })
 
-      dset_plot <- if (icode_level == 1) "Raw" else "Aggregated"
+    # Plot map
+    output$map <- leaflet::renderLeaflet({
+      current_map()
+    })
 
-      f_plot_map(coin(), dset = dset_plot, ISO3 = shared_reactives$ISO3,
-                 iCode = input$plot_icode)
+    # user map (for download)
+    user_map <- reactive({
+      leaflet::setView(
+        current_map(),
+        lng = input$map_center$lng,
+        lat = input$map_center$lat,
+        zoom = input$map_zoom
+      )
+    })
 
+    # download map
+    output$download_map <- downloadHandler(
+      filename = "A2SIT_map.png",
+
+      content = function(file) {
+        mapview::mapshot(
+          x = user_map(),
+          file = file,
+          cliprect = "viewport",
+          selfcontained = FALSE
+        )
+      }
+    )
+
+    observeEvent(input$check_ns,{
+      browser()
     })
 
     # Results table
@@ -195,23 +266,21 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, sh
       req(coin())
       req(results_exist(coin()))
 
-      f_display_results_table(coin(), type = "scores")
+      f_display_results_table(coin(), type = "scores", as_discrete = as.logical(input$as_discrete))
     })
 
     # update selected unit for table
     observeEvent(input$results_table_rows_selected, {
       df_results <- coin()$Results$FullScore
-      unit_selected(
-        df_results$uCode[input$results_table_rows_selected]
-      )
+      r_shared$usel <- df_results$uCode[input$results_table_rows_selected]
     })
     # update selected unit for map
     observeEvent(input$map_shape_click$id, {
-      unit_selected(input$map_shape_click$id)
+      r_shared$usel <- input$map_shape_click$id
     })
     # update selected unit for bar
     observeEvent(eventbar(),{
-      unit_selected(eventbar()$key)
+      r_shared$usel <- eventbar()$key
     })
 
     # bar chart
@@ -222,27 +291,44 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, sh
       req(input$plot_icode)
 
       # plot underlying dimensions only if have more than 1 child
-      stack_children <- get_number_of_children(coin(), input$plot_icode) > 1
+      can_stack <- get_number_of_children(coin(), input$plot_icode) > 1
+      stack_children <- input$stack_children && can_stack
+
+      # bar subset
+      if(input$bar_subset == "All"){
+        plot_subset <- NULL
+        showticks <- FALSE
+      } else if (input$bar_subset == "Top 50"){
+        plot_subset <- 50
+        showticks <- TRUE
+      } else if (input$bar_subset == "Bottom 50"){
+        plot_subset <- -50
+        showticks <- TRUE
+      }
 
       # get iName
       iName <- COINr::icodes_to_inames(coin(), input$plot_icode)
 
+      dset_plot <- get_plot_dset(coin(), input$plot_icode)
+
       iCOINr::iplot_bar(
-        coin(), dset = "Aggregated",
+        coin(), dset = dset_plot,
         iCode = input$plot_icode,
         orientation = "horizontal",
-        usel = unit_selected(),
-        stack_children = stack_children
+        usel = r_shared$usel,
+        stack_children = stack_children,
+        plot_subset = plot_subset
       ) |>
         plotly::layout(
           plot_bgcolor = "rgba(0,0,0,0)",
           paper_bgcolor = "rgba(0,0,0,0)",
           yaxis = list(title = ""),
-          xaxis = list(showticklabels = FALSE),
-          title = list(text = iName, y = 0.9, x = 0.5, xanchor = 'center', yanchor =  'top'),
+          xaxis = list(showticklabels = showticks),
+          title = list(text = iName, y = 1, x = 0.5, xanchor = 'center', yanchor =  'top'),
           legend = list(x = 1, y = 1.1, orientation = 'h', xanchor = "right", yanchor = "top"),
           showlegend = TRUE,
-          margin = list(b = 0, l = 0)
+          margin = list(b = 0, l = 0),
+          colorway = c("#18375F", "#0072BC", "#8EBEFF", "#00B398",  "#666666")
         ) |>
         plotly::config(displayModeBar = FALSE)
 
@@ -262,19 +348,19 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, sh
 
     # unit info: header
     output$unit_name <- renderText({
-      if(is.null(unit_selected())){
+      if(is.null(r_shared$usel)){
         "Select a region..."
       } else {
-        COINr::ucodes_to_unames(coin(), unit_selected())
+        COINr::ucodes_to_unames(coin(), r_shared$usel)
       }
     })
 
     # unit info: index rank
     output$index_rank <- renderText({
 
-      req(unit_selected())
+      req(r_shared$usel)
 
-      index_rank <- get_index_rank(coin(), unit_selected())
+      index_rank <- get_index_rank(coin(), r_shared$usel)
       n_units <- get_n_units(coin())
 
       paste0("Overall rank = ", index_rank, "/", n_units)
@@ -291,13 +377,13 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, sh
     # unit info: index score
     output$index_score <- renderText({
 
-      req(unit_selected())
+      req(r_shared$usel)
 
-      index_score <- get_index_score(coin(), unit_selected()) |>
+      index_score <- get_index_score(coin(), r_shared$usel) |>
         round(1)
       n_units <- get_n_units(coin())
 
-      paste0("Overall score = ", index_score, " (mean = ", mean_index_score(), ")")
+      paste0("Overall score = ", index_score, " (mean ", mean_index_score(), ")")
     })
 
     # unit info: scores and ranks
@@ -305,11 +391,11 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, sh
 
       req(coin())
       req(results_exist(coin()))
-      req(unit_selected())
+      req(r_shared$usel)
 
       df_info <- COINr::get_unit_summary(
         coin(),
-        unit_selected(),
+        r_shared$usel,
         Levels = coin()$Meta$maxlev - 1,
         dset = "Aggregated")[-1]
       df_info$Rank <- as.integer(df_info$Rank)
@@ -318,8 +404,8 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, sh
     })
 
     # profile link - update text
-    observeEvent(unit_selected(), {
-      req(unit_selected())
+    observeEvent(r_shared$usel, {
+      req(r_shared$usel)
       updateActionLink(inputId = "go_to_profile", label = "Go to profile", icon = icon("location-dot"))
     })
 
@@ -327,7 +413,7 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, sh
     observeEvent(input$go_to_profile, {
 
       # update selected unit reactive
-      shared_reactives$profile_unit <-  unit_selected()
+      r_shared$profile_unit <-  r_shared$usel
 
       # go to profile tab
       shinydashboard::updateTabItems(
@@ -419,6 +505,42 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, sh
       coin(f_rebuild_index(coin(), w, input$agg_method))
 
     })
+
+    # Save scenario -----------------------------------------------------------
+
+    observeEvent(input$scenario_save, {
+
+      req(coin())
+      req(req(results_exist(coin())))
+      req(input$scenario_name)
+
+      # extract things of interest
+      df_results <- coin()$Data$Aggregated
+      w <- get_slider_weights(input, top_icodes())
+      agg_method <- if(input$agg_method == "a_amean"){
+        "Arithmetic mean"
+      } else {
+        "Geometric mean"
+      }
+
+      # save to list
+      r_shared$scenarios[[input$scenario_name]] <- list(
+        df_results = df_results,
+        w = w,
+        agg_method = agg_method
+      )
+
+      # notify user
+      shinyWidgets::show_toast(
+        title = "Scenario saved",
+        text = paste0("Scenario '", input$scenario_name, "' was saved. Go to the 'Scenarios' tab to compare."),
+        type = "info",
+        timer = 5000,
+        position = "bottom-end"
+      )
+
+    })
+
 
   })
 

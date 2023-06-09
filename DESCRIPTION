@@ -15,7 +15,7 @@ Imports:
     htmltools,
     config,
     golem,
-    iCOINr (>= 0.2.2),
+    iCOINr (>= 0.2.6),
     leaflet,
     plotly,
     readxl,
@@ -30,7 +30,9 @@ Imports:
     shinyjs,
     stats,
     fresh,
-    bsplus
+    bsplus,
+    cicerone,
+    mapview
 Remotes: 
     bluefoxr/iCOINr,
     bluefoxr/COINr

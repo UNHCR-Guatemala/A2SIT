@@ -4,30 +4,33 @@ input_UI <- function(id) {
     tabName = "upload",
     tags$style(type='text/css', '#id_input-data_message {white-space: pre-wrap;}'),
     column(
-      3,
+      4,
       box(title = "Data upload",
           width = NULL,
           collapsible = TRUE,
           status = "primary",
 
-          "Select the country you want to analyse, then upload your Admin2 data.",
-          "Use the link below to download a template for your selected country, or",
-          tags$a(href="https://github.com/UNHCR-Guatemala/A2SIT/raw/main/inst/data_module-input.xlsx",
-                 "download example data set"),
-          "for testing/demo.",
-
-          br(),br(),
-
-          country_dropdown(NS(id, "ISO3"), "Select country:") |>
+          h4("1. Select your country"),
+          country_dropdown(NS(id, "ISO3"), "Country") |>
             add_input_pop("If your country is not on this list please contact us."),
+          hr(),
 
-          downloadLink(NS(id, "download_country_template"), "Download country template"),
+          h4("2. Download country template"),
+          p("Download the template for the selected country:"),
+          downloadButton(NS(id, "download_country_template"), "Download country template"),
+          hr(),
 
-          br(),br(),
-          fileInput(NS(id, "xlsx_file"), "Load Data", buttonLabel = "Browse...", accept = c("xls", "xlsx")) |>
+          h4("3. Upload your data"),
+          p("Upload your compiled template here and click the 'Load' button."),
+          fileInput(NS(id, "xlsx_file"), NULL, buttonLabel = "Browse...", accept = c("xls", "xlsx")) |>
             add_input_pop("Please upload the template spreadsheet compiled with your data."),
+          actionButton(NS(id, "load_click"), "Load"),
+          hr(),
 
-          actionButton(NS(id, "load_click"), "Load")),
+          p("Or download the ",
+            tags$a(href="https://github.com/UNHCR-Guatemala/A2SIT/raw/main/inst/A2SIT_data_input_template_GTM.xlsx",
+                   "example data set for Guatemala."))
+      ),
 
       box(title = box_pop_title("Messages", "Any messages from the data import process."), width = NULL, status = "info",
           verbatimTextOutput(NS(id, "data_message")))
@@ -35,7 +38,7 @@ input_UI <- function(id) {
     ),
 
     column(
-      9,
+      8,
 
       fluidRow(
         column(6, uiOutput(NS(id, "flag"))),
@@ -54,13 +57,13 @@ input_UI <- function(id) {
 
 }
 
-input_server <- function(id, coin, coin_full, shared_reactives) {
+input_server <- function(id, coin, coin_full, r_shared) {
 
   moduleServer(id, function(input, output, session) {
 
     # update shared reactive for other modules
     observeEvent(input$ISO3, {
-      shared_reactives$ISO3 <- input$ISO3
+      r_shared$ISO3 <- input$ISO3
     })
 
     # Download template
@@ -97,22 +100,6 @@ input_server <- function(id, coin, coin_full, shared_reactives) {
         # copy of full coin for plotting later
         coin_full(coin())
 
-        c_name <- A2SIT::country_codes$CountryName[A2SIT::country_codes$ISO3 == input$ISO3]
-
-        # render flag + country name
-        output$flag <- renderUI({
-
-          tagList(
-            column(3, tags$img(
-              src = A2SIT::country_codes$FlagLink[A2SIT::country_codes$ISO3 == input$ISO3],
-              width = 100,
-              height = 75
-            )),
-            column(9, h1(c_name))
-          )
-
-        })
-
         shinyWidgets::sendSweetAlert(
           session = session,
           title = "Data uploaded",
@@ -127,16 +114,37 @@ input_server <- function(id, coin, coin_full, shared_reactives) {
 
     })
 
+    # render flag + country name
+    output$flag <- renderUI({
+
+      req(coin())
+
+      c_name <- A2SIT::country_codes$CountryName[
+        A2SIT::country_codes$ISO3 == input$ISO3]
+
+      tagList(
+        column(3, tags$img(
+          src = A2SIT::country_codes$FlagLink[A2SIT::country_codes$ISO3 == input$ISO3],
+          width = 100,
+          height = 75
+        )),
+        column(9, h1(c_name))
+      )
+
+    })
+
     # coin print output
     output$coin_print <- renderPrint({
       req(coin())
       f_print_coin(coin())
     })
 
-    # plot framework
+    # plot framework (use UNHCR colours)
     output$framework <- plotly::renderPlotly({
       req(coin())
-      iCOINr::iplot_framework(coin())
+      iCOINr::iplot_framework(
+        coin(),
+        plotly_colorway = c("#18375F", "#0072BC", "#8EBEFF", "#00B398",  "#666666"))
     })
 
     # value boxes

@@ -9,30 +9,26 @@ app_server <- function(input, output, session) {
 
   coin <- reactiveVal(NULL)
   coin_full <- reactiveVal(NULL)
-  shared_reactives <- reactiveValues(
+  r_shared <- reactiveValues(
     ISO3 = NULL, # country of the data
     profile_unit = NULL, # unit to view in profiles
-    results_built = FALSE # whether results (up to aggregation) built
+    results_built = FALSE, # whether results (up to aggregation) built
+    scenarios = NULL, # list of saved scenarios for comparison
+    l_analysis = NULL,
+    l_analysis_f = NULL
   )
 
   # Modules -----------------------------------------------------------------
 
   welcome_server("id_welcome", session)
-  input_server("id_input", coin, coin_full, shared_reactives)
-  analysis_server("id_analysis", coin, coin_full, input)
-  results_server("id_results", coin, coin_full, input, session, shared_reactives)
-  profiles_server("id_profiles", coin, coin_full, input, shared_reactives)
+  input_server("id_input", coin, coin_full, r_shared)
+  analysis_server("id_analysis", coin, coin_full, input, r_shared)
+  results_server("id_results", coin, coin_full, input, session, r_shared)
+  profiles_server("id_profiles", coin, coin_full, input, r_shared)
+  scenarios_server("id_scenarios", coin, input, r_shared)
+  compare_units_server("id_compare_units", coin, input, r_shared)
 
-  # Extras (not modules) ----------------------------------------------------
-
-  # # close sidebar for welcome screen
-  # observeEvent(input$tab_selected, {
-  #
-  #   browser()
-  #   if(input$tab_selected != "welcome"){
-  #     shinydashboardPlus::updateSidebar("tab_selected")
-  #   }
-  # })
+  # Exports -----------------------------------------------------------------
 
   # Export to Excel
   output$export_button_excel <- downloadHandler(
@@ -40,7 +36,7 @@ app_server <- function(input, output, session) {
       "index_export.xlsx"
     },
     content = function(file) {
-      f_export_to_excel(coin(), file)
+      f_export_to_excel(coin(), r_shared$scenarios, file)
     }
   )
 
@@ -55,11 +51,41 @@ app_server <- function(input, output, session) {
     }
   )
 
+  # Help --------------------------------------------------------------------
+
   # help icon
   output$header_help <- renderUI({
     selected_modal <- paste0(input$tab_selected, "_modal")
     header_help_icon(selected_modal)
   })
 
+  # Bookmarking -------------------------------------------------------------
+
+  # things NOT to bookmark otherwise they trigger recreating the coin
+  setBookmarkExclude(c("id_input-load_click"))
+
+  # The coin and other things have to be added to the bookmark state$value
+  onBookmark(function(state){
+    state$values$coin_saved <- coin()
+    state$values$r_shared <- reactiveValuesToList(r_shared)
+  })
+
+  # When session is restored we have to:
+  # - restore the coin from the state$values
+  # - extract analysis tables again
+  # - make a copy of the coin with no indicators removed, for plotting
+  onRestored(function(state){
+
+    # restore coin
+    coin(state$values$coin_saved)
+    # restore reactive values list (has to be done in loop unfortunately)
+    for(rname in names(state$values$r_shared)){
+      r_shared[[rname]] <- state$values$r_shared[[rname]]
+    }
+
+    # make "full" coin with all indicators in (for plotting)
+    coin_full(reset_coin(coin()))
+
+  })
 
 }

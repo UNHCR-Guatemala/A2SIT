@@ -75,56 +75,56 @@ profiles_UI <- function(id) {
 
 }
 
-profiles_server <- function(id, coin, coin_full, input, shared_reactives) {
+profiles_server <- function(id, coin, coin_full, input, r_shared) {
 
   moduleServer(id, function(input, output, session) {
 
     # populate dropdown for selecting unit
     observe({
-      req(shared_reactives$results_built)
+      req(r_shared$results_built)
       updateSelectInput(inputId = "selected_unit", choices = get_unit_list(coin()))
     })
 
     # update selected unit (link from results tab)
-    observeEvent(shared_reactives$profile_unit, {
-      req(shared_reactives$results_built)
-      req(shared_reactives$profile_unit)
-      updateSelectInput(inputId = "selected_unit", selected = shared_reactives$profile_unit)
+    observeEvent(r_shared$profile_unit, {
+      req(r_shared$results_built)
+      req(r_shared$profile_unit)
+      updateSelectInput(inputId = "selected_unit", selected = r_shared$profile_unit)
     })
 
     # title
     output$unit_name <- renderText({
       req(input$selected_unit)
-      req(shared_reactives$results_built)
+      req(r_shared$results_built)
       COINr::ucodes_to_unames(coin(), input$selected_unit)
     })
 
     output$rank_box <- shinydashboard::renderValueBox({
       req(coin())
-      req(shared_reactives$results_built)
+      req(r_shared$results_built)
       shinydashboard::valueBox(
         get_index_rank(coin(), input$selected_unit),
         "Rank",
         #icon = icon("ranking-star"),
-        color = "aqua"
+        color = "light-blue"
       )
     })
 
     output$score_box <- shinydashboard::renderValueBox({
       req(coin())
-      req(shared_reactives$results_built)
+      req(r_shared$results_built)
       shinydashboard::valueBox(
         get_index_score(coin(), input$selected_unit) |>
           round(1),
         "Score",
         #icon = icon("star"),
-        color = "orange"
+        color = "green"
       )
     })
 
     # summary table of scores/ranks for each indicator
     output$df_indicators <- DT::renderDataTable({
-      req(shared_reactives$results_built)
+      req(r_shared$results_built)
       f_indicator_table(coin(), input$selected_unit)
     })
 
@@ -133,7 +133,7 @@ profiles_server <- function(id, coin, coin_full, input, shared_reactives) {
 
       req(coin())
       req(input$selected_unit)
-      req(shared_reactives$results_built)
+      req(r_shared$results_built)
 
       f_plot_radar(
         coin(),
@@ -148,7 +148,7 @@ profiles_server <- function(id, coin, coin_full, input, shared_reactives) {
 
       req(coin())
       req(input$selected_unit)
-      req(shared_reactives$results_built)
+      req(r_shared$results_built)
 
       f_display_group_table(
         coin(),
@@ -184,8 +184,8 @@ profiles_server <- function(id, coin, coin_full, input, shared_reactives) {
     })
 
     # populate dropdown for radar chart
-    observeEvent(shared_reactives$results_built, {
-      req(shared_reactives$results_built)
+    observeEvent(r_shared$results_built, {
+      req(r_shared$results_built)
       updateSelectInput(
         inputId = "radar_group",
         choices = get_indicator_codes(coin(), code_types = "Aggregate"),
@@ -198,7 +198,7 @@ profiles_server <- function(id, coin, coin_full, input, shared_reactives) {
 
       req(coin())
       req(input$radar_group)
-      req(shared_reactives$results_built)
+      req(r_shared$results_built)
 
       n_children <- get_number_of_children(coin(), input$radar_group)
 
@@ -220,7 +220,7 @@ profiles_server <- function(id, coin, coin_full, input, shared_reactives) {
 
 
     output$df_strengths <- renderTable({
-      req(shared_reactives$results_built)
+      req(r_shared$results_built)
       X <- COINr::get_str_weak(
         coin(),
         usel = input$selected_unit,
@@ -235,7 +235,7 @@ profiles_server <- function(id, coin, coin_full, input, shared_reactives) {
     })
 
     output$df_weaknesses <- renderTable({
-      req(shared_reactives$results_built)
+      req(r_shared$results_built)
       X <- COINr::get_str_weak(
         coin(),
         usel = input$selected_unit,

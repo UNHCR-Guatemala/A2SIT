@@ -4,10 +4,12 @@
 \alias{f_export_to_excel}
 \title{Export to excel}
 \usage{
-f_export_to_excel(coin, fname = "index_export.xlsx")
+f_export_to_excel(coin, l_scen, fname = "index_export.xlsx")
 }
 \arguments{
 \item{coin}{The coin, with results present.}
+
+\item{l_scen}{List of scenario data frames}
 
 \item{fname}{file name to write the results to.}
 }

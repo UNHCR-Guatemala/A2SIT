@@ -61,14 +61,13 @@ add_modal <- function(tag, message_to_add){
 }
 
 
-# function that creates a help pop up window (for each page?)
+# function that creates a help pop up window for each page
 header_help_icon <- function(id_modal){
 
   tags$li(class = "dropdown",
-          tags$p(
-            bsplus::shiny_iconlink("info-circle", class = "title-help",
-                 style = "color: #FFFFFF; position: absolute; right: 40px; top: 0px; font-size: 30px;")
-          )
+          htmltools::tags$a(shiny::icon("info-circle", id = "header_help_icon"),
+                            style = "color: #FFFFFF; position: absolute; right: 40px; top: 5px; font-size: 30px;",
+                            href = "#")
   ) |>
     bsplus::bs_attach_modal(id_modal = id_modal)
 
@@ -82,7 +81,7 @@ welcome_modal <- function(){
     id = "welcome_modal",
     title = "Welcome",
     body = includeMarkdown(system.file("md-help", "welcome.md", package = "A2SIT")),
-    size = "medium"
+    size = "large"
   )
 }
 
@@ -91,7 +90,7 @@ upload_modal <- function(){
     id = "upload_modal",
     title = "Data input",
     body = includeMarkdown(system.file("md-help", "input.md", package = "A2SIT")),
-    size = "medium"
+    size = "large"
   )
 }
 
@@ -100,7 +99,7 @@ analyse_modal <- function(){
     id = "analyse_modal",
     title = "Indicator analysis",
     body = includeMarkdown(system.file("md-help", "analysis.md", package = "A2SIT")),
-    size = "medium"
+    size = "large"
   )
 }
 
@@ -109,7 +108,7 @@ results_modal <- function(){
     id = "results_modal",
     title = "Results explorer",
     body = includeMarkdown(system.file("md-help", "results.md", package = "A2SIT")),
-    size = "medium"
+    size = "large"
   )
 }
 
@@ -118,6 +117,6 @@ profiles_modal <- function(){
     id = "profiles_modal",
     title = "Admin2 Profiles",
     body = includeMarkdown(system.file("md-help", "profiles.md", package = "A2SIT")),
-    size = "medium"
+    size = "large"
   )
 }

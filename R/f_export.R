@@ -6,6 +6,7 @@
 #'
 #'
 #' @param coin The coin, with results present.
+#' @param l_scen List of scenario data frames
 #' @param fname file name to write the results to.
 #'
 #' @importFrom RColorBrewer brewer.pal
@@ -15,13 +16,20 @@
 #' @return Writes an Excel spreadsheet.
 #'
 #' @export
-f_export_to_excel <- function(coin, fname = "index_export.xlsx"){
+f_export_to_excel <- function(coin, l_scen, fname = "index_export.xlsx"){
 
-  l <- list()
+  # scenarios
+  if(is.null(l_scen)){
+    l <- list()
+  } else {
+    # scenarios
+    l <- l_scen
+    names(l) <- paste0("Scen_", gsub(" ", "_", names(l_scen)))
+  }
 
-  # Results
-  l$Scores <- coin$Results$FullScore
-  l$Ranks <- coin$Results$FullRank
+  # # Results
+  # l$Scores <- coin$Results$FullScore
+  # l$Ranks <- coin$Results$FullRank
 
   # Structure
   l$Structure <- coin$Meta$Lineage
