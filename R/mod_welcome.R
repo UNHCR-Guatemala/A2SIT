@@ -3,7 +3,7 @@ welcome_UI <- function(id) {
   shinydashboard::tabItem(
     tabName = "welcome",
     tags$style("
-        #id_welcome-splash_panel {
+        #splash_panel {
           background-color: #0072BC;
           opacity: 1;
           text-align: center;
