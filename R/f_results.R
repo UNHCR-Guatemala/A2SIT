@@ -395,6 +395,24 @@ f_rebuild_index <- function(coin, w = NULL, agg_method){
 
 }
 
+# returns a unit summary based on the severity level. For use in the map panel.
+get_unit_summary_sev <- function(coin, usel, Level){
+
+  iCodes <- get_codes_at_level(coin, Level)
+  sevs <- coin$Results$Severity[coin$Results$Severity$uCode == usel, iCodes] |>
+    as.integer()
+  ranks <- coin$Results$FullRank[coin$Results$FullRank$uCode == usel, iCodes] |>
+    as.numeric()
+
+  data.frame(
+    Dimension = COINr::icodes_to_inames(coin, iCodes),
+    Severity = sevs,
+    Rank = ranks
+  )
+
+}
+
+
 #' Get admin2 polygons from API
 #'
 #' Queries the gis.unhcr.org sever to return admin2 shape files for a specific
