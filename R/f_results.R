@@ -197,6 +197,9 @@ f_plot_map <- function(coin, iCode, ISO3, as_discrete = TRUE){
   df_plot <- COINr::get_data(coin, dset = dset_plot, iCodes = iCode)
   iValues <- df_plot[[2]]
 
+  # add rank
+  df_plot$Rank <- rank(-1*df_plot[[iCode]], na.last = "keep", ties.method = "min")
+
   if(as_discrete){
     icode_direction <- get_indicator_direction(coin, iCode)
     df_plot[["Indicator"]] <- to_discrete_scale(iValues, icode_direction)
@@ -212,26 +215,17 @@ f_plot_map <- function(coin, iCode, ISO3, as_discrete = TRUE){
   # colorBin is a leaflet function
   palette <- c("#FFE7E8", "#B41C37")
 
-  if(as_discrete){
-    pal <- leaflet::colorFactor(palette, levels = 1:5)
-    labels <- paste0(
-      "<strong>", admin2_geom$gis_name, "</strong><br/>",
-      round(admin2_geom$Indicator, 1)
-    )
-    # if plotting at indicator level we also add the value
-    if(dset_plot == "Raw"){
-      labels <- paste0(labels, " (value: ", round(admin2_geom[[iCode]], 1), ")")
-    }
-
+  pal <- if(as_discrete){
+    leaflet::colorFactor(palette, levels = 1:5)
   } else {
-    pal <- leaflet::colorNumeric(palette, domain = iValues)
-    labels <- paste0(
-      "<strong>", admin2_geom$gis_name, "</strong><br/>",
-      round(admin2_geom$Indicator, 1)
-    )
+    leaflet::colorNumeric(palette, domain = iValues)
   }
 
-  labels <- lapply(labels, htmltools::HTML)
+  labels <- paste0(
+    "<strong>", admin2_geom$gis_name, "</strong><br/>",
+    round(admin2_geom$Indicator, 1), " (rank ", admin2_geom$Rank,")"
+  ) |>
+    lapply(htmltools::HTML)
 
 
   # Plot --------------------------------------------------------------------
@@ -316,7 +310,7 @@ f_generate_results <- function(coin){
 #'
 #' @return Updated coin
 #' @export
-f_rebuild_index <- function(coin, w, agg_method){
+f_rebuild_index <- function(coin, w = NULL, agg_method){
 
   stopifnot(is.coin(coin),
             agg_method %in% c("a_amean", "a_gmean"))
@@ -327,42 +321,51 @@ f_rebuild_index <- function(coin, w, agg_method){
 
   # Get weights that were last used to aggregate ----
 
-  # special case: reset or make equal
-  if(is.character(w)){
+  if (is.null(w)){
 
-    stopifnot(length(w) == 1)
+    # use same weights
+    w_new <- f_get_last_weights(coin)
 
-    if(w == "equal"){
-      w_new <- f_get_equal_weights(coin)
-    } else if (w == "original"){
-      w_new <- coin$Meta$Weights$Original
+  } else {
+
+    # special case: reset or make equal
+    if(is.character(w)){
+
+      stopifnot(length(w) == 1)
+
+      if(w == "equal"){
+        w_new <- f_get_equal_weights(coin)
+      } else if (w == "original"){
+        w_new <- coin$Meta$Weights$Original
+      }
+
+      coin$Log$Aggregate$w <- w_new
+      COINr::Regen(coin, from = "Aggregate")
     }
 
-    coin$Log$Aggregate$w <- w_new
-    COINr::Regen(coin, from = "Aggregate")
-  }
+    w_new <- f_get_last_weights(coin)
 
-  w_new <- f_get_last_weights(coin)
+    # Alter weights based on input type ----
 
-  # Alter weights based on input type ----
+    if(is.data.frame(w)){
 
-  if(is.data.frame(w)){
+      stopifnot(all(c("iCode", "Weight") %in% names(w)),
+                all(w$iCode %in% w_new$iCode),
+                is.numeric(w$Weight))
 
-    stopifnot(all(c("iCode", "Weight") %in% names(w)),
-              all(w$iCode %in% w_new$iCode),
-              is.numeric(w$Weight))
+      # subst new weights in
+      w_new$Weight[match(w$iCode, w_new$iCode)] <- w$Weight
 
-    # subst new weights in
-    w_new$Weight[match(w$iCode, w_new$iCode)] <- w$Weight
+    } else if (is.list(w)){
 
-  } else if (is.list(w)){
+      stopifnot(all(names(w) %in% w_new$iCode),
+                all(sapply(w, is.numeric)),
+                all(lengths(w) == 1))
 
-    stopifnot(all(names(w) %in% w_new$iCode),
-              all(sapply(w, is.numeric)),
-              all(lengths(w) == 1))
+      # subst new weights in
+      w_new$Weight[match(names(w), w_new$iCode)] <- as.numeric(w)
 
-    # subst new weights in
-    w_new$Weight[match(names(w), w_new$iCode)] <- as.numeric(w)
+    }
 
   }
 

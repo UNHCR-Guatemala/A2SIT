@@ -201,8 +201,9 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, r_
         return(NULL)
       }
 
-      n_sliders <- length(top_icodes())
-      weights <- rep(1/n_sliders, n_sliders)
+      w_full <- f_get_last_weights(coin())
+      weights <- w_full$Weight[match(top_icodes(), w_full$iCode)]
+      weights <- weights/sum(weights)
       names(weights) <- top_icodes()
 
       slider_weights(weights)
@@ -257,10 +258,6 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, r_
       }
     )
 
-    observeEvent(input$check_ns,{
-      browser()
-    })
-
     # Results table
     output$results_table <- DT::renderDataTable({
       req(coin())
@@ -311,6 +308,8 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, r_
 
       dset_plot <- get_plot_dset(coin(), input$plot_icode)
 
+      plot_title <- paste0(iName, " (1-100 scale)")
+
       iCOINr::iplot_bar(
         coin(), dset = dset_plot,
         iCode = input$plot_icode,
@@ -324,7 +323,7 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, r_
           paper_bgcolor = "rgba(0,0,0,0)",
           yaxis = list(title = ""),
           xaxis = list(showticklabels = showticks),
-          title = list(text = iName, y = 1, x = 0.5, xanchor = 'center', yanchor =  'top'),
+          title = list(text = plot_title, y = 1, x = 0.5, xanchor = 'center', yanchor =  'top'),
           legend = list(x = 1, y = 1.1, orientation = 'h', xanchor = "right", yanchor = "top"),
           showlegend = TRUE,
           margin = list(b = 0, l = 0),
@@ -495,11 +494,19 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, r_
 
       req(results_exist(coin()))
 
-      # since I have to access multiple values of input, I have to convert
-      # to a list - not sure if there is another way
-      l_input <- isolate(reactiveValuesToList(input))
-      # assemble weights into list
-      w <- l_input[top_icodes()]
+      if (input$show_weights) {
+
+        # if weights are enabled, collect weight values
+        # since I have to access multiple values of input, I have to convert
+        # to a list - not sure if there is another way
+        l_input <- isolate(reactiveValuesToList(input))
+        # assemble weights into list
+        w <- l_input[top_icodes()]
+
+      } else {
+        # this means reuse current weights
+        w <- NULL
+      }
 
       # update with new weights
       coin(f_rebuild_index(coin(), w, input$agg_method))

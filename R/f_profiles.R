@@ -62,6 +62,9 @@ f_indicator_table <- function(coin, usel){
   colour_func <- grDevices::colorRampPalette(c("#DCE9FF", "#0072BC"))
   colour_palette_sev <- colour_func(length(breaks_sev) + 1)
 
+  # convert level to factor so filters display properly
+  df_out$Level <- as.factor(df_out$Level)
+
   # Create table
   df_out |>
     DT::datatable(
