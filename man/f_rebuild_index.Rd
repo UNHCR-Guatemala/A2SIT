@@ -4,7 +4,7 @@
 \alias{f_rebuild_index}
 \title{Regenerate results}
 \usage{
-f_rebuild_index(coin, w, agg_method)
+f_rebuild_index(coin, w = NULL, agg_method)
 }
 \arguments{
 \item{coin}{The coin}
