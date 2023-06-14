@@ -378,11 +378,19 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, r_
 
       req(r_shared$usel)
 
-      index_score <- get_index_score(coin(), r_shared$usel) |>
-        round(1)
-      n_units <- get_n_units(coin())
+      if (as.logical(input$as_discrete)) {
+        index_sev <- coin()$Results$Severity[
+          coin()$Results$Severity$uCode == r_shared$usel,
+          get_index_code(coin())
+        ]
+        paste0("Overall severity = ", index_sev)
+      } else {
+        index_score <- get_index_score(coin(), r_shared$usel) |>
+          round(1)
+        paste0("Overall score = ", index_score, " (mean ", mean_index_score(), ")")
+      }
 
-      paste0("Overall score = ", index_score, " (mean ", mean_index_score(), ")")
+
     })
 
     # unit info: scores and ranks
@@ -392,11 +400,20 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, r_
       req(results_exist(coin()))
       req(r_shared$usel)
 
-      df_info <- COINr::get_unit_summary(
-        coin(),
-        r_shared$usel,
-        Levels = coin()$Meta$maxlev - 1,
-        dset = "Aggregated")[-1]
+      if (as.logical(input$as_discrete)) {
+
+        df_info <- get_unit_summary_sev(coin(), r_shared$usel,
+                                        Level = coin()$Meta$maxlev - 1)
+      } else {
+
+        df_info <- COINr::get_unit_summary(
+          coin(),
+          r_shared$usel,
+          Levels = coin()$Meta$maxlev - 1,
+          dset = "Aggregated")[-1]
+
+      }
+
       df_info$Rank <- as.integer(df_info$Rank)
       names(df_info)[1] <- "Dimension"
       df_info
