@@ -31,8 +31,9 @@ compare_units_server <- function(id, coin, input, r_shared) {
     # populate dropdown for selecting unit
     observe({
       req(r_shared$results_built)
-      updateSelectInput(inputId = "selected_unit1", choices = get_unit_list(coin()))
-      updateSelectInput(inputId = "selected_unit2", choices = get_unit_list(coin()))
+      unit_list <- get_unit_list(coin())
+      updateSelectInput(inputId = "selected_unit1", choices = unit_list, selected = unit_list[[1]])
+      updateSelectInput(inputId = "selected_unit2", choices = unit_list, selected = unit_list[[2]])
     })
 
 
