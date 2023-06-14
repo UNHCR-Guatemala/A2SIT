@@ -9,13 +9,20 @@ compare_units_UI <- function(id) {
       width = 12,
       col_4(selectInput(NS(id, "selected_unit1"), label = NULL,
                         choices = NULL, width = "100%")),
-      col_4(p("with", style = "text-align: center;")),
+      col_1(p("with", style = "text-align: center;")),
       col_4(selectInput(NS(id, "selected_unit2"), label = NULL,
-                        choices = NULL, width = "100%"))
+                        choices = NULL, width = "100%")),
+      col_1(p("using", style = "text-align: center;")),
+      col_2(selectInput(NS(id, "compare_using"), label = NULL,
+                        choices = c("Ranks", "Scores", "Severity"), width = "100%"))
     ),
 
     shinydashboardPlus::box(
-      title = NULL,
+      title = box_pop_title(
+        title = "Comparison",
+        popover_text = "For each row, the region with the most severe value is highlighted.",
+        placement = "top"
+      ),
       width = 12,
       DT::DTOutput(NS(id, "df_indicators"))
     ),
@@ -40,7 +47,11 @@ compare_units_server <- function(id, coin, input, r_shared) {
     # summary table of scores/ranks for each indicator
     output$df_indicators <- DT::renderDataTable({
       req(r_shared$results_built)
-      f_compare_units_table(coin(), input$selected_unit1, input$selected_unit2)
+      f_compare_units_table(
+        coin(),
+        input$selected_unit1,
+        input$selected_unit2,
+        using = input$compare_using)
     })
 
   })

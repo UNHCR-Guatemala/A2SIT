@@ -31,7 +31,7 @@ f_indicator_df <- function(coin, usel){
   df_out$Severity <- coin$Data$Severity[
     coin$Data$Severity$uCode == usel,
     match(df_out$Code, names(coin$Data$Severity))
-  ] |> as.integer()
+  ] |> as.numeric()
 
   df_out <- df_out[c("Level", "Name", "Rank", "Score", "Severity")]
 
@@ -118,19 +118,36 @@ f_compare_units_df <- function(coin, usel1, usel2){
 
 }
 
-f_compare_units_table <- function(coin, usel1, usel2){
+f_compare_units_table <- function(coin, usel1, usel2, using){
+
+  stopifnot(using %in% c("Ranks", "Scores", "Severity"))
 
   dfc <- f_compare_units_df(coin, usel1, usel2)
+  dfc$Level <- as.factor(dfc$Level) # DT filter works better this way
 
-  # flags used for highlighting cells in table
-  compare_cols <- data.frame(
-    r1 = as.numeric(dfc[[4]] < dfc[[5]]),
-    r2 = as.numeric(dfc[[5]] < dfc[[4]]),
-    sc1 = as.numeric(dfc[[6]] > dfc[[7]]),
-    sc2 = as.numeric(dfc[[7]] > dfc[[6]]),
-    sv1 = as.numeric(dfc[[8]] > dfc[[9]]),
-    sv2 = as.numeric(dfc[[9]] > dfc[[8]])
-  )
+  # delete columns we don't need
+  if (using == "Ranks"){
+    dfc <- dfc[!startsWith(names(dfc), "Score")]
+    dfc <- dfc[!startsWith(names(dfc), "Severity")]
+    compare_cols <- data.frame(
+      r1 = as.numeric(dfc[[4]] < dfc[[5]]),
+      r2 = as.numeric(dfc[[5]] < dfc[[4]])
+    )
+  } else if (using == "Scores"){
+    dfc <- dfc[!startsWith(names(dfc), "Rank")]
+    dfc <- dfc[!startsWith(names(dfc), "Severity")]
+    compare_cols <- data.frame(
+      sc1 = as.numeric(dfc[[4]] > dfc[[5]]),
+      sc2 = as.numeric(dfc[[5]] > dfc[[4]])
+    )
+  } else if (using == "Severity"){
+    dfc <- dfc[!startsWith(names(dfc), "Rank")]
+    dfc <- dfc[!startsWith(names(dfc), "Score")]
+    compare_cols <- data.frame(
+      sv1 = as.numeric(dfc[[4]] > dfc[[5]]),
+      sv2 = as.numeric(dfc[[5]] > dfc[[4]])
+    )
+  }
 
   ncol_display <- ncol(dfc)
 
