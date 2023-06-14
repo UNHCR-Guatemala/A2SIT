@@ -48,7 +48,11 @@ scenarios_UI <- function(id) {
             choices = NULL),
           selectInput(
             NS(id, "scat_y"), "Plot on y-axis:",
-            choices = NULL)
+            choices = NULL),
+          selectInput(
+            NS(id, "comp_with_scat"), "Compare using:",
+            choices = c("Ranks", "Scores")
+          )
         ),
         width = 4,
         plotly::plotlyOutput(NS(id, "scenario_scatter"))
@@ -145,6 +149,26 @@ scenarios_server <- function(id, coin, input, r_shared) {
 
     }, rownames = FALSE, options = list(scrollX = TRUE, dom = 't'))
 
+    # comparison data frame for scatter plot - independent from table
+    df_scat <- reactive({
+
+      req(coin())
+      req(req(results_exist(coin())))
+
+      # gather scenarios
+      l <- r_shared$scenarios
+      if(is.null(l)){
+        return(NULL)
+      }
+
+      f_df_for_scat(
+        coin(),
+        l = l,
+        comp_with = input$comp_with_scat
+      )
+
+    })
+
     # update scatter plot dropdown selectors
     observe({
 
@@ -162,15 +186,15 @@ scenarios_server <- function(id, coin, input, r_shared) {
     # scenario scatter plot
     output$scenario_scatter <- plotly::renderPlotly({
 
-      req(df_comp())
+      req(df_scat())
       req(input$scat_y)
       req(input$scat_x)
 
-      if(ncol(df_comp()) < 4){
+      if(ncol(df_scat()) < 4){
         return(NULL)
       }
 
-      fig <- plotly::plot_ly(data = df_comp(), type = 'scatter', mode = 'markers') |>
+      fig <- plotly::plot_ly(data = df_scat(), type = 'scatter', mode = 'markers') |>
         plotly::add_trace(
           x = ~get(input$scat_x),
           y = ~get(input$scat_y),
@@ -180,8 +204,8 @@ scenarios_server <- function(id, coin, input, r_shared) {
           showlegend = F
         ) |>
         plotly::layout(
-          xaxis = list(title = paste0(input$scat_x, " ", input$comp_with, " (", input$tab_type, ")")),
-          yaxis = list(title = paste0(input$scat_y, " ", input$comp_with, " (", input$tab_type, ")")))
+          xaxis = list(title = paste0(input$scat_x, " (", input$comp_with_scat, ")")),
+          yaxis = list(title = paste0(input$scat_y, " (", input$comp_with_scat, ")")))
 
       fig
 

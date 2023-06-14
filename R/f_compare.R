@@ -113,3 +113,58 @@ f_style_comparison_table <- function(df_merged, comp_with){
 }
 
 
+
+#' Simple comparison table for scatter plot
+#'
+#' Either merged table of scores or ranks. This is independent from the
+#' `f_make_comparison_table()` function to allow some flexibility.
+#'
+#' @param coin The coin
+#' @param l List of scenarios to compare
+#' @param comp_with Either "Ranks" or "Scores"
+#'
+#' @return A data frame
+f_df_for_scat <- function(coin, l, comp_with){
+
+  n_scen <- length(l)
+  names_scen <- names(l)
+
+  icode_compare <- get_index_code(coin)
+
+  # Merging -----------------------------------------------------------------
+
+  # create base df
+  df_merged <- l[[1]][c("uCode", icode_compare)]
+  # add names
+  df_merged <- base::merge(df_merged, coin$Meta$Unit[c("uCode", "uName")], by = "uCode")
+  # reorder
+  df_merged <- df_merged[c("uCode", "uName", icode_compare)]
+
+  # merge other dfs
+  if(n_scen > 1){
+    for(ii in 2:n_scen){
+
+      dfi <- l[[ii]][c("uCode", icode_compare)]
+      df_merged <- base::merge(df_merged, dfi, by = "uCode")
+
+    }
+  }
+
+  # rename cols
+  names(df_merged) <- c("Code", "Name", names_scen)
+
+
+  # Convert to ranks etc ----------------------------------------------------
+
+  # convert to ranks if required
+  if(comp_with == "Ranks"){
+    df_merged <- COINr::rank_df(df_merged)
+  } else {
+    saved_names <- names(df_merged)
+    df_merged <- COINr::round_df(df_merged, 2)
+    names(df_merged) <- saved_names
+  }
+
+  df_merged
+
+}
