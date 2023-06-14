@@ -46,20 +46,17 @@ app_ui <- function() {
 
     # increase width of dropdown menus
     tags$head(tags$style(HTML('
-  .navbar-custom-menu>.navbar-nav>li>.dropdown-menu {
-  width:200px;
-  }
-
-
-}
-  ')),
-              tags$script(HTML("
+        .navbar-custom-menu>.navbar-nav>li>.dropdown-menu {
+        width:200px;
+      }
+    }'
+    )),
+    tags$script(HTML("
       var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
       console.log(screenWidth)
       if (screenWidth <= 768) {
-        document.body.classList.add('sidebar-collapse');
-      }
-  "))
+      document.body.classList.add('sidebar-collapse');
+      }"))
     ),
 
     shinydashboard::tabItems(
