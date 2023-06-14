@@ -42,6 +42,8 @@ app_ui <- function() {
     analyse_modal(),
     results_modal(),
     profiles_modal(),
+    scenarios_modal(),
+    compare_units_modal(),
 
     # some themeing (to improve)
     includeCSS(system.file("app", "www", "custom.css", package = "A2SIT")),

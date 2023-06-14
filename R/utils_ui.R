@@ -120,3 +120,21 @@ profiles_modal <- function(){
     size = "large"
   )
 }
+
+scenarios_modal <- function(){
+  bsplus::bs_modal(
+    id = "scenarios_modal",
+    title = "Compare scenarios",
+    body = includeMarkdown(system.file("md-help", "scenarios.md", package = "A2SIT")),
+    size = "large"
+  )
+}
+
+compare_units_modal <- function(){
+  bsplus::bs_modal(
+    id = "compare_units_modal",
+    title = "Compare units",
+    body = includeMarkdown(system.file("md-help", "compare_units.md", package = "A2SIT")),
+    size = "large"
+  )
+}
