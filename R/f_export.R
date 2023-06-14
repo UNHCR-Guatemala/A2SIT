@@ -25,6 +25,13 @@ f_export_to_excel <- function(coin, l_scen, fname = "index_export.xlsx"){
     # scenarios
     l <- l_scen
     names(l) <- paste0("Scen_", gsub(" ", "_", names(l_scen)))
+    # convert also to 1-5 scale
+    l_scen_sev <- lapply(l_scen, function(scen){
+      f_dset_to_severity(coin, scen)
+    })
+    names(l_scen_sev) <- paste0(names(l), "_1to5")
+    # bind together
+    l <- c(l_scen_sev, l)
   }
 
   # # Results

@@ -90,6 +90,26 @@ f_build_index <- function(coin, agg_method = "a_amean", only_aggregate = FALSE){
 f_make_severity_level_dset <- function(coin){
 
   iData <- COINr::get_dset(coin, "Aggregated")
+
+  iData <- f_dset_to_severity(coin, iData)
+
+  coin$Data$Severity <- iData
+
+  df_results <- COINr::get_results(coin, "Severity", tab_type = "Full",
+                                   also_get = "uName", nround = 1, out2 = "df")
+  df_results <- df_results[names(df_results) != "Rank"]
+
+  coin$Results$Severity <- df_results
+
+  coin
+
+}
+
+# function which converts a data frame either of dset or results, to the 1-5
+# severity scale
+# Note this is only applied to levels > 1, i.e. not the indicator level.
+f_dset_to_severity <- function(coin, iData){
+
   agg_codes <- get_indicator_codes(coin, "Aggregate", with_levels = FALSE,
                                    use_names = FALSE)
 
@@ -101,15 +121,7 @@ f_make_severity_level_dset <- function(coin){
 
   iData[agg_codes] <- agg_cols
 
-  coin$Data$Severity <- iData
-
-  df_results <- COINr::get_results(coin, "Severity", tab_type = "Full",
-                                   also_get = "uName", nround = 1, out2 = "df")
-  df_results <- df_results[names(df_results) != "Rank"]
-
-  coin$Results$Severity <- df_results
-
-  coin
+  iData
 
 }
 
