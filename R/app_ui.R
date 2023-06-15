@@ -16,15 +16,18 @@ app_ui <- function() {
   # Sidebar -----------------------------------------------------------------
 
   db_sidebar <- shinydashboardPlus::dashboardSidebar(
+    id = "db_sidebar",
     #tags$style(".left-side, .main-sidebar {padding-top: 20px}"),
-    minified = TRUE, collapsed = FALSE, width = "17%",
+    minified = TRUE, collapsed = FALSE, width = "30vw",
     shinydashboard::sidebarMenu(
       id = "tab_selected",
-      shinydashboard::menuItem("Welcome", tabName = "welcome", icon = icon("house")),
-      shinydashboard::menuItem("Upload", tabName = "upload", icon = icon("upload")),
-      shinydashboard::menuItem("Analyse", tabName = "analyse", icon = icon("magnifying-glass-chart")),
-      shinydashboard::menuItem("Results", tabName = "results", icon = icon("square-poll-vertical")),
-      shinydashboard::menuItem("Profiles", tabName = "profiles", icon = icon("location-dot"))
+      shinydashboard::menuItem(span("Welcome", id = "welcome_sb_link"), tabName = "welcome", icon = icon("house")),
+      shinydashboard::menuItem(span("Upload", id = "upload_sb_link"), tabName = "upload", icon = icon("upload")),
+      shinydashboard::menuItem(span("Analyse", id = "analyse_sb_link"), tabName = "analyse", icon = icon("magnifying-glass-chart")),
+      shinydashboard::menuItem(span("Results", id = "results_sb_link"), tabName = "results", icon = icon("square-poll-vertical")),
+      shinydashboard::menuItem(span("Profiles", id = "profiles_sb_link"), tabName = "profiles", icon = icon("location-dot")),
+      shinydashboard::menuItem(span("Compare scenarios", id = "scenarios_sb_link"), tabName = "scenarios", icon = icon("circle-half-stroke")),
+      shinydashboard::menuItem(span("Compare regions", id = "compare_sb_link"), tabName = "compare_units", icon = icon("code-compare"))
     )
   )
 
@@ -44,29 +47,23 @@ app_ui <- function() {
 
     # some themeing (to improve)
     includeCSS(system.file("app", "www", "custom.css", package = "A2SIT")),
-    theme_dashboard(),
+    fresh::use_theme(theme_UNHCR),
 
     # increase width of dropdown menus
     tags$head(tags$style(HTML('
-        .navbar-custom-menu>.navbar-nav>li>.dropdown-menu {
-        width:200px;
-      }
-    }'
-    )),
-    tags$script(HTML("
-      var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-      console.log(screenWidth)
-      if (screenWidth <= 768) {
-      document.body.classList.add('sidebar-collapse');
-      }"))
-    ),
+  .navbar-custom-menu>.navbar-nav>li>.dropdown-menu {
+  width:200px;
+  }
+  '))),
 
     shinydashboard::tabItems(
       welcome_UI("id_welcome"),
       input_UI("id_input"),
       analysis_UI("id_analysis"),
       results_UI("id_results"),
-      profiles_UI("id_profiles")
+      profiles_UI("id_profiles"),
+      compare_units_UI("id_compare_units"),
+      scenarios_UI("id_scenarios")
     )
   )
 
@@ -88,20 +85,14 @@ app_ui <- function() {
       uiOutput("header_help", inline = TRUE),
 
       title = title_beta,
-      titleWidth = "17%",
+      titleWidth = "30vw",
       controlbarIcon = icon("gears"),
       leftUi = tagList(
         shinydashboardPlus::dropdownBlock(
           id = "save_session",
-          title = "Save session",
+          title = "Bookmark session",
           icon = icon("floppy-disk"), badgeStatus = NULL,
-          "To add"
-        ),
-        shinydashboardPlus::dropdownBlock(
-          id = "load_session",
-          title = "Load session",
-          icon = icon("folder-open"), badgeStatus = NULL,
-          "To add"
+          bookmarkButton()
         ),
         shinydashboardPlus::dropdownBlock(
           id = "export_to_excel",
@@ -136,11 +127,11 @@ golem_add_external_resources <- function(){
   tags$head(
     golem::activate_js(),
     golem::favicon(),
-    tags$title("A2SIT"),
+    tags$title("A2SIT")
     # Add here all the external resources
     # If you have a custom.css in the inst/app/www
     # Or for example, you can add shinyalert::useShinyalert() here
-    # tags$link(rel="stylesheet", type="text/css", href="www/custom.css")
+    #tags$link(rel="stylesheet", type="text/css", href="www/custom.css")
 
   )
 }
