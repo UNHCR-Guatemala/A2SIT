@@ -2,6 +2,7 @@
 ^\.Rproj\.user$
 ^LICENSE\.md$
 ^A2SIT\.Rproj$
+not_package
 ^\.travis\.yml$
 ^app\.R$
 ^rsconnect$
@@ -13,3 +14,6 @@ $run_dev.*
 ^rsconnect$
 ^.github$
 ^\.github$
+.Rprofile
+shiny_bookmarks
+^A2SIT_Doc$

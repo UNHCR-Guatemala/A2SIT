@@ -169,7 +169,7 @@ filter_to_flagged <- function(Xd, Xh){
 #
 # This is used for displaying the output of `f_analyse_indicators()`.
 #
-f_highlight_DT <- function(Xd, Xh, table_caption = NULL, highlight_colour = "#ffc266"){
+f_highlight_DT <- function(Xd, Xh, table_caption = NULL, highlight_colour = "#FAEB00"){
 
   stopifnot(identical(dim(Xd), dim(Xh)))
 
@@ -187,12 +187,16 @@ f_highlight_DT <- function(Xd, Xh, table_caption = NULL, highlight_colour = "#ff
 
   styles <- c("white", highlight_colour)
 
+  column_names <- c("Indicator", "% Availability", "% Same", "Skew/kurtosis", "Collinear with", "Negatively correlated with", "Status")
+
   DT::datatable(
     X,
     rownames = FALSE,
+    colnames = column_names,
     caption = table_caption,
-    selection = "single",
+    selection = list(mode = "single", target = "row"),
     options = list(
+      scrollX = TRUE,
       columnDefs = list(
         list(
           visible=FALSE,
@@ -204,7 +208,9 @@ f_highlight_DT <- function(Xd, Xh, table_caption = NULL, highlight_colour = "#ff
     DT::formatStyle(
       columns = 1:ncol_display,
       valueColumns = (ncol_display + 1):ncol(X),
-      backgroundColor = DT::styleEqual(c(0,1), styles))
+      backgroundColor = DT::styleEqual(c(0,1), styles)
+    ) |>
+    DT::formatPercentage(c("Frc.Avail", "Frc.Same"), 1)
 
 }
 

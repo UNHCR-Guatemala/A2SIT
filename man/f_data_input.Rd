@@ -4,10 +4,12 @@
 \alias{f_data_input}
 \title{Data input}
 \usage{
-f_data_input(file_path)
+f_data_input(file_path, ISO3)
 }
 \arguments{
 \item{file_path}{path to the excel file where we have the raw data}
+
+\item{ISO3}{ISO3 code of country to which the data belongs, e.g. \code{"GTM"}}
 }
 \value{
 coin-class object

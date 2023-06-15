@@ -13,21 +13,21 @@ app_ui <- function() {
   # enable alert messages
   shinyWidgets::useSweetAlert()
 
-
   # Sidebar -----------------------------------------------------------------
 
   db_sidebar <- shinydashboardPlus::dashboardSidebar(
-    minified = FALSE, collapsed = FALSE, width = "15vw",
+    id = "db_sidebar",
+    #tags$style(".left-side, .main-sidebar {padding-top: 20px}"),
+    minified = TRUE, collapsed = FALSE, width = "30vw",
     shinydashboard::sidebarMenu(
       id = "tab_selected",
-      shinydashboard::menuItem("Upload", tabName = "upload", icon = icon("upload")),
-      shinydashboard::menuItem("Analyse", tabName = "analyse", icon = icon("magnifying-glass-chart")),
-      shinydashboard::menuItem("Results", tabName = "results", icon = icon("square-poll-vertical")),
-      shinydashboard::menuItem("Export", tabName = "export", icon = icon("file-export")),
-      shinydashboard::menuItem("Save/load", icon = icon("floppy-disk"),
-                               shinydashboard::menuSubItem("Save session", tabName = "subitem1", icon = icon("angles-right")),
-                               shinydashboard::menuSubItem("Load session", tabName = "subitem2", icon = icon("angles-right"))
-      )
+      shinydashboard::menuItem(span("Welcome", id = "welcome_sb_link"), tabName = "welcome", icon = icon("house")),
+      shinydashboard::menuItem(span("Upload", id = "upload_sb_link"), tabName = "upload", icon = icon("upload")),
+      shinydashboard::menuItem(span("Analyse", id = "analyse_sb_link"), tabName = "analyse", icon = icon("magnifying-glass-chart")),
+      shinydashboard::menuItem(span("Results", id = "results_sb_link"), tabName = "results", icon = icon("square-poll-vertical")),
+      shinydashboard::menuItem(span("Profiles", id = "profiles_sb_link"), tabName = "profiles", icon = icon("location-dot")),
+      shinydashboard::menuItem(span("Compare scenarios", id = "scenarios_sb_link"), tabName = "scenarios", icon = icon("circle-half-stroke")),
+      shinydashboard::menuItem(span("Compare regions", id = "compare_sb_link"), tabName = "compare_units", icon = icon("code-compare"))
     )
   )
 
@@ -36,12 +36,34 @@ app_ui <- function() {
 
   db_body <- shinydashboard::dashboardBody(
 
-    theme_dashboard(),
+    # add modals (longer help in md format)
+    welcome_modal(),
+    upload_modal(),
+    analyse_modal(),
+    results_modal(),
+    profiles_modal(),
+    scenarios_modal(),
+    compare_units_modal(),
+
+    # some themeing (to improve)
+    includeCSS(system.file("app", "www", "custom.css", package = "A2SIT")),
+    fresh::use_theme(theme_UNHCR),
+
+    # increase width of dropdown menus
+    tags$head(tags$style(HTML('
+  .navbar-custom-menu>.navbar-nav>li>.dropdown-menu {
+  width:200px;
+  }
+  '))),
+
     shinydashboard::tabItems(
+      welcome_UI("id_welcome"),
       input_UI("id_input"),
       analysis_UI("id_analysis"),
-      shinydashboard::tabItem(tabName = "results"),
-      shinydashboard::tabItem(tabName = "exports")
+      results_UI("id_results"),
+      profiles_UI("id_profiles"),
+      compare_units_UI("id_compare_units"),
+      scenarios_UI("id_scenarios")
     )
   )
 
@@ -50,16 +72,44 @@ app_ui <- function() {
 
   # define UNHCR logo
   title_logo <- tags$div(tags$img(src="https://raw.githubusercontent.com/UNHCR-Guatemala/A2SIT/main/inst/app/www/logo.svg", height ='30vh'), "  A2SIT")
+  title_beta <- tags$div(tags$span("A2SIT", style = "font-size: 30px"), tags$span("beta", style = "font-size: 12px"))
 
   shinydashboardPlus::dashboardPage(
+
     md = FALSE,
-    #skin = "blue",
     options = list(sidebarExpandOnHover = TRUE),
-    header = shinydashboardPlus::dashboardHeader(title = title_logo, titleWidth = "15vw", controlbarIcon = icon("gear")),
-    footer = shinydashboardPlus::dashboardFooter(left = "Left content", right = "Right content"),
+
+    header = shinydashboardPlus::dashboardHeader(
+
+      #header_help_icon("modal_help"),
+      uiOutput("header_help", inline = TRUE),
+
+      title = title_beta,
+      titleWidth = "30vw",
+      controlbarIcon = icon("gears"),
+      leftUi = tagList(
+        shinydashboardPlus::dropdownBlock(
+          id = "save_session",
+          title = "Bookmark session",
+          icon = icon("floppy-disk"), badgeStatus = NULL,
+          bookmarkButton()
+        ),
+        shinydashboardPlus::dropdownBlock(
+          id = "export_to_excel",
+          title = "Export",
+          icon = icon("file-export"), badgeStatus = NULL,
+          h5("Export to Excel"),
+          downloadButton("export_button_excel", "Excel"),
+          br(),
+          h5("Export to R"),
+          downloadButton("export_button_R", "R")
+        )
+      )
+    ),
+    footer = shinydashboardPlus::dashboardFooter(right = "2023 UNHCR"),
     sidebar = db_sidebar,
     body = db_body,
-    controlbar = shinydashboardPlus::dashboardControlbar(disable = FALSE),
+    controlbar = shinydashboardPlus::dashboardControlbar(disable = TRUE),
     title = "Admin2 Severity Index Tool"
   )
 
@@ -72,6 +122,7 @@ golem_add_external_resources <- function(){
   addResourcePath(
     'www', system.file('app/www', package = "A2SIT")
   )
+  addResourcePath('img', system.file('app/img', package = 'A2SIT') )
 
   tags$head(
     golem::activate_js(),

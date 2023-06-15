@@ -7,7 +7,7 @@
 #' @export
 run_app <- function(...) {
   with_golem_options(
-    app = shinyApp(ui = app_ui, server = app_server),
+    app = shinyApp(ui = app_ui, server = app_server, enableBookmarking = "server"),
     golem_opts = list(...)
   )
 }

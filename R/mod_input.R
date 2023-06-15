@@ -2,55 +2,133 @@ input_UI <- function(id) {
 
   shinydashboard::tabItem(
     tabName = "upload",
+    tags$style(type='text/css', '#id_input-data_message {white-space: pre-wrap;}'),
     column(
       4,
       box(title = "Data upload",
           width = NULL,
           collapsible = TRUE,
           status = "primary",
-          "Browse to the location of your input data, which must be formatted according to the template.",
-          br(),
-          tags$a(href="https://github.com/UNHCR-Guatemala/A2SIT/raw/main/inst/data_module-input.xlsx", "For testing purpose, you can download & use this file"),
 
-          br(),br(),
-          fileInput(NS(id, "xlsx_file"), "Load Data", buttonLabel = "Browse...", accept = c("xls", "xlsx")),
-          actionButton(NS(id, "load_click"), "Load")),
-      box(title = "Messages", width = NULL, status = "info",
-          verbatimTextOutput(NS(id, "data_message")),
-          verbatimTextOutput(NS(id, "coin_print")))
+          h4("1. Select your country"),
+          country_dropdown(NS(id, "ISO3"), "Country") |>
+            add_input_pop("If your country is not on this list please contact us."),
+          hr(),
+
+          h4("2. Download country template"),
+          p("Download the template for the selected country:"),
+          downloadButton(NS(id, "download_country_template"), "Download country template"),
+          hr(),
+
+          h4("3. Upload your data"),
+          p("Upload your compiled template here and click the 'Load' button."),
+          fileInput(NS(id, "xlsx_file"), NULL, buttonLabel = "Browse...", accept = c("xls", "xlsx")) |>
+            add_input_pop("Please upload the template spreadsheet compiled with your data."),
+          actionButton(NS(id, "load_click"), "Load"),
+          hr(),
+
+          p("Or download the ",
+            tags$a(href="https://github.com/UNHCR-Guatemala/A2SIT/raw/main/inst/A2SIT_data_input_template_GTM.xlsx",
+                   "example data set for Guatemala."))
+      ),
+
+      box(title = box_pop_title("Messages", "Any messages from the data import process."), width = NULL, status = "info",
+          verbatimTextOutput(NS(id, "data_message")))
+
     ),
+
     column(
       8,
-      box(title = "Index Framework", width = NULL, collapsible = TRUE, status = "success",
-          plotly::plotlyOutput(NS(id, "framework"), height = "80vh"))
+
+      fluidRow(
+        column(6, uiOutput(NS(id, "flag"))),
+        column(3, shinydashboard::infoBoxOutput(NS(id, "n_indicators_box"), width = 12)),
+        column(3, shinydashboard::infoBoxOutput(NS(id, "n_units_box"), width = 12))
+      ),
+
+      box(title = box_pop_title(
+        "Index Framework",
+        "The framework plot shows the structure of the index. The outer ring shows the indicators, and each succesive ring inwards shows the groupings in the levels above. The size of each chunk is the relative weighing of each component in the index.",
+        placement = "bottom"),
+        width = NULL, collapsible = FALSE, status = "success",
+        plotly::plotlyOutput(NS(id, "framework"), height = "70vh"))
     )
   )
 
 }
 
-input_server <- function(id, coin, coin_full) {
+input_server <- function(id, coin, coin_full, r_shared) {
 
   moduleServer(id, function(input, output, session) {
 
+    # update shared reactive for other modules
+    observeEvent(input$ISO3, {
+      r_shared$ISO3 <- input$ISO3
+    })
+
+    # Download template
+    output$download_country_template <- downloadHandler(
+      filename = function() {
+        paste0("A2SIT_data_input_template_", input$ISO3, ".xlsx")
+      },
+      content = function(file) {
+        f_generate_input_template(input$ISO3, file)
+      }
+    )
+
+    # load data
     observeEvent(input$load_click, {
 
       req(input$xlsx_file)
 
       data_message <- utils::capture.output({
-        coin(f_data_input(input$xlsx_file$datapath))
+        coin(f_data_input(input$xlsx_file$datapath, input$ISO3))
       }, type = "message")
 
-      # copy of full coin for plotting later
-      coin_full(coin())
+      if(is.null(coin())){
+
+        # not successful
+        shinyWidgets::sendSweetAlert(
+          session = session,
+          title = "Problem with data input",
+          text = "Please check the messages box for more info.",
+          type = "warning"
+        )
+
+      } else {
+
+        # copy of full coin for plotting later
+        coin_full(coin())
+
+        shinyWidgets::sendSweetAlert(
+          session = session,
+          title = "Data uploaded",
+          text = "Please check the messages box for any messages.",
+          type = "success"
+        )
+
+      }
 
       # Outputs
       output$data_message <- renderText(data_message, sep = "\n")
 
-      shinyWidgets::sendSweetAlert(
-        session = session,
-        title = "Data uploaded",
-        text = "Please check the messages for more info.",
-        type = "success"
+    })
+
+    # render flag + country name
+    output$flag <- renderUI({
+
+      req(coin())
+
+      c_name <- A2SIT::country_codes$CountryName[
+        A2SIT::country_codes$ISO3 == input$ISO3]
+
+      tagList(
+        column(3, tags$img(
+          src = A2SIT::country_codes$FlagLink[A2SIT::country_codes$ISO3 == input$ISO3],
+          width = 100,
+          height = 75
+        )),
+        column(9, h1(c_name))
       )
 
     })
@@ -61,14 +139,36 @@ input_server <- function(id, coin, coin_full) {
       f_print_coin(coin())
     })
 
-    # plot framework
+    # plot framework (use UNHCR colours)
     output$framework <- plotly::renderPlotly({
       req(coin())
-      iCOINr::iplot_framework(coin())
+      iCOINr::iplot_framework(
+        coin(),
+        plotly_colorway = c("#18375F", "#0072BC", "#8EBEFF", "#00B398",  "#666666"))
     })
 
-    # the coin is passed back out of the module for use in other modules
-    # return(reactive(coin()))
+    # value boxes
+    output$n_indicators_box <- shinydashboard::renderInfoBox({
+      req(coin())
+      shinydashboard::infoBox(
+        title = "Indicators",
+        value = get_n_indicators(coin()),
+        icon = icon("list"),
+        color = "blue"
+      )
+    })
+    # value boxes
+    output$n_units_box <- shinydashboard::renderInfoBox({
+      req(coin())
+      shinydashboard::infoBox(
+        title = "Regions",
+        value = get_n_units(coin()),
+        icon = icon("location-dot"),
+        color = "green"
+      )
+    })
+
+
   })
 
 }
