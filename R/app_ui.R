@@ -18,7 +18,7 @@ app_ui <- function() {
   db_sidebar <- shinydashboardPlus::dashboardSidebar(
     id = "db_sidebar",
     #tags$style(".left-side, .main-sidebar {padding-top: 20px}"),
-    minified = TRUE, collapsed = FALSE, width = "30vw",
+    minified = TRUE, collapsed = FALSE, width = "17%",
     shinydashboard::sidebarMenu(
       id = "tab_selected",
       shinydashboard::menuItem(span("Welcome", id = "welcome_sb_link"), tabName = "welcome", icon = icon("house")),
@@ -47,14 +47,23 @@ app_ui <- function() {
 
     # some themeing (to improve)
     includeCSS(system.file("app", "www", "custom.css", package = "A2SIT")),
-    fresh::use_theme(theme_UNHCR),
+    # fresh::use_theme(theme_UNHCR),
+    theme_shinydashboard_unhcr(),
 
     # increase width of dropdown menus
     tags$head(tags$style(HTML('
-  .navbar-custom-menu>.navbar-nav>li>.dropdown-menu {
-  width:200px;
-  }
-  '))),
+        .navbar-custom-menu>.navbar-nav>li>.dropdown-menu {
+        width:200px;
+      }
+    }'
+    )),
+    tags$script(HTML("
+      var screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+      console.log(screenWidth)
+      if (screenWidth <= 768) {
+      document.body.classList.add('sidebar-collapse');
+      }"))
+    ),
 
     shinydashboard::tabItems(
       welcome_UI("id_welcome"),
@@ -85,7 +94,7 @@ app_ui <- function() {
       uiOutput("header_help", inline = TRUE),
 
       title = title_beta,
-      titleWidth = "30vw",
+      titleWidth = "17%",
       controlbarIcon = icon("gears"),
       leftUi = tagList(
         shinydashboardPlus::dropdownBlock(
