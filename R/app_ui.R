@@ -46,7 +46,7 @@ app_ui <- function() {
     compare_units_modal(),
 
     # some themeing (to improve)
-    includeCSS(system.file("app", "www", "custom.css", package = "A2SIT")),
+    #includeCSS(system.file("app", "www", "custom.css", package = "A2SIT")),
     # fresh::use_theme(theme_UNHCR),
     theme_shinydashboard_unhcr(),
 
