@@ -16,6 +16,13 @@ usethis::use_package( "shiny" )
 usethis::use_package( "shinydashboard" )
 usethis::use_package( "shinydashboardPlus" )
 
+
+## Dependencies ----
+## Amend DESCRIPTION with dependencies read from package code parsing
+## install.packages('attachment') # if needed.
+attachment::att_amend_desc()
+
+
 ## 2.3 Add tests
 
 usethis::use_test( "app" )
