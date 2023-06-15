@@ -58,7 +58,9 @@ theme_shinydashboard_unhcr <- function() {
 
 
   #sidebar
-  sidebarBackColor = "#343a40"
+  # sidebarBackColor = "#343a40"
+  sidebarBackColor = "#EDEDED"
+
   sidebarPadding = 0
   sidebarMenuBackColor = "transparent"
   sidebarMenuPadding = 0
@@ -69,16 +71,21 @@ theme_shinydashboard_unhcr <- function() {
   sidebarSearchBackColor = primary
   sidebarSearchIconColor = "#fff"
   sidebarSearchBorderColor = primary
-  sidebarTabTextColor = "#FFF"
+
+  sidebarTabTextColor = "#696969"
+  #sidebarTabTextColor = "#FFF"
   sidebarTabTextSize = 16
   sidebarTabBorderStyle = "none none none solid"
   sidebarTabBorderColor = "transparent"
   sidebarTabBorderWidth = 0
+
   sidebarTabBackColorSelected = primary
   sidebarTabTextColorSelected = "#FFF"
   sidebarTabRadiusSelected = "0px 0px 0px 0px"
   sidebarTabBackColorHover = "transparent"
-  sidebarTabTextColorHover = "#e2e2e2"
+
+  sidebarTabTextColorHover = "black"
+  # sidebarTabTextColorHover = "#e2e2e2"
   sidebarTabBorderStyleHover = "none none none solid"
   sidebarTabBorderColorHover = "#FAEB00"
   sidebarTabBorderWidthHover = 5
@@ -137,6 +144,86 @@ theme_shinydashboard_unhcr <- function() {
 
   cssCode <- paste0(
     '
+    @import url(\'https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600&display=swap\');
+
+    body {
+      font-family: \'Nunito Sans\', sans-serif;
+      font-size: 16px;
+    }
+    .box-title {
+      font-weight: 700;
+    }
+    #splash_panel {
+      background-color: #FFF !important;
+      opacity: 1;
+      text-align: center;
+      padding-top: 15%;
+      padding-right: 20%;
+      padding-left: 30%;
+      color: #000 !important;
+    }
+    .skin-blue .main-header .logo {
+      height: 100% !important;
+    }
+    .skin-blue .main-sidebar{
+      padding-top: 60px;
+    }
+    .btn-default{
+      background-color: #0072BC !important;
+      border-radius: 4px !important;
+      color: #FFF !important;
+      border-color: transparent;
+    }
+    .btn-default:hover{
+      background-color: #1274b5 !important;
+    }
+    .bootstrap-select>.dropdown-toggle{
+      background-color: #fff !important;
+      color: #000 !important;
+    }
+    .skin-blue .main-sidebar .sidebar .sidebar-menu .active > a:hover{
+      background-color:#0072BC !important;
+    }
+    .sidebar-mini.sidebar-collapse .sidebar-menu>li>a>span{
+      display: none;
+      -webkit-transform: translateZ(0);
+    }
+    .sidebar-mini.sidebar-collapse .main-sidebar{
+      transform: translate(0,0);
+      width: 50px!important;
+      z-index: 850;
+    }
+    /* Small devices (portrait phones) */
+    @media screen and (max-width: 576px) {
+    .skin-blue .main-sidebar{
+      padding-top: 0;
+    }
+    .main-sidebar, .left-side{
+      webkit-transform: translate(0%, 0);
+      -ms-transform: translate(-17%, 0);
+      -o-transform: translate(-17%, 0);
+      transform: translate(0%, 0);
+    }
+    }
+
+    /* Medium devices (landscape phones) */
+    @media screen and (min-width: 577px) and (max-width: 768px) {
+    .skin-blue .main-sidebar{
+      padding-top: 0;
+    }
+    .main-sidebar, .left-side{
+      webkit-transform: translate(0%, 0);
+      -ms-transform: translate(-17%, 0);
+      -o-transform: translate(-17%, 0);
+      transform: translate(0%, 0);
+    }
+    }
+
+    /* Large devices (tablets and desktops) */
+    @media screen and (min-width: 769px) {
+
+    }
+
     /* font */
     body, label, input, button, select, box,
     .h1, .h2, .h3, .h4, .h5, h1, h2, h3, h4, h5 {
