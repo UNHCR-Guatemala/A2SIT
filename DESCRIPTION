@@ -36,6 +36,7 @@ Imports:
     shinyjs,
     shinyWidgets,
     stats,
+    unhcrshiny,
     utils
 Suggests: 
     knitr,

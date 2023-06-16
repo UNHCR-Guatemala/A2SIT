@@ -4,6 +4,7 @@
 #'
 #' @importFrom shinydashboardPlus box dashboardPage
 #' @importFrom shinydashboard menuItem menuSubItem tabItem
+#' @importFrom unhcrshiny theme_shinydashboard_unhcr
 #'
 #'
 #' @export
@@ -48,7 +49,7 @@ app_ui <- function() {
     # some themeing (to improve)
     #includeCSS(system.file("app", "www", "custom.css", package = "A2SIT")),
     # fresh::use_theme(theme_UNHCR),
-    theme_shinydashboard_unhcr(),
+    unhcrshiny::theme_shinydashboard_unhcr(),
 
     # increase width of dropdown menus
     tags$head(tags$style(HTML('
