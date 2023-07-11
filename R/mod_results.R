@@ -30,18 +30,16 @@ results_UI <- function(id) {
       tags$style("
         #controls {
           background-color: #ffffff;
-          opacity: 0.5;
-        }
-        #controls:hover{
           opacity: 0.9;
         }
         #unit_summary {
           background-color: #ffffff;
           font-size: 12px;
-          opacity: 0.7;
-        }
-        #unit_summary:hover{
           opacity: 0.9;
+        }
+        #download_block {
+          display: inline-block;
+          padding: 1rem 1rem;
         }"),
 
       shinydashboard::tabBox(
@@ -60,10 +58,13 @@ results_UI <- function(id) {
                         choices = NULL, width = "100%"),
             selectInput(NS(id, "as_discrete"), label = NULL,
                         choices = list("1-5 scale" = TRUE, "1-100 scale" = FALSE), width = "100%"),
-            div(
-              downloadLink(NS(id, "download_map"), label = "Download map"),
-              style = "text-align: right;"
+
+            div(style = "display: flex; justify-content: space-between;",
+                downloadLink(NS(id, "download_map"), label = "Download map", style = "text-align: right;"),
+                selectInput(NS(id, "download_map_filetype"), label = NULL,
+                            choices = c("png", "pdf", "jpeg"), width = "40%")
             ),
+
             style = "z-index: 20; padding: 10px; font-size: 0.8em;",
           ),
           absolutePanel(
@@ -246,8 +247,7 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, r_
 
     # download map
     output$download_map <- downloadHandler(
-      filename = "A2SIT_map.png",
-
+      filename = function(){paste0("A2SIT_map.", input$download_map_filetype)},
       content = function(file) {
         mapview::mapshot(
           x = user_map(),
@@ -348,7 +348,7 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, r_
     # unit info: header
     output$unit_name <- renderText({
       if(is.null(r_shared$usel)){
-        "Select a region..."
+        "Click on a region on the map to see the details about it."
       } else {
         COINr::ucodes_to_unames(coin(), r_shared$usel)
       }
