@@ -87,7 +87,7 @@ results_UI <- function(id) {
       shinydashboardPlus::box(
         title = box_pop_title(
           title = "Adjust",
-          popover_text = "Select a scenario and click 'Recalculate'. See 'gear' icon in the top right for advanced options.",
+          popover_text = "Select a scenario and click 'Recalculate'. The 'gear' icon in the top right allows weight adjustment but this is not recommended.",
           placement = "bottom", px_from_right = 40
         ),
         width = 3, status = "warning",
@@ -348,7 +348,7 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, r_
     # unit info: header
     output$unit_name <- renderText({
       if(is.null(r_shared$usel)){
-        "Click on a region on the map to see the details about it."
+        "Click on a region on the map to see details about it."
       } else {
         COINr::ucodes_to_unames(coin(), r_shared$usel)
       }
