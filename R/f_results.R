@@ -269,6 +269,32 @@ f_plot_map <- function(coin, iCode, ISO3, as_discrete = TRUE){
 
 }
 
+
+#' Save map as image
+#'
+#' @param plt Leaflet map object
+#' @param file_name File path to save to, with file extension. The extension must
+#' be one of .png, .pdf, .jpeg or .html
+#'
+#' @return File saved at specified path
+#' @export
+f_save_map <- function(plt, file_name = "map.png"){
+
+  stopifnot(inherits(plt, "leaflet"))
+
+  is_html <- endsWith(file_name, ".html")
+
+  if(is_html){
+    htmlwidgets::saveWidget(plt, file = file_name)
+  } else {
+    html_path <- paste0(tempdir(), "\\temp_map.html")
+    htmlwidgets::saveWidget(plt, file = html_path)
+    webshot::webshot(html_path, file = file_name)
+    unlink(html_path)
+  }
+
+}
+
 # generates sorted results tables and attaches back to the coin
 #' Add results table to coin
 #'

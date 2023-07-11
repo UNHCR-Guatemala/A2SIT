@@ -22,9 +22,9 @@ Imports:
     golem,
     grDevices,
     htmltools,
+    htmlwidgets,
     iCOINr (>= 0.2.6),
     leaflet,
-    mapview,
     openxlsx,
     plotly,
     RColorBrewer,
@@ -37,7 +37,8 @@ Imports:
     shinyWidgets,
     stats,
     unhcrshiny (>= 0.1.0),
-    utils
+    utils,
+    webshot
 Suggests: 
     knitr,
     rmarkdown,
@@ -45,7 +46,7 @@ Suggests:
     testthat (>= 3.0.0)
 VignetteBuilder: 
     knitr
-Remotes:  
+Remotes: 
     bluefoxr/COINr,
     bluefoxr/iCOINr,
     edouard-legoupil/unhcrshiny

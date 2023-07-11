@@ -62,7 +62,7 @@ results_UI <- function(id) {
             div(style = "display: flex; justify-content: space-between;",
                 downloadLink(NS(id, "download_map"), label = "Download map", style = "text-align: right;"),
                 selectInput(NS(id, "download_map_filetype"), label = NULL,
-                            choices = c("png", "pdf", "jpeg"), width = "40%")
+                            choices = c("png", "pdf", "jpeg", "html"), width = "40%")
             ),
 
             style = "z-index: 20; padding: 10px; font-size: 0.8em;",
@@ -249,12 +249,7 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, r_
     output$download_map <- downloadHandler(
       filename = function(){paste0("A2SIT_map.", input$download_map_filetype)},
       content = function(file) {
-        mapview::mapshot(
-          x = user_map(),
-          file = file,
-          cliprect = "viewport",
-          selfcontained = FALSE
-        )
+        f_save_map(plt = user_map(), file_name = file)
       }
     )
 
