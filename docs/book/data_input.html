@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.475">
+<meta name="generator" content="quarto-1.3.353">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Admin2 Severity Index Tool - 3&nbsp; Data input</title>
+<title>Admin2 Severity Index Tool - 4&nbsp; Data input</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -17,7 +17,7 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
 </style>
@@ -31,7 +31,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="./analysis.html" rel="next">
-<link href="./summary.html" rel="prev">
+<link href="./layout.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -68,11 +68,16 @@ ul.task-list li input[type="checkbox"] {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-    <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Data input</span></h1>
-      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
-        <i class="bi bi-chevron-right"></i>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./layout.html">Using the app</a></li><li class="breadcrumb-item"><a href="./data_input.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data input</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
       </button>
     </div>
   </nav>
@@ -80,123 +85,152 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Admin2 Severity Index Tool</a> 
     </div>
       </div>
-      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="mt-2 flex-shrink-0 align-items-center">
         <div class="sidebar-search">
         <div id="quarto-search" class="" title="Search"></div>
         </div>
-      </div>
+        </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link">Welcome</a>
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./intro.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">What is A2SIT?</span></a>
+  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">What is A2SIT?</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./summary.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Summary</span></a>
+  <a href="./summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Using the app</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Using the app</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./data_input.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Data input</span></a>
+  <a href="./layout.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">App layout</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./analysis.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Indicator analysis</span></a>
+  <a href="./data_input.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data input</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./results.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Exploring results</span></a>
+  <a href="./analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Indicator analysis</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./profiles.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Region profiles</span></a>
+  <a href="./results.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Exploring results</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./scenarios.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Scenarios</span></a>
+  <a href="./profiles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Region profiles</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./unit_comparison.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Region comparisons</span></a>
+  <a href="./scenarios.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Scenarios</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./unit_comparison.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Region comparisons</span></span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">Methodology</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Methodology</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./meth_overview.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Overview</span></a>
+  <a href="./meth_overview.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Overview</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./data_processing.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Data processing</span></a>
+  <a href="./data_processing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Data processing</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./aggregation_weighting.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Aggregation and weighing</span></a>
+  <a href="./aggregation_weighting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Aggregation and weighting</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./technical_implementation.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Technical implementation</span></a>
+  <a href="./technical_implementation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Technical implementation</span></span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./references.html" class="sidebar-item-text sidebar-link">References</a>
+  <a href="./references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
   </div>
 </li>
     </ul>
     </div>
 </nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#template" id="toc-template" class="nav-link active" data-scroll-target="#template"><span class="toc-section-number">3.1</span>  Template</a>
+  <li><a href="#template" id="toc-template" class="nav-link active" data-scroll-target="#template"><span class="header-section-number">4.1</span> Template</a>
   <ul class="collapse">
-  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data"><span class="toc-section-number">3.1.1</span>  Data</a></li>
-  <li><a href="#structure" id="toc-structure" class="nav-link" data-scroll-target="#structure"><span class="toc-section-number">3.1.2</span>  Structure</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data"><span class="header-section-number">4.1.1</span> Data</a></li>
+  <li><a href="#structure" id="toc-structure" class="nav-link" data-scroll-target="#structure"><span class="header-section-number">4.1.2</span> Structure</a></li>
   </ul></li>
+  <li><a href="#upload" id="toc-upload" class="nav-link" data-scroll-target="#upload"><span class="header-section-number">4.2</span> Upload</a>
+  <ul class="collapse">
+  <li><a href="#successful" id="toc-successful" class="nav-link" data-scroll-target="#successful"><span class="header-section-number">4.2.1</span> Successful</a></li>
+  <li><a href="#unsuccessful" id="toc-unsuccessful" class="nav-link" data-scroll-target="#unsuccessful"><span class="header-section-number">4.2.2</span> Unsuccessful</a></li>
+  </ul></li>
+  <li><a href="#whats-next" id="toc-whats-next" class="nav-link" data-scroll-target="#whats-next"><span class="header-section-number">4.3</span> What’s next</a></li>
   </ul>
 </nav>
     </div>
@@ -205,7 +239,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Data input</span></h1>
+<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data input</span></h1>
 </div>
 
 
@@ -221,8 +255,8 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 <p>Data must be input into the A2SIT app using a formatted Excel template. The app expects the data to be in a certain format, so it is <em>very important to closely follow the instructions here</em>, otherwise you may run into errors!</p>
-<section id="template" class="level2" data-number="3.1">
-<h2 data-number="3.1" class="anchored" data-anchor-id="template"><span class="header-section-number">3.1</span> Template</h2>
+<section id="template" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="template"><span class="header-section-number">4.1</span> Template</h2>
 <p>The A2SIT app generates customised templates for each country. To download the template, select your country from the dropdown menu, then click the “Download country template” button.</p>
 <p><img src="figs/data_input_1.png" class="img-fluid"></p>
 <p>The dropdown menu contains all the countries currently supported by the app<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
@@ -233,8 +267,8 @@ ul.task-list li input[type="checkbox"] {
 <li>Structure: this defines the structure of the index</li>
 </ul>
 <p>The first tab is simply information and is ignored by the A2SIT app. We will also walk through the compilation of the spreadsheet here. Importantly, <em>do not change the names of the Data and Structure tabs</em>: these are tab names expected by the app.</p>
-<section id="data" class="level3" data-number="3.1.1">
-<h3 data-number="3.1.1" class="anchored" data-anchor-id="data"><span class="header-section-number">3.1.1</span> Data</h3>
+<section id="data" class="level3" data-number="4.1.1">
+<h3 data-number="4.1.1" class="anchored" data-anchor-id="data"><span class="header-section-number">4.1.1</span> Data</h3>
 <p>The data tab contains a table which looks something like this:</p>
 <p><img src="figs/data_input_2.png" class="img-fluid" style="width:90.0%"></p>
 <p>In this table (excluding the metadata rows/columns), each row represents one Admin 2 region, and each column is one indicator.</p>
@@ -254,13 +288,13 @@ ul.task-list li input[type="checkbox"] {
 <p>The <strong>direction</strong> row defines the direction of each indicator. An indicator that shares the same “direction” as the index should have a “1” - such indicators in the context of Severity could be rates of domestic violence, or the number of displaced people. Higher values of these indicators imply higher severity. On the other hand, indicators such as coverage of public services, number of hospitals, etc run in the opposite direction: higher values imply <em>less</em> severity, therefore they should be assigned a direction of “-1”. The direction row can only take values of -1 or 1.</p>
 <p>Finally, the <strong>initial weight</strong> row gives a weight for each indicator. It is recommended to leave these all at “1” (representing equal weighting) unless you have good reasons for doing otherwise. The weights are used in the aggregation step later in the app to calculate the index scores, and can be used to increase or decrease the contribution of each indicator. However, weighting can be complex and highly subjective. If you <em>do</em> wish to adjust weights, consider that weights are relative within each aggregation group: they will be rescaled to sum to 1 within each group by the app. In other words, if we have three indicators in a group with weights 1, 1, and 1, they will each get a weight of 1/3.</p>
 </section>
-<section id="structure" class="level3" data-number="3.1.2">
-<h3 data-number="3.1.2" class="anchored" data-anchor-id="structure"><span class="header-section-number">3.1.2</span> Structure</h3>
-<p>The “Structure” tab contains a table which defines the structure of the index. This is pre-compiled so there is no need to edit it unless you want to.</p>
+<section id="structure" class="level3" data-number="4.1.2">
+<h3 data-number="4.1.2" class="anchored" data-anchor-id="structure"><span class="header-section-number">4.1.2</span> Structure</h3>
+<p>The “Structure” tab contains a table which defines the structure of the index. This is pre-compiled so there is no need to edit it unless you want to. However, it is a little more complex than the data tab.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="figs/data_input_3.png" class="img-fluid figure-img" style="width:70.0%"></p>
-<p></p><figcaption class="figure-caption">The “Structure” tab from the example data set.</figcaption><p></p>
+<figcaption class="figure-caption">The “Structure” tab from the example data set.</figcaption>
 </figure>
 </div>
 <p>Each row in the table gives details about one of the aggregates created by aggregating indicators together, with columns describing their attributes:</p>
@@ -271,9 +305,57 @@ ul.task-list li input[type="checkbox"] {
 <li><strong>Level</strong> is the level in the framework, where 1 is the indicator level, 2 is the level created by aggregating indicators, and so on.</li>
 <li><strong>Weight</strong> is the weight assigned to the aggregate. As mentioned previously, weights are relative within aggregation groups.</li>
 </ul>
-
-
+<p>The iCode, Parent and Level columns together define the structure of the index. For example, in the example above the first four aggregates (at level 2) are defined as belonging to the “Socio_econ” group in level 3, according to the Parent column. The “Socio_econ” aggregate itself is defined in row 23 as belonging to the “vulnerabilidad” dimension, in level 4. Finally, the “Vulnerabilidad” dimension itself is one of four main dimensions of the “MVI”, which is the top level index at level 5.</p>
+<p>Notice that all the iCodes with Level = 2 are the entries in the “Group” row of the Data tab. This is to define where in the index each group is positioned.</p>
+<p>You can edit the Structure table to include any number of aggregation groups and levels. However, keep in mind:</p>
+<ul>
+<li>Every indicator or aggregate must have a parent, unless it is at the top level. You cannot define a parent that is more than one level above - if needed, define intermediate aggregates with only one indicator/aggregate.</li>
+<li>All the codes in the “Group” row of the Data tab must be included in the Structure table.</li>
+</ul>
+<p>The “Structure” table is in fact a simplified version of the “iMeta” table that is used in the COINr package upon which the A2SIT app is based. If you run into problems, or want to learn more about these input tables, you may wish to read the relavant <a href="https://bluefoxr.github.io/COINr/articles/coins.html#building-coins">COINr documentation page</a>.</p>
 </section>
+</section>
+<section id="upload" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="upload"><span class="header-section-number">4.2</span> Upload</h2>
+<p>Once the template has been correctly compiled, you are ready to upload it to the app.</p>
+<p><img src="figs/data_input_4.png" class="img-fluid" style="width:50.0%"></p>
+<p>On the “Upload” tab, first make sure you have selected the correct country in the dropdown, then browse to the your input data file and click the “Load” button. At this point, either the data upload will be successful or not. Here’s what to do.</p>
+<section id="successful" class="level3" data-number="4.2.1">
+<h3 data-number="4.2.1" class="anchored" data-anchor-id="successful"><span class="header-section-number">4.2.1</span> Successful</h3>
+<p><img src="figs/data_input_5.png" class="img-fluid" style="width:50.0%"></p>
+<p>If the data upload is successful, the app should give several immediate outputs. First, a confirmation message that the upload was successful, then some summary information and possibly some messages.</p>
+<p>The summary information will consist of a header which reports the country name, and also the number of indicators and regions.</p>
+<p><img src="figs/data_input_6.png" class="img-fluid" style="width:80.0%"></p>
+<p>Below this will be a sunburst plot of the framework you have specified, which should look something like this:</p>
+<p><img src="figs/data_input_7.png" class="img-fluid" style="width:70.0%"></p>
+<p>This is a plot of the index framework as specified in the Structure table. Hovering over segments will show indicator names, and clicking on segments will zoom in on lower levels. Double click to reset the plot. Like most plots in the app, a snapshot of the plot can be downloaded as a png file by clicking the small camera icon in the upper right of the plot.</p>
+<p>The framework plot also shows the effective weight of each indicator and aggregate in the framework, as a result of the weights specified <em>and</em> the index structure, as the angle of each segment. Notice that where dimensions have more indicators, these are effectively (individually) weighted less. This is important to consider in defining the index structure.</p>
+<p><img src="figs/data_input_8.png" class="img-fluid" style="width:60.0%"></p>
+<p>Finally, there may be some additional messages in the “Messages” box. In our example, we receive several messages - these relate to the fact that the app has detected some indicators with no data points and removed them (since they cannot be used in the calculations). Furthermore, it has found some aggregate groups with no “children” (indicators) defined in them. These empty groups also cannot be used in the calculation and so are removed. Check these messages carefully to ensure the app is not doing anything you don’t want to do.</p>
+<p>From here, if you are happy with the details reported by the app, you can move to the next tab.</p>
+</section>
+<section id="unsuccessful" class="level3" data-number="4.2.2">
+<h3 data-number="4.2.2" class="anchored" data-anchor-id="unsuccessful"><span class="header-section-number">4.2.2</span> Unsuccessful</h3>
+<p><img src="figs/data_input_9.png" class="img-fluid" style="width:50.0%"></p>
+<p>If you do have trouble uploading your data, don’t worry! The input is a little complex but the app will try to tell you what the problem is.</p>
+<p>If the upload is unsuccessful, the app should report a helpful error message in the “Messages” box. For example:</p>
+<p><img src="figs/data_input_10.png" class="img-fluid" style="width:60.0%"> <img src="figs/data_input_11.png" class="img-fluid" style="width:60.0%"> <img src="figs/data_input_12.png" class="img-fluid" style="width:60.0%"></p>
+<p>Try to address the problem reported by the app. There may be more than one problem but the app will only report the first one it finds, so you may need to upload more than once to correct multiple problems. If you have trouble, re-read very carefully the rules in the sections above and check the example data set. Common problems could be:</p>
+<ul>
+<li>Mismatch between Structure and Data tables: remember that codes are <em>case-sensitive</em>, and cross check very carefully to ensure that all group names from the Data table are in the Structure table.</li>
+<li>Non-numeric data: make sure each column of data is actually formatted as numeric. Even it looks like a number, Excel may have interpreted it as text. In Excel, a cell formatted as a number will be right-aligned, whereas text is left-aligned (see below).</li>
+</ul>
+<p><img src="figs/data_input_13.png" class="img-fluid" style="width:30.0%"></p>
+<ul>
+<li>Altering spreadsheet: try above all to avoid modifying the spreadsheet in unexpected ways. For example, do not add extra or numbers in cells near the tables. Do not change the names of required columns, and don’t move tables, or rename tabs. You CAN add extra tabs to the spreadsheet with other calculations as the app will only look for the Data and Structure tabs.</li>
+</ul>
+</section>
+</section>
+<section id="whats-next" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="whats-next"><span class="header-section-number">4.3</span> What’s next</h2>
+<p>From here, things get a lot smoother: the app should now work with fairly minimal interventions on your part. Move to the “Analysis” tab to begin analysing your data!</p>
+
+
 </section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
@@ -310,9 +392,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -377,6 +473,92 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {
@@ -418,13 +600,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./summary.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Summary</span></span>
+      <a href="./layout.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">App layout</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./analysis.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Indicator analysis</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Indicator analysis</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

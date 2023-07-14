@@ -12,6 +12,7 @@ book:
     - summary.qmd
     - part: "Using the app"
       chapters:
+        - layout.qmd
         - data_input.qmd
         - analysis.qmd
         - results.qmd
