@@ -1,3 +1,37 @@
 # Overview
 
-R, COINr, back end.
+The A2SIT app is a browser-based tool for building composite indicators for Admin-2 level user-input data. The app gives a moderate, but not full, degree of flexibility: for example, within the app users may remove/replace indicators and change aggregation methods. In the input file, users can additionally change the index structure and weights. However, many methodological steps cannot be changed, at least within the app. This is a deliberate choice to avoid exposing the user to too many methodological options, aiming to provide a smooth user experience.
+
+## Composite indicators
+
+Indicators are used in many contexts to measure complex multidimensional concepts, typically with the aim of prioritising resources and interventions, and also to track progress. In the international/policy context, indicators are often used to compare countries and/or sub-national regions.
+
+Quite often, the concept to be measured cannot be sufficiently captured with one indicator, and a group of indicators is needed. As the number of indicators gets larger, it becomes increasingly difficult to compare and prioritise. 
+
+*Composite indicators* are mathematical aggregations of a set of indicators into a single measure. Indicators are organised into conceptual groups which aim to follow a map of the concept to be measured. Aggregating the indicators into a single composite indicator allows quick and easy comparisons, clear communication with stakeholders, and acts as a natural entry point to the data set underneath.
+
+Importantly, in building a composite indicator, *we do not wish to substitute the underlying data*, but rather to complement it with an overview measure. Composite indicators involve a number of subjective decisions in their construction, and cannot fully capture all information in the indicator set underneath. However, used carefully, they are a valuable addition and entry point to a complex data set.
+
+## Index construction
+
+The index construction follows recognised international methodology for composite indicators[^results-1], and the steps are as follows:
+
+[^results-1]: Specifically the [JRC/OECD Handbook on Composite Indicators](https://publications.jrc.ec.europa.eu/repository/handle/JRC47008), and guidance from the European Commission's [Competence Centre on Composite Indicators and Scoreboards](https://knowledge4policy.ec.europa.eu/composite-indicators_en).
+
+1. Clean data input
+2. Treat any outliers
+3. Normalise indicators onto a 1-100 scale
+4. Aggregate using the selected aggregation method (scenario), using the weights specified in your input spreadsheet.
+
+When the user has input their data, the app first removes any indicators or regions with no data points, since they cannot be used in the calculation. This is also explained in @sec-datainput. The other steps are explained in more detail in the next two chapters.
+
+## Technical implementation
+
+The A2SIT app is written in R, using [Shiny](https://shiny.posit.co/) as its front end. The back end of the package makes extensive use of the [COINr package](https://bluefoxr.github.io/COINr/), which is an R package for developing and analysing composite indicators.
+
+The key steps in terms of constructing the index in COINr are:
+
+1. Building the "coin" object, which is in the `f_data_input()` function ([see on GitHub](https://github.com/UNHCR-Guatemala/A2SIT/blob/c7f70d356d426cf76924532ed66a6b2ea9fd5043/R/f_input.R#L27)).
+2. Building the index, which is in the `f_build_index()` function ([see on GitHub](https://github.com/UNHCR-Guatemala/A2SIT/blob/c7f70d356d426cf76924532ed66a6b2ea9fd5043/R/f_results.R#L46)).
+
+In the next two chapters, we also point to the COINr code that is used in building the index. In @sec-techimp a more technical explanation of the general code setup is given.

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Admin2 Severity Index Tool - 11&nbsp; Data processing</title>
+<title>Admin2 Severity Index Tool - 10&nbsp; Data processing</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +19,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -61,6 +95,8 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 </head>
 
@@ -73,7 +109,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./meth_overview.html">Methodology</a></li><li class="breadcrumb-item"><a href="./data_processing.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Data processing</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./meth_overview.html">Methodology</a></li><li class="breadcrumb-item"><a href="./data_processing.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Data processing</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -106,14 +142,8 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./intro.html" class="sidebar-item-text sidebar-link">
+  <a href="./about.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">What is A2SIT?</span></span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./summary.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Summary</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -128,43 +158,43 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./layout.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">App layout</span></span></a>
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">App layout</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./data_input.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Data input</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Data input</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./analysis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Indicator analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Indicator analysis</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./results.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Exploring results</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Exploring results</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./profiles.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Region profiles</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Region profiles</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./scenarios.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Scenarios</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Scenarios</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./unit_comparison.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Region comparisons</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Region comparisons</span></span></a>
   </div>
 </li>
       </ul>
@@ -181,49 +211,51 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./meth_overview.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Overview</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Overview</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./data_processing.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Data processing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Data processing</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./aggregation_weighting.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Aggregation and weighting</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Aggregation and weighting</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./technical_implementation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Technical implementation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Technical implementation</span></span></a>
   </div>
 </li>
       </ul>
   </li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./references.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">References</span></a>
-  </div>
-</li>
     </ul>
     </div>
 </nav>
 <div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#outlier-treatment" id="toc-outlier-treatment" class="nav-link active" data-scroll-target="#outlier-treatment"><span class="header-section-number">10.1</span> Outlier treatment</a></li>
+  <li><a href="#normalisation" id="toc-normalisation" class="nav-link" data-scroll-target="#normalisation"><span class="header-section-number">10.2</span> Normalisation</a></li>
+  <li><a href="#coinr-implementation" id="toc-coinr-implementation" class="nav-link" data-scroll-target="#coinr-implementation"><span class="header-section-number">10.3</span> COINr implementation</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-dataprocessing" class="quarto-section-identifier"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Data processing</span></span></h1>
+<h1 class="title"><span id="sec-dataprocessing" class="quarto-section-identifier"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Data processing</span></span></h1>
 </div>
 
 
@@ -238,9 +270,83 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<p>Data cleaning, outlier treatment, normalisation</p>
+<p>This chapter gives a little more detail on the steps followed in processing the data before aggregation.</p>
+<section id="outlier-treatment" class="level2" data-number="10.1">
+<h2 data-number="10.1" class="anchored" data-anchor-id="outlier-treatment"><span class="header-section-number">10.1</span> Outlier treatment</h2>
+<p>Outliers are roughly defined as data points that don’t fit the rest of the distribution of the indicator. Consider the artificial example below:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="data_processing_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption class="figure-caption">Example of a distribution with an outlier.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Outliers can exist because of errors in measurement and data processing, and should always be double-checked. But often, they are simply a reflection of reality. Outliers and skewed distributions are common in socio-economic variables.</p>
+<p>Outlier treatment is the process of altering indicator values to improve their statistical properties, mainly for the purposes of aggregation. The reason why we may want to treat outliers is that in composite indicators, before aggregating we typically normalise the data by scaling it onto a common range (e.g.&nbsp;0-100). When an indicator has outlying values, as in the example above, the outlier will “dominate” the scale and result in a large part of the indicator scale being empty.</p>
+<p>Typically the implication is that the large majority of points (Admin-2 regions here) end up with either a very low score (or high, depending on which side the outlier is on), except for the outlier. This can turn the indicator into a trivial measure of “is the observation the outlying region or not?”, which is not usually what we want to measure.</p>
+<p>Consider that data treatment is simply another assumption in a statistical process. Like any other step or assumption though, any data treatment should be carefully recorded and its implications understood.</p>
+<p>The A2SIT app has an outlier treatment algorithm which treats outliers automatically when the results are calculated. The methodology follows that used by the European Commission, among others, and is as follows.</p>
+<p>For each indicator separately:</p>
+<ol type="1">
+<li>Check skew and kurtosis value</li>
+<li>If absolute skew is greater than 2 AND kurtosis is greater than 3.5:
+<ol type="a">
+<li>Successively Winsorise up to a maximum of five points. If either skew or kurtosis goes below thresholds, stop. If after reaching the maximum number of points, both thresholds are still exceeded, then:</li>
+<li>Return the indicator to its original state, and perform a modified log transformation.</li>
+</ol></li>
+<li>If the indicator does not exceed both thresholds, leave it untreated.</li>
+</ol>
+<p>Here, the skew and kurtosis thresholds are used as simple indicators of distributions with outliers.</p>
+<p><em>Winsorisation</em> involves reassigning outlying points to the next highest or lowest point, depending on the direction of the outlier. In the example above, this would involve taking the outlier with a value of 10, and reassigning it to the maximum value of the observed points except that one. This treatment can be applied iteratively, in case of multiple outliers.</p>
+<p>The log transformation involves applying a scaled log-transformation that reshapes the entire distribution. It is most suitable for naturally skewed distributions such as log-normal distributions. Since the direction of skew can be either positive or negative, the transformation adapts accordingly. For positively-skewed indicators:</p>
+<p><span class="math display">\[
+x' = \log(x-\min(x) + a)\\
+\text{where:} \;\;\;  a = 0.01(\max(x)-\min(x))`
+\]</span></p>
+<p>Else if the skew is negative:</p>
+<p><span class="math display">\[
+x' = -\log(\max(x) + a - x)\\
+\]</span></p>
+<p>This transformation is effectively a log transformation with a small shift, which ensures that negative values can also be transformed.</p>
+</section>
+<section id="normalisation" class="level2" data-number="10.2">
+<h2 data-number="10.2" class="anchored" data-anchor-id="normalisation"><span class="header-section-number">10.2</span> Normalisation</h2>
+<p>The normalisation step aims to bring indicators onto a common scale, which makes them comparable for the purposes of aggregation. The A2SIT app uses the common “min-max” approach, which simply rescales each indicator onto the <span class="math inline">\([1, 100]\)</span> interval:</p>
+<p><span class="math display">\[ x' = \frac{ x - x_{\text{min}} }{ x_{\text{max}} - x_{\text{min}} } \times (100-1) + 1\]</span></p>
+<p>where <span class="math inline">\(x'\)</span> is the normalised indicator value. This means that the lowest observed value of each indicator, over all Admin-2 regions, will get a score of 1, and the highest observed value will get a score of 100.</p>
+<p>The min-max method is simple to understand and communicate. We set the lower bound at 1 to acknowledge the fact that the minimum value does not imply a true zero in that indicator (i.e.&nbsp;there is not an absence of severity).</p>
+<p>Note that the app additionally uses an ex-post rescaling onto a 1-5 categorical scale. This is explained more in the following chapter.</p>
+</section>
+<section id="coinr-implementation" class="level2" data-number="10.3">
+<h2 data-number="10.3" class="anchored" data-anchor-id="coinr-implementation"><span class="header-section-number">10.3</span> COINr implementation</h2>
+<p>The relevant code for these steps can be found in the <code>f_build_index()</code> function, which is on GitHub <a href="https://github.com/UNHCR-Guatemala/A2SIT/blob/c7f70d356d426cf76924532ed66a6b2ea9fd5043/R/f_results.R#L46">here</a>. In COINr, the code looks like this:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>max_winsorisation <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>skew_thresh <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>kurt_thresh <span class="ot">&lt;-</span> <span class="fl">3.5</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># treat outliers</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>coin <span class="ot">&lt;-</span> COINr<span class="sc">::</span><span class="fu">qTreat</span>(</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  coin, <span class="at">dset =</span> <span class="st">"Raw"</span>,</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">winmax =</span> max_winsorisation,</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">skew_thresh =</span> skew_thresh,</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">kurt_thresh =</span> kurt_thresh,</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">f2 =</span> <span class="st">"log_CT_plus"</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># normalise to [1, 100]: otherwise if we have zeros can't use geometric mean</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>coin <span class="ot">&lt;-</span> COINr<span class="sc">::</span><span class="fu">Normalise</span>(</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  coin,</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">dset =</span> <span class="st">"Treated"</span>,</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">global_specs =</span> <span class="fu">list</span>(<span class="at">f_n =</span> <span class="st">"n_minmax"</span>,</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>                      <span class="at">f_n_para =</span> <span class="fu">list</span>(<span class="at">l_u =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">100</span>)))</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -479,12 +585,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./meth_overview.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Overview</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Overview</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="./aggregation_weighting.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Aggregation and weighting</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Aggregation and weighting</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

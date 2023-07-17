@@ -1,4 +1,4 @@
-# Technical implementation
+# Technical implementation {#sec-techimp}
 
 The A2SIT app is built in R, and the source code is accessible at the public [A2SIT repo](https://github.com/UNHCR-Guatemala/A2SIT/). The app is wrapped in an R package, and can therefore be installed locally:
 
@@ -73,15 +73,45 @@ Next, the coin is passed to the results module when the user arrives there. This
 
 The tabs following this do not edit the coin - they simply read from it and display outputs. At any time, the coin is used to generate an Excel output using the `f_export_to_excel()` function, or to write the coin to an `.Rdata` file.
 
-
-
 ## Front-end
 
 The app is built using Shiny, specifically using [shinydashboard](https://rstudio.github.io/shinydashboard/) and [shinydashboardplus](https://shinydashboardplus.rinterface.com/). These packages give the "box" layout of the app, and also enable the sidebar menu, collapsible boxes and pop-out side bars in the boxes.
 
-The UI of the app is defined in the `app_UI.R` file, where the menu items, tabs and headers/footers are specified.
+The UI of the app is defined in the `app_UI.R` file, where the menu items, tabs and headers/footers are specified. As mentioned previously, each tab corresponds to a Shiny module, so the UI functions can be found within the corresponding module files.
+
+The app makes quite heavy use of add-on packages for specific functions, many of which are wrappers for JavaScript libraries, among which:
+
+* bsplus (modal help)
+* cicerone (guided tour on Welcome tab)
+* htmlwidgets (interactive graphics)
+* leaflet (maps)
+* plotly (interactive plots)
+* shinyjs (adding/hiding page elements)
+* shinyWidgets (enhanced user inputs)
+* webshot (exporting maps as images)
+
+Notably, the appearance of the app is also controlled by the [unhcrshiny package](https://github.com/Edouard-Legoupil/unhcrshiny), which specifies the CSS.
+
+Apart from the main UI code which is found in `app_UI.R` and the module files for each tab, a number of auxilliary functions are found in the `utils_ui.R` file.
+
+## Documentation
+
+As an R package, the app is firstly documented in the usual way by documenting each function with a description, inputs and outputs, and so on. When the package is installed, this help is rendered and available in an R session by running the usual `?function_name` command. The package doesn't however contain any vignettes; rather everything is contained in this online book. The book is built using [quarto](https://quarto.org/docs/guide/), and the source files are available in `./A2SIT_Doc` (this may be moved to `./inst` at some point).
+
+To edit the book, simply edit the source files which are written in Markdown. To render the book the easiest way is to open the book `.Rproj` file, which is also in `./A2SIT_Doc`, in RStudio. Then, as long as quarto is installed, you should be able to click the "Render Book" button in the "Build" tab, in the upper right of the GUI. This will rebuild the entire book. Individual pages can be built by clicking the "Render" button in the file editing pane.
 
 ## Contributing
 
-To 
+The A2SIT package is hosted on a public GitHub repo at <https://github.com/UNHCR-Guatemala/A2SIT>.
+
+To flag a bug, or suggest a new feature, [open an issue](https://github.com/UNHCR-Guatemala/A2SIT/issues).
+
+If you wish to contribute code to the A2SIT package, you should:
+
+1. Clone the repo
+2. Create a new branch
+3. Make your edits
+4. Create a pull request
+
+If any of these steps are unclear, a good resource for using Git and GitHub in the context of R is the [Happy Git with R book](https://happygitwithr.com/index.html). There are also countless general resources for Git and GitHub out there in the wild.
 

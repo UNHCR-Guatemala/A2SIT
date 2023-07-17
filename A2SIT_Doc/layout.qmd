@@ -1,6 +1,55 @@
 # App layout {#sec-layout}
 
-- layout
-- export
-- sessions
-- help
+Let's begin by exploring the basic layout of the app. When you load the app, you will first see the landing page:
+
+![](figs/index_1.png){width=100%}
+
+The best way to get a quick intro to the app is to click the "Tour" button, which will give a short interactive guided tour of the layout of the app. Here we give a little more description.
+
+First, the app is divided into a main window, a header and a sidebar. 
+
+- The main window is where the main content of the app is: the plots, tables, etc.
+- The header gives some general tools which available at any point
+- The sidebar lets you navigate between the different tabs in the app.
+
+The app is generally meant to be used by working through the tabs from top to bottom.
+
+## Main window
+
+There is not much to say about the main window, since it is different for each tab, and is described in much more detail in the following chapters. Suffice to say here that the buttons on the welcome screen include the guided tour, another button "Data input" which takes you to the "Upload" tab, and the "Know more" button which takes you to this online book.
+
+Depending on the size of your screen, the main window can sometimes become cluttered. Two ways to improve this are:
+
+1. Minimise the sidebar (see next section)
+2. Use the "zoom" function in your browser. E.g. on Chrome hold the "Ctrl" button and scroll the mouse wheel to zoom out - this will make the text smaller but you will be able to see more content at once. You can also zoom in if you need to!
+
+## Sidebar
+
+Clicking on any element in the sidebar will take you to the corresponding tab. Keep in mind that you need to upload your data first before any of the remaining tabs will have any content. The app is built to analyse *your* data, so if you haven't put any data in, it doesn't have much to tell you!
+
+Start at the "Upload" tab to upload your data. Once you have completed that tab, click on the "Analyse" tab, and so on.
+
+To make more space in the main window, you can minimise the sidebar by clicking the button (highlighted in the picture below): hovering over the sidebar will maximise it. Clicking the button again will restore the sidebar completely.
+
+![](figs/index_2.png){width=50%}
+
+## Header
+
+The header contains several useful features which can be accessed at any time.
+
+![](figs/index_3.png){width=100%}
+
+On the right side, the help icon gives a pop-up help window. The window is different for each tab, and gives specific help for that tab. However, the most detailed help is available in this book.
+
+The "Bookmark session" button can be used to generate a link which allows you to return your app session in the future, and can be shared with others. This is generally only useful once you have uploaded data. In that case, at any point in the app, copy the bookmark link. You can put this link back in your browser at any point to return to the same point in the app, with your data saved. Keep in mind that:
+
+- The bookmark link takes you back to the exact point when you saved: it will not remember anything you did after you created the bookmark
+- Please don't create more bookmarks than necessary - each one takes up server space
+- We may delete old bookmark files if necessary, to avoid overloading the server space if necessary. *To add a policy here maybe, if we need to*
+
+Finally in the header, the "Export" button can be used to download the results as they stand either to Excel or as a file that can be read by R. 
+
+If downloaded to Excel, the file will contain a number of tabs showing the results on both the 1-100 scale and the categorical 1-5 scale, for all scenarios. It also records the analysis tables, and metadata such as the weights and index structure.
+
+If downloaded to R, the file can be loaded into R and will contain the "coin", which is an object encapsulating a composite indicator and used by the COINr package, which is the basis of the A2SIT app calculations. See [COINr documentation](https://bluefoxr.github.io/COINr/articles/coins.html) for more details on how to work with coins.
+

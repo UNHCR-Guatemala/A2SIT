@@ -4,12 +4,11 @@ project:
 
 book:
   title: "Admin2 Severity Index Tool"
-  author: "William Becker"
-  date: "2023-05-24"
+  author: "Authors + William Becker (to be updated)"
+  date: "2023-07-17"
   chapters:
     - index.qmd
-    - intro.qmd
-    - summary.qmd
+    - about.qmd
     - part: "Using the app"
       chapters:
         - layout.qmd
@@ -25,7 +24,6 @@ book:
         - data_processing.qmd
         - aggregation_weighting.qmd
         - technical_implementation.qmd
-    - references.qmd
 
 bibliography: references.bib
 

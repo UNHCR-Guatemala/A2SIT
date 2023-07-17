@@ -1,4 +1,4 @@
-# Data input
+# Data input {#sec-datainput}
 
 Data must be input into the A2SIT app using a formatted Excel template. The app expects the data to be in a certain format, so it is *very important to closely follow the instructions here*, otherwise you may run into errors!
 
