@@ -17,7 +17,6 @@ f_export_to_excel(coin, l_scen, fname = "index_export.xlsx")
 Writes an Excel spreadsheet.
 }
 \description{
-Simplified export to Excel with some formatting
-Note if we change the index structure, the conditional formatting will need
-to be adjusted.
+Simplified export to Excel. Exports the coin contents, plus scenarios, to
+an Excel spreadsheet.
 }

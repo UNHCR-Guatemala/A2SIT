@@ -1,3 +1,17 @@
+#' Interactive tour
+#'
+#' Generates an interactive tour using the cicerone package. The "el" entries
+#' correspond to IDs defined in the UI. Sometimes I have had to wrap things
+#' to get an ID. Not perfect but does the job.
+#'
+#' This is called in the "Welcome" tab. See also the cicerone documentation to
+#' understand how this works.
+#'
+#' @param id The namespace - not sure if actually used.
+#'
+#' @return Tour via cicerone
+#' @export
+#'
 create_guide <- function(id){
 
   cicerone::Cicerone$

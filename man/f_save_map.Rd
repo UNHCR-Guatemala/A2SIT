@@ -16,5 +16,6 @@ be one of .png, .pdf, .jpeg or .html}
 File saved at specified path
 }
 \description{
-Save map as image
+First saves widget as html file using htmlwidgets. Then uses the webshot
+package to save it as image.
 }

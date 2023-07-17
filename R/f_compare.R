@@ -78,6 +78,15 @@ f_make_comparison_table <- function(coin, l, base_scen, comp_with, tab_type){
 
 }
 
+#' Style comparison table
+#'
+#' Returns DT table with styling.
+#'
+#' @param df_merged Output of [f_make_comparison_table()].
+#' @param comp_with Either "Ranks" or "Scores" (colours are reversed if Ranks)
+#'
+#' @return DT table with styling.
+#'
 f_style_comparison_table <- function(df_merged, comp_with){
 
   # find min and max of score ranges

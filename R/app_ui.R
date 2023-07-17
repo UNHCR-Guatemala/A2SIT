@@ -1,5 +1,7 @@
 #' Assemble UI modules
 #'
+#' This is called by `run_app()`.
+#'
 #' @return Front end of app
 #'
 #' @importFrom shinydashboardPlus box dashboardPage

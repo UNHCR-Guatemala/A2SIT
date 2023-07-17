@@ -10,5 +10,5 @@ app_ui()
 Front end of app
 }
 \description{
-Assemble UI modules
+This is called by \code{run_app()}.
 }

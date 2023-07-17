@@ -246,6 +246,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#back-end" id="toc-back-end" class="nav-link" data-scroll-target="#back-end"><span class="header-section-number">12.3</span> Back-end</a>
   <ul class="collapse">
   <li><a href="#data-flow" id="toc-data-flow" class="nav-link" data-scroll-target="#data-flow"><span class="header-section-number">12.3.1</span> Data flow</a></li>
+  <li><a href="#mapping-and-geometry" id="toc-mapping-and-geometry" class="nav-link" data-scroll-target="#mapping-and-geometry"><span class="header-section-number">12.3.2</span> Mapping and geometry</a></li>
   </ul></li>
   <li><a href="#front-end" id="toc-front-end" class="nav-link" data-scroll-target="#front-end"><span class="header-section-number">12.4</span> Front-end</a></li>
   <li><a href="#documentation" id="toc-documentation" class="nav-link" data-scroll-target="#documentation"><span class="header-section-number">12.5</span> Documentation</a></li>
@@ -280,6 +281,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The front end of the A2SIT app is built using <a href="https://shiny.posit.co/">Shiny</a>, which allows to build browser-based apps that run R behind the scenes. It also calls on many R packages for specific visualisation tasks such as mapping, plots and help popovers.</p>
 <p>The back-end rests heavily on the <a href="https://bluefoxr.github.io/COINr/">COINr package</a> which is an R package for building and analysing composite indicators. However, there is a lot of additional code which is used to build on and customise COINr functions, and to provide additional functionality. The idea is to guide the user to build their own severity index with a deliberately narrow range of options along the way. In this sense, the concept lies half way between a classical data exploration/visualisation of a single composite indicator (where the user can only explore an existing index) and a generalised GUI for building composite indicators (where a user might be able to build anything they want). This is a deliberate choice to enable an easy user interface.</p>
 <p>The documentation here aims to be general and descriptive. Selected functions within the package are additionally documented using the usual R function documentation, and this can be accessed either using <code>?function_name</code> with the package loaded, or online at the package’s <a href="https://unhcr-guatemala.github.io/A2SIT/">documentation website</a>. It is not possible to give an exhaustive description of the functioning of the package since it is quite complex, but hopefully the pointers here will be helpful in guiding anyone who is interested in understanding and editing the source code.</p>
+<p>Note that the functions in the A2SIT package are highly customised for the purposes of the app, therefore even though they are accessible at the command line, many will not be hugely useful in other contexts. Probably it is more useful to use COINr directly, and the A2SIT package soruce code as examples.</p>
 <section id="package-overview" class="level2" data-number="12.1">
 <h2 data-number="12.1" class="anchored" data-anchor-id="package-overview"><span class="header-section-number">12.1</span> Package overview</h2>
 <p>The A2SIT package is set up as a typical R package - for an overview of R package structure see the <a href="https://r-pkgs.org/">R Packages</a> book.</p>
@@ -347,6 +349,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The coin is then passed to the analysis module, which largely returns outputs to the user such as plots and tables. Here, users can optionally remove indicators, so this implies some small modifications to the coin.</p>
 <p>Next, the coin is passed to the results module when the user arrives there. This triggers the results to be calculated, which implies running the <code>f_build_index()</code> function, and calculating alternative scenarios via the <code>get_scenarios()</code> function.</p>
 <p>The tabs following this do not edit the coin - they simply read from it and display outputs. At any time, the coin is used to generate an Excel output using the <code>f_export_to_excel()</code> function, or to write the coin to an <code>.Rdata</code> file.</p>
+</section>
+<section id="mapping-and-geometry" class="level3" data-number="12.3.2">
+<h3 data-number="12.3.2" class="anchored" data-anchor-id="mapping-and-geometry"><span class="header-section-number">12.3.2</span> Mapping and geometry</h3>
+<p>It is worth saying a few particular words about maps and Admin-2 codes.</p>
+<p>The A2SIT app aims to calculate scores at the Admin-2 level for a given country, AND to generate maps of the results. In order for this to work, it needs a geometry file for each country which defines the Admin-2 regions within that country. Moreover, each region should be referenced by a unique code which can be used within the app.</p>
+<p>Although in theory the geometry files are available from the UNHCR’s <a href="https://gis.unhcr.org/arcgis/rest/services/core_v2/wrl_polbnd_adm2_a_unhcr/MapServer">gis.unhcr.org sever</a>, extracting the files in the correct format has proven to be difficult. In short this is because:</p>
+<ul>
+<li>The API tends to time out for some countries, so in practice the geometry can’t be retrieved</li>
+<li>There doesn’t seem to be a harmonised system of Admin-2 codes, and codes are sometimes duplicated, which violates the requirements of COINr</li>
+<li>Geometry files can be large, and some cannot be simplified.</li>
+</ul>
+<p>At the time of writing, this is still an ongoing issue, and a <a href="https://github.com/UNHCR-Guatemala/A2SIT/issues/11">discussion can be found on GitHub</a>.</p>
+<p>Leaving these pending issues aside, the A2SIT app has a function called <code>cache_admin2_geometry()</code> which queries the API and, if successful, stores the geometry for a given set of ISO3 codes. It also tries to simplify the geometry using the “sf” package.</p>
+<p>The map files that are successfully retrieved are stored as <code>.RDS</code> files within the app’s <code>/inst/geom</code> folder, each of which contains a spatial polyogon data frame which can be read by leaflet. These map files are used at various points:</p>
+<ol type="1">
+<li>To tell the user which countries are available for data input in the app (the dropdown menu on the “Upload” tab).</li>
+<li>To generate data input templates: the Admin-2 codes from the geometry files are used as unit codes and added to the base template. This ensures that they can be matched back to the geometry file later.</li>
+<li>To plot the maps: the user’s data is merged with the geometry file, and this enables it to be plotted.</li>
+</ol>
+<p>The objective would be to have geometry files for as many countries as possible, although as mentioned this is a work in progress. Note that even for the stored geometry files, some have duplicate codes, and/or missing names.</p>
 </section>
 </section>
 <section id="front-end" class="level2" data-number="12.4">

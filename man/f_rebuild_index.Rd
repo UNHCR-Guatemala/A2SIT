@@ -21,3 +21,15 @@ Updated coin
 \description{
 Regenerates results based on specified weights and aggregation method.
 }
+\details{
+The weights \code{w} can either be a named list with names as iCodes and values
+the new weights, OR as a data frame with columns "iCode" and "Weight" with
+codes and corresponding weights.
+In both cases a subset of weight-code pairs can be specified.
+E.g. \code{list("Salud" = 0.5, Amenazas = 0.8)}.
+
+OR set \code{w = "equal"} for equal weights everywhere, or \code{w = "original"} to use the
+weights that were input with the input data.
+
+Remember that weights are relative within aggregation groups.
+}

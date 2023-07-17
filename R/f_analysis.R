@@ -109,7 +109,13 @@ f_analyse_indicators <- function(coin){
 
 }
 
-# Helper function for indicator analysis
+
+#' Formatting for correlations
+#'
+#' @param X output from COINr::get_corr_flags()
+#'
+#' @return A vector of correlations
+#'
 f_gather_correlations <- function(X){
 
   Xpairs <- data.frame(v1 = c(X$Ind1, X$Ind2),
@@ -121,7 +127,14 @@ f_gather_correlations <- function(X){
 
 }
 
-# either a coin input, or else a list with Xd and Xh data frames in that order
+
+#' Extract and display analysis table
+#'
+#' @param coin The coin, with analysis tables in
+#' @param filter_to_flagged Only show indicators with at least on flag.
+#'
+#' @return DT table
+#'
 f_display_indicator_analysis <- function(coin, filter_to_flagged = TRUE){
 
   if(COINr::is.coin(coin)){
@@ -146,8 +159,16 @@ f_display_indicator_analysis <- function(coin, filter_to_flagged = TRUE){
 
 }
 
-# this is used in the function above and in shiny server for row selection
-# input is either 2 dfs or else Xd can be a list with 2dfs in it.
+
+#' Filter analysis table to flagged
+#'
+#' Only show rows with at least one flag - filters both tables.
+#'
+#' @param Xd Stats table
+#' @param Xh Flag table (for highlighting)
+#'
+#' @return List of data frames.
+#'
 filter_to_flagged <- function(Xd, Xh){
 
   if(!is.data.frame(Xd)){
@@ -164,11 +185,20 @@ filter_to_flagged <- function(Xd, Xh){
   list(Flags = Xd, FlaggedStats = Xh)
 }
 
-# Generic function for creating an interactive table with input df `Xd`, and
-# with cells highlighted by an equivalently sized logical df `Xh`.
-#
-# This is used for displaying the output of `f_analyse_indicators()`.
-#
+
+#' Generate display table for indicator analysis
+#'
+#' Takes analysis table and corresponding flags, and generates DT table with
+#' highlighted cells.
+#'
+#' @param Xd Analysis table from [f_analyse_indicators()]
+#' @param Xh Highlight table, also from [f_analyse_indicators()]
+#' @param table_caption Optional caption
+#' @param highlight_colour Highlight colour
+#'
+#' @return DT table
+#' @export
+#'
 f_highlight_DT <- function(Xd, Xh, table_caption = NULL, highlight_colour = "#FAEB00"){
 
   stopifnot(identical(dim(Xd), dim(Xh)))
@@ -214,13 +244,19 @@ f_highlight_DT <- function(Xd, Xh, table_caption = NULL, highlight_colour = "#FA
 
 }
 
-# Removes indicators as specified by a character vector of indicator
-# codes in `remove_indicators`. After removal, any results are regenerated
-# (updated).
-#
-# The original data is always preserved so indicators can be restored.
-# Analysis tables are not currently re-run so this has to be done separately.
-#
+
+#' Remove indicators from coin
+#'
+#' Removes indicators as specified by a character vector of indicator
+#' codes in `remove_indicators`. After removal, any results are regenerated
+#' (updated). The original data is always preserved so indicators can be restored.
+#'
+#' @param coin The coin
+#' @param remove_indicators character vector of indicator codes to remove
+#'
+#' @return updated coin
+#' @export
+#'
 f_remove_indicators <- function(coin, remove_indicators = NULL){
 
   # extract analysis
@@ -247,9 +283,17 @@ f_remove_indicators <- function(coin, remove_indicators = NULL){
 
 }
 
-# As `f_remove_indicators()` but adds indicators back in. Obviously only
-# indicators that were originally present in the input data can be added.
-#
+#' Replace indicators to coin
+#'
+#' As [f_remove_indicators()] but adds indicators back in. Obviously only
+#' indicators that were originally present in the input data can be added.
+#'
+#' @param coin The coin
+#' @param add_indicators character vector of indicator codes to replace
+#'
+#' @return updated coin
+#' @export
+#'
 f_add_indicators <- function(coin, add_indicators = NULL){
 
   # extract analysis

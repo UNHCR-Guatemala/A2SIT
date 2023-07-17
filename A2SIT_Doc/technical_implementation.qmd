@@ -13,6 +13,8 @@ The back-end rests heavily on the [COINr package](https://bluefoxr.github.io/COI
 
 The documentation here aims to be general and descriptive. Selected functions within the package are additionally documented using the usual R function documentation, and this can be accessed either using `?function_name` with the package loaded, or online at the package's [documentation website](https://unhcr-guatemala.github.io/A2SIT/). It is not possible to give an exhaustive description of the functioning of the package since it is quite complex, but hopefully the pointers here will be helpful in guiding anyone who is interested in understanding and editing the source code.
 
+Note that the functions in the A2SIT package are highly customised for the purposes of the app, therefore even though they are accessible at the command line, many will not be hugely useful in other contexts. Probably it is more useful to use COINr directly, and the A2SIT package soruce code as examples.
+
 ## Package overview
 
 The A2SIT package is set up as a typical R package - for an overview of R package structure see the [R Packages](https://r-pkgs.org/) book.
@@ -72,6 +74,30 @@ The coin is then passed to the analysis module, which largely returns outputs to
 Next, the coin is passed to the results module when the user arrives there. This triggers the results to be calculated, which implies running the `f_build_index()` function, and calculating alternative scenarios via the `get_scenarios()` function.
 
 The tabs following this do not edit the coin - they simply read from it and display outputs. At any time, the coin is used to generate an Excel output using the `f_export_to_excel()` function, or to write the coin to an `.Rdata` file.
+
+### Mapping and geometry
+
+It is worth saying a few particular words about maps and Admin-2 codes.
+
+The A2SIT app aims to calculate scores at the Admin-2 level for a given country, AND to generate maps of the results. In order for this to work, it needs a geometry file for each country which defines the Admin-2 regions within that country. Moreover, each region should be referenced by a unique code which can be used within the app.
+
+Although in theory the geometry files are available from the UNHCR's [gis.unhcr.org sever](https://gis.unhcr.org/arcgis/rest/services/core_v2/wrl_polbnd_adm2_a_unhcr/MapServer), extracting the files in the correct format has proven to be difficult. In short this is because:
+
+- The API tends to time out for some countries, so in practice the geometry can't be retrieved
+- There doesn't seem to be a harmonised system of Admin-2 codes, and codes are sometimes duplicated, which violates the requirements of COINr
+- Geometry files can be large, and some cannot be simplified.
+
+At the time of writing, this is still an ongoing issue, and a [discussion can be found on GitHub](https://github.com/UNHCR-Guatemala/A2SIT/issues/11).
+
+Leaving these pending issues aside, the A2SIT app has a function called `cache_admin2_geometry()` which queries the API and, if successful, stores the geometry for a given set of ISO3 codes. It also tries to simplify the geometry using the "sf" package.
+
+The map files that are successfully retrieved are stored as `.RDS` files within the app's `/inst/geom` folder, each of which contains a spatial polyogon data frame which can be read by leaflet. These map files are used at various points:
+
+1. To tell the user which countries are available for data input in the app (the dropdown menu on the "Upload" tab).
+2. To generate data input templates: the Admin-2 codes from the geometry files are used as unit codes and added to the base template. This ensures that they can be matched back to the geometry file later.
+3. To plot the maps: the user's data is merged with the geometry file, and this enables it to be plotted.
+
+The objective would be to have geometry files for as many countries as possible, although as mentioned this is a work in progress. Note that even for the stored geometry files, some have duplicate codes, and/or missing names.
 
 ## Front-end
 

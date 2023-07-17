@@ -15,6 +15,6 @@ country_codes
 }
 \description{
 Data frame with country names, ISO codes (alpha 2 and alpha 3), and links to
-svg flags (used e.g. in dropdown selectors)-
+svg flags (used e.g. in dropdown selectors).
 }
 \keyword{datasets}
