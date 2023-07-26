@@ -13,7 +13,7 @@ f_rebuild_index(coin, w = NULL, agg_method)
 as the new weights, OR as a data frame with columns "iCode" and "Weight" with
 codes and corresponding weights.}
 
-\item{agg_method}{One of \code{c("a_amean", "a_gmean")} currently supported.}
+\item{agg_method}{One of \code{c("a_amean", "a_gmean", "a_hmean")} currently supported.}
 }
 \value{
 Updated coin

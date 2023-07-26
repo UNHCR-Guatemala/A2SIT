@@ -148,7 +148,10 @@ get_plot_dset <- function(coin, iCode){
   if (icode_level == 1) "Raw" else "Aggregated"
 }
 
-# a shortcut function for building GTM coin, for debugging
+#' Shortcut function for building GTM coin, for debugging
+#'
+#' @return coin
+#' @export
 f_build_GTM_coin <- function(){
   coin <- f_data_input("./inst/A2SIT_data_input_template_GTM.xlsx", "GTM")
   f_build_index(coin)
