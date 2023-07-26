@@ -98,6 +98,11 @@ f_analyse_indicators <- function(coin){
   df_disp$Status <- "In"
   df_flag$Status <- FALSE
 
+  # sort alphabetically to make easier in app
+  df_disp <- df_disp[order(df_disp$iCode), ]
+  df_flag <- df_flag[order(df_flag$iCode), ]
+  df_stats <- df_stats[order(df_stats$iCode), ]
+
   # add outputs to coin
   coin$Analysis$Raw <- list(
     FlaggedStats = df_disp,
