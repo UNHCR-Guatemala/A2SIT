@@ -311,7 +311,8 @@ f_plot_map <- function(coin, iCode, ISO3, as_discrete = TRUE){
   }
 
   # merge into shape df
-  admin2_geom <- base::merge(admin2_geom, df_plot, by.x = "adm2_source_code", by.y = "uCode")
+  admin2_geom <- merge(admin2_geom, df_plot, by.x = "adm2_source_code", by.y = "uCode") |>
+    sf::st_as_sf()
 
   # Colours and labels ------------------------------------------------------
 
