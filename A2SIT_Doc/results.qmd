@@ -40,7 +40,7 @@ Underneath the Results box, there is a bar chart of the same indicator/aggregate
 
 ## Scenarios
 
-By default the index is calculated using the arithmetic mean, which implies that low (high) scores in one indicator are perfectly compensated by high (low) scores in another. Optionally, select "Scenario 2" which uses the geometric mean: in this case lower scores in one indicator are less compensated by higher scores in others. Click "Recalculate" to see the new results.
+By default the index is calculated using the arithmetic mean, which implies that low (high) scores in one indicator are perfectly compensated by high (low) scores in another. Optionally, select "Scenario 2" which uses the geometric mean: in this case lower scores in one indicator are less compensated by higher scores in others, or "Scenario 3" which implies even less compensation. Click "Recalculate" to see the new results.
 
 Importantly, the scenario selected here will be used as the "main" results in the rest of the app, including in the "Profiles" and "Region comparison" tabs. All scenarios can additionally be compared in one place in the "Scenarios" tab, which is explained in @sec-scenarios.
 
