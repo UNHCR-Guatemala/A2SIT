@@ -7,8 +7,8 @@ test_that("f_data_input", {
   expect_s3_class(coin, "coin")
 
   # cached country, but wrong one
-  coin <- f_data_input(f_path, "ARG")
-  expect_null(coin)
+  coin_error <- f_data_input(f_path, "ARG")
+  expect_null(coin_error)
 
   # not cached country
   expect_error(f_data_input(f_path, "XXX"), "ISO3 %in% valid_ISOs is not TRUE")
