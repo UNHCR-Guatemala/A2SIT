@@ -264,7 +264,7 @@ f_highlight_DT <- function(Xd, Xh, table_caption = NULL, highlight_colour = "#FA
 #'
 f_remove_indicators <- function(coin, remove_indicators = NULL){
 
-  # extract analysis
+  # extract analysis (doesn't change)
   ind_analysis <- coin$Analysis$Raw
   analysis_exists <- !is.null(ind_analysis)
 
@@ -280,9 +280,9 @@ f_remove_indicators <- function(coin, remove_indicators = NULL){
     coin$Analysis$Raw <- ind_analysis
   }
 
-  # if(!is.null(coin$Data$Aggregated)){
-  #   coin <- f_generate_results(coin)
-  # }
+  # regenerate results and severity
+  coin <- f_generate_results(coin)
+  coin <- f_make_severity_level_dset(coin)
 
   coin
 

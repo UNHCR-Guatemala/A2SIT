@@ -81,8 +81,10 @@ test_that("results correct", {
 
 })
 
+
+
 # also check
 # - add/remove indicators
-# - severity data set is correctly recalculated
 # - results table is correctly reloaded
 # - make sure weights are correctly accounted for when changed in iMeta
+# - make sure scenarios correctly regenerated when indicators added/dropped, and with change of aggregation method
