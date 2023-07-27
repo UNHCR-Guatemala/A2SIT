@@ -1,6 +1,6 @@
 # A2SIT
 
-This is the repository for the Admin2 Severity Index Tool (A2SIT). The A2SIT is a Shiny web app built in R which allows users to upload data and build a severity index!
+This is the repository for the Admin2 Severity Index Tool (A2SIT). The A2SIT is a Shiny web app built in R which allows users to upload data and build a severity index.
 
 :warning: *The A2SIT is currently under development...* :construction:
 
