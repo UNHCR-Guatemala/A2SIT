@@ -45,7 +45,15 @@ This is simply the product of each indicator to the power of its weight, all rai
 
 The geometric mean is less compensatory than the arithmetic mean -- low values in one indicator only partially substitute high values in others. For this reason, the geometric mean may sometimes be preferred when indicators represent "essentials". An example might be quality of life: a longer life expectancy perhaps should not compensate severe restrictions on personal freedoms.
 
-The figure below shows how the two aggregation methods differ. In this simple example, two indicators on the $[1, 100]$ scale are aggregated together with equal weights - the first indicator x1 has values from 1-100, and the second always has the same value of 50.
+### Harmonic mean
+
+The final aggregation method is the harmonic mean, which implies even less compensation between indicators than the geometric mean. It uses the mean of the reciprocals of the indicators:
+
+$$ y = \frac{\sum_{i=1}^d w_i}{\sum_{i=1}^d w_i/x_i} $$
+
+The harmonic mean is the last of the three so-called [Pythagorean means](https://en.wikipedia.org/wiki/Pythagorean_means), and is often used for taking the mean of rates and ratios. However it can also be used as a general approach for providing very little compensation between indicators; a region will only get a high score if almost all of its indicators have high scores.
+
+The figure below shows how the three aggregation methods differ. In this simple example, two indicators on the $[1, 100]$ scale are aggregated together with equal weights - the first indicator x1 has values from 1-100, and the second always has the same value of 50.
 
 ```{r}
 #| echo: false
@@ -60,11 +68,12 @@ X <- data.frame(
 
 y <- COINr::Aggregate(X, f_ag = "a_amean", f_ag_para = list(w = c(1, 1)))
 y2 <- COINr::Aggregate(X, f_ag = "a_gmean", f_ag_para = list(w = c(1, 1)))
+y3 <- COINr::Aggregate(X, f_ag = "a_hmean", f_ag_para = list(w = c(1, 1)))
 
 df_plot <- data.frame(
-  Type = c(rep("Arithmetic", 100), rep("Geometic", 100)),
-  x1 = c(X$x1, X$x1),
-  y = c(y, y2)
+  Type = c(rep("Arithmetic", 100), rep("Geometric", 100), rep("Harmonic", 100)),
+  x1 = c(X$x1, X$x1, X$x1),
+  y = c(y, y2, y3)
 )
 
 ggplot(df_plot, aes(x = x1, y = y, colour = Type)) +
@@ -72,7 +81,7 @@ ggplot(df_plot, aes(x = x1, y = y, colour = Type)) +
   theme_minimal()
 ```
 
-The plot shows that the arithmetic mean is linear with respect to x1. However the geometric mean is not: in particular, low scores of x1 will result in a quite low aggregated score, approaching zero, despite the fact that the other indicator has a value of 50. The geometric mean never gives an aggregate score higher than the arithmetic mean.
+The plot shows that the arithmetic mean is linear with respect to x1. However the geometric mean is not: in particular, low scores of x1 will result in a quite low aggregated score, approaching zero, despite the fact that the other indicator has a value of 50. The geometric mean never gives an aggregate score higher than the arithmetic mean. The harmonic mean is even less compensatory and provides scores always lower than the geometric mean.
 
 Whichever aggregation method is chosen, all Admin-2 regions will be treated the same. Scores in composite indicators are dimensionless, so comparing scores between arithmetic and geometric means is not usually helpful. Usually it is better to compare ranks. Luckily, the A2SIT app has a tool for comparing scenarios which is described in @sec-scenarios.
 

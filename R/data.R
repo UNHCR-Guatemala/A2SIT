@@ -7,3 +7,13 @@
 #'
 #' @source countrycodes package, plus github for flags
 "country_codes"
+
+#' Example coin for use in tests
+#'
+#' This is a coin assembled from example data from Guatemala. It is only used
+#' for the purposes of fast testing.
+#'
+#' @format A "coin" object
+#'
+#' @source Data from UNCHR Guatemala
+"GTM_coin"

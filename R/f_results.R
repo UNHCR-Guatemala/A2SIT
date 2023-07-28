@@ -14,7 +14,7 @@
 f_get_scenarios <- function(coin){
 
   current_agg_method <- coin$Log$Aggregate$f_ag
-  agg_methods <- c("a_amean", "a_gmean")
+  agg_methods <- c("a_amean", "a_gmean", "a_hmean")
   stopifnot(!is.null(current_agg_method),
             current_agg_method %in% agg_methods)
 
@@ -55,6 +55,7 @@ get_aggregation_name <- function(f_ag){
   switch(f_ag,
          "a_amean" = "Arithmetic mean",
          "a_gmean" = "Geometric mean",
+         "a_hmean" = "Harmonic mean",
          stop("Aggregation method type not recognised")
   )
 }
@@ -310,7 +311,8 @@ f_plot_map <- function(coin, iCode, ISO3, as_discrete = TRUE){
   }
 
   # merge into shape df
-  admin2_geom <- base::merge(admin2_geom, df_plot, by.x = "adm2_source_code", by.y = "uCode")
+  admin2_geom <- merge(admin2_geom, df_plot, by.x = "adm2_source_code", by.y = "uCode") |>
+    sf::st_as_sf()
 
   # Colours and labels ------------------------------------------------------
 
@@ -450,14 +452,14 @@ f_generate_results <- function(coin){
 #' @param w can either be a named list with names as iCodes and values
 #' as the new weights, OR as a data frame with columns "iCode" and "Weight" with
 #' codes and corresponding weights.
-#' @param agg_method One of `c("a_amean", "a_gmean")` currently supported.
+#' @param agg_method One of `c("a_amean", "a_gmean", "a_hmean")` currently supported.
 #'
 #' @return Updated coin
 #' @export
 f_rebuild_index <- function(coin, w = NULL, agg_method){
 
   stopifnot(is.coin(coin),
-            agg_method %in% c("a_amean", "a_gmean"))
+            agg_method %in% c("a_amean", "a_gmean", "a_hmean"))
 
   if(is.null(coin$Data$Aggregated)){
     stop("Can't find results in the coin. Did you forget to build the index first?", call. = FALSE)

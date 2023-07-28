@@ -17,3 +17,4 @@ $run_dev.*
 .Rprofile
 shiny_bookmarks
 ^A2SIT_Doc$
+geom_scripts

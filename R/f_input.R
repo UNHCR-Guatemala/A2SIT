@@ -7,7 +7,7 @@
 #' On reading the Excel file, this function does the following:
 #'
 #' - Data is split into data and metadata and tidied
-#' - Metadata is merged with hard-coded index structure
+#' - Metadata is read from structure tab
 #' - Any indicators with no data at all are removed
 #' - Any resulting aggregation groups with no "children" are removed
 #' - A coin is assembled using COINr and this is the function output
@@ -26,6 +26,11 @@
 #'
 #' @export
 f_data_input <- function(file_path, ISO3){
+
+  # Checks ----
+
+  valid_ISOs <- get_cached_countries()
+  stopifnot(ISO3 %in% valid_ISOs)
 
   # Settings ----
 

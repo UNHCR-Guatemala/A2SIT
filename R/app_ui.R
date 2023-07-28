@@ -102,20 +102,23 @@ app_ui <- function() {
       leftUi = tagList(
         shinydashboardPlus::dropdownBlock(
           id = "save_session",
-          title = "Bookmark session",
+          title = "Save progress",
           icon = icon("floppy-disk"), badgeStatus = NULL,
           bookmarkButton()
         ),
-        shinydashboardPlus::dropdownBlock(
-          id = "export_to_excel",
-          title = "Export",
-          icon = icon("file-export"), badgeStatus = NULL,
-          h5("Export to Excel"),
-          downloadButton("export_button_excel", "Excel"),
-          br(),
-          h5("Export to R"),
-          downloadButton("export_button_R", "R")
-        )
+
+        # Old position of export to Excel/R
+        # shinydashboardPlus::dropdownBlock(
+        #   id = "export_to_excel",
+        #   title = "Export",
+        #   icon = icon("file-export"), badgeStatus = NULL,
+        #   "stuff"
+        #   # h5("Export to Excel"),
+        #   # downloadButton("export_button_excel", "Excel"),
+        #   # br(),
+        #   # h5("Export to R"),
+        #   # downloadButton("export_button_R", "R")
+        # )
       )
     ),
     footer = shinydashboardPlus::dashboardFooter(right = "2023 UNHCR"),

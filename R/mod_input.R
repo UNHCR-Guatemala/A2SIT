@@ -10,6 +10,15 @@ input_UI <- function(id) {
           collapsible = TRUE,
           status = "primary",
 
+          p(
+            "Follow the steps below to download a country template, fill in your data and upload. You can also download the ",
+            tags$a(href="https://github.com/UNHCR-Guatemala/A2SIT/raw/main/inst/A2SIT_data_input_template_GTM.xlsx",
+                   "example data set for Guatemala "),
+            "to use as an example, or to run through the app as a demo."
+
+          ),
+          hr(),
+
           h4("1. Select your country"),
           country_dropdown(NS(id, "ISO3"), "Country") |>
             add_input_pop("If your country is not on this list please contact us."),
@@ -22,14 +31,20 @@ input_UI <- function(id) {
 
           h4("3. Upload your data"),
           p("Upload your compiled template here and click the 'Load' button."),
-          fileInput(NS(id, "xlsx_file"), NULL, buttonLabel = "Browse...", accept = c("xls", "xlsx")) |>
-            add_input_pop("Please upload the template spreadsheet compiled with your data."),
-          actionButton(NS(id, "load_click"), "Load"),
-          hr(),
 
-          p("Or download the ",
-            tags$a(href="https://github.com/UNHCR-Guatemala/A2SIT/raw/main/inst/A2SIT_data_input_template_GTM.xlsx",
-                   "example data set for Guatemala."))
+          col_8(
+            fileInput(NS(id, "xlsx_file"), NULL, buttonLabel = "Browse...", accept = c("xls", "xlsx")) |>
+              add_input_pop("Please upload the template spreadsheet compiled with your data."),
+            style='padding:0px;'
+          ),
+          col_4(actionButton(NS(id, "load_click"), "Load")),
+
+          # col here otherwise seems to attach to the col-4 previously
+          col_12(
+            p(icon("triangle-exclamation"), em("Only data formatted using the input template can be uploaded.")),
+            style='padding:0px;'
+          )
+
       ),
 
       box(title = box_pop_title("Messages", "Any messages from the data import process."), width = NULL, status = "info",

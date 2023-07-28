@@ -15,7 +15,7 @@ profiles_UI <- function(id) {
         h1(textOutput(NS(id, "unit_name"))),
         selectInput(NS(id, "selected_unit"), label = "Select a region",
                     choices = NULL, width = "100%") |>
-          add_input_pop("Regions can also be selected from the map.")
+          add_input_pop("Regions can also be selected from the map. You can also type in the dropdown to search for regions.")
       ),
       tags$head(tags$style('#title_box .box-header{ display: none}')),
 

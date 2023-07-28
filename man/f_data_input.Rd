@@ -21,7 +21,7 @@ Reads a formatted Excel file found at \code{file_path} and outputs a constructed
 On reading the Excel file, this function does the following:
 \itemize{
 \item Data is split into data and metadata and tidied
-\item Metadata is merged with hard-coded index structure
+\item Metadata is read from structure tab
 \item Any indicators with no data at all are removed
 \item Any resulting aggregation groups with no "children" are removed
 \item A coin is assembled using COINr and this is the function output
