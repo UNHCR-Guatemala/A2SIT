@@ -2,6 +2,7 @@
 ## This script allows to simplify .shp files and create RDS files
 ## Resulting RDS files should be stored in inst>geom folder for A2SIT to read them
 ## Original shapefiles need to be stored in local device to avoid GitHub file size limits
+## In the simplification chunk, it is necessary to play around with the "keep" value to make sure not to lose variables
 
 # load libraries
 library(sf)
