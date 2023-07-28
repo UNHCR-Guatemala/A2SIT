@@ -317,9 +317,9 @@ f_add_indicators <- function(coin, add_indicators = NULL){
     coin$Analysis$Raw <- ind_analysis
   }
 
-  # if(!is.null(coin$Data$Aggregated)){
-  #   coin <- f_generate_results(coin)
-  # }
+  # regenerate results and severity
+  coin <- f_generate_results(coin)
+  coin <- f_make_severity_level_dset(coin)
 
   coin
 

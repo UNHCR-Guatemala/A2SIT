@@ -24,8 +24,6 @@ Hovering over each region gives further details about the region, including its 
 
 You can change which indicator or aggregate is plotted on the map using the uppermost dropdown menu in the top right of this box. You can also select whether to view the scores as a 1-5 (categorical) scale or on the 1-100 scale (raw values at the indicator level).
 
-The map is downloadable in various formats by selecting the file format (either png, jpeg, pdf or html) and clicking the "download map" link. Capturing the map images is unfortunately not perfect and you may have to experiment a little to get the best results. An alternative, which can offer more control, may be to download the map as an HTML file, then open it in a separate tab, and save the image there using the "print to pdf" functionality in your browser, or to simply take a screenshot (in the latter case, you can maximise the window with F11 and take a screenshot of the full window using Windows' "snipping" tool, for example).
-
 In the same "Results" box you can also select the "Table" tab to see the results as a table.
 
 ![](figs/results_2.png){width=100%}
@@ -40,10 +38,24 @@ Underneath the Results box, there is a bar chart of the same indicator/aggregate
 
 ## Scenarios
 
-By default the index is calculated using the arithmetic mean, which implies that low (high) scores in one indicator are perfectly compensated by high (low) scores in another. Optionally, select "Scenario 2" which uses the geometric mean: in this case lower scores in one indicator are less compensated by higher scores in others, or "Scenario 3" which implies even less compensation. Click "Recalculate" to see the new results.
+By default the index is calculated using the arithmetic mean, which implies that low (high) scores in one indicator are perfectly compensated by high (low) scores in another. Optionally, in the "Adjust" box, select "Scenario 2" which uses the geometric mean: in this case lower scores in one indicator are less compensated by higher scores in others, or "Scenario 3" which implies even less compensation. Click "Recalculate" to see the new results. More details on the aggregation methods are given in @sec-aggweight.
+
+![](figs/results_4.png){width=40%}
 
 Importantly, the scenario selected here will be used as the "main" results in the rest of the app, including in the "Profiles" and "Region comparison" tabs. All scenarios can additionally be compared in one place in the "Scenarios" tab, which is explained in @sec-scenarios.
 
-Clicking on the 'gear' icon in the top right of this box opens the option to adjust weights. If this is enabled, you can interactively adjust weights for the highest level of the index (below the index). However, in general equal weights are strongly recommended unless there is a specific reason to weight otherwise.
+Clicking on the 'gear' icon in the top right of this box opens the option to adjust weights. If this is enabled, you can interactively adjust weights for the highest level of the index (below the index). *Please note however, this feature is not well-tested.* Additionally, in general equal weights are strongly recommended unless there is a specific reason to weight otherwise. If weight adjustments are required, it is probably better to do this in the input Excel file.
 
-More details on the aggregation methods are given in @sec-aggweight.
+## Export
+
+The Export box contains options for exporting the results to Excel or R, or to download map images.
+
+![](figs/results_5.png){width=40%}
+
+The map is downloadable in various formats by selecting the file format (either png, jpeg, pdf or html) and clicking the "Click to download" link. Capturing the map images is unfortunately not perfect and you may have to experiment a little to get the best results. An alternative, which can offer more control, may be to download the map as an HTML file, then open it in a separate tab, and save the image there using the "print to pdf" functionality in your browser, or to simply take a screenshot (in the latter case, you can maximise the window with F11 and take a screenshot of the full window using Windows' "snipping" tool, for example).
+
+Finally the "Export results" section can be used to download the results as they stand either to Excel or as a file that can be read by R. 
+
+If downloaded to Excel, the file will contain a number of tabs showing the results on both the 1-100 scale and the categorical 1-5 scale, for all scenarios. It also records the analysis tables, and metadata such as the weights and index structure.
+
+If downloaded to R, the file can be loaded into R and will contain the "coin", which is an object encapsulating a composite indicator and used by the COINr package, which is the basis of the A2SIT app calculations. See [COINr documentation](https://bluefoxr.github.io/COINr/articles/coins.html) for more details on how to work with coins.
