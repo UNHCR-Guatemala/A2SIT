@@ -22,3 +22,7 @@ country. Some of the files returned are heavy, and the server also seems to
 fail or time out every now and then. Also, some admin2 codes are not in the
 expected format.
 }
+\details{
+This function also optionally tries to simplify the geometry using the sf
+package, this doesn't always work though.
+}

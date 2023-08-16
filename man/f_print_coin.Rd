@@ -10,7 +10,7 @@ f_print_coin(coin)
 \item{coin}{The coin}
 }
 \value{
-A coin
+Text
 }
 \description{
 This is a print-style text output function for summarising the contents of the coin.

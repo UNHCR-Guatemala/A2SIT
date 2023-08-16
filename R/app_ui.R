@@ -1,9 +1,12 @@
 #' Assemble UI modules
 #'
+#' This is called by `run_app()`.
+#'
 #' @return Front end of app
 #'
 #' @importFrom shinydashboardPlus box dashboardPage
 #' @importFrom shinydashboard menuItem menuSubItem tabItem
+#' @importFrom unhcrshiny theme_shinydashboard_unhcr
 #'
 #'
 #' @export
@@ -46,9 +49,9 @@ app_ui <- function() {
     compare_units_modal(),
 
     # some themeing (to improve)
-    includeCSS(system.file("app", "www", "custom.css", package = "A2SIT")),
+    #includeCSS(system.file("app", "www", "custom.css", package = "A2SIT")),
     # fresh::use_theme(theme_UNHCR),
-    theme_shinydashboard_unhcr(),
+    unhcrshiny::theme_shinydashboard_unhcr(),
 
     # increase width of dropdown menus
     tags$head(tags$style(HTML('
@@ -99,20 +102,23 @@ app_ui <- function() {
       leftUi = tagList(
         shinydashboardPlus::dropdownBlock(
           id = "save_session",
-          title = "Bookmark session",
+          title = "Save progress",
           icon = icon("floppy-disk"), badgeStatus = NULL,
           bookmarkButton()
         ),
-        shinydashboardPlus::dropdownBlock(
-          id = "export_to_excel",
-          title = "Export",
-          icon = icon("file-export"), badgeStatus = NULL,
-          h5("Export to Excel"),
-          downloadButton("export_button_excel", "Excel"),
-          br(),
-          h5("Export to R"),
-          downloadButton("export_button_R", "R")
-        )
+
+        # Old position of export to Excel/R
+        # shinydashboardPlus::dropdownBlock(
+        #   id = "export_to_excel",
+        #   title = "Export",
+        #   icon = icon("file-export"), badgeStatus = NULL,
+        #   "stuff"
+        #   # h5("Export to Excel"),
+        #   # downloadButton("export_button_excel", "Excel"),
+        #   # br(),
+        #   # h5("Export to R"),
+        #   # downloadButton("export_button_R", "R")
+        # )
       )
     ),
     footer = shinydashboardPlus::dashboardFooter(right = "2023 UNHCR"),

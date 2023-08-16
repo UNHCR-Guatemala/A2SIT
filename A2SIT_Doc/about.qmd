@@ -1,0 +1,5 @@
+# What is A2SIT?
+
+Here we explain what the A2SIT is, the motivation behind it etc. I leave this section to Peter + team.
+
+We could put also information about indicators here or in chapters in this book.

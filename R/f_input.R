@@ -7,16 +7,17 @@
 #' On reading the Excel file, this function does the following:
 #'
 #' - Data is split into data and metadata and tidied
-#' - Metadata is merged with hard-coded index structure
+#' - Metadata is read from structure tab
 #' - Any indicators with no data at all are removed
 #' - Any resulting aggregation groups with no "children" are removed
 #' - A coin is assembled using COINr and this is the function output
 #'
 #' If indicators/groups are removed, a message is sent to the console.
 #'
-#' The Excel file is required to be in a fairly strict format: an example is given at
-#' `inst/data_module-input.xlsx`. This template is still a work in progress
-#' and can be modified in the app phase following further feedback.
+#' The Excel file is required to be in a fairly strict format: templates are downloaded
+#' through the app or using [f_generate_input_template()].
+#'
+#' User errors are trapped as much as possible with hopefully-helpful error messages.
 #'
 #' @param file_path path to the excel file where we have the raw data
 #' @param ISO3 ISO3 code of country to which the data belongs, e.g. `"GTM"`
@@ -25,6 +26,11 @@
 #'
 #' @export
 f_data_input <- function(file_path, ISO3){
+
+  # Checks ----
+
+  valid_ISOs <- get_cached_countries()
+  stopifnot(ISO3 %in% valid_ISOs)
 
   # Settings ----
 
@@ -165,8 +171,7 @@ f_data_input <- function(file_path, ISO3){
 #'
 #' @param coin The coin
 #'
-#' @return A coin
-#'
+#' @return Text
 #'
 #' @export
 f_print_coin <- function(coin){
@@ -267,9 +272,20 @@ f_generate_input_template <- function(ISO3, to_file_name = NULL){
   openxlsx::saveWorkbook(wb, to_file_name, overwrite = T)
 }
 
-# checks and messages to pass to the user for basic errors in iData
-# Note COINr does many of these checks anyway, but the intention is to generate
-# some user-friendly versions here
+
+#' Verbose check on iData tab
+#'
+#' Checks and messages to pass to the user for basic errors in the iData tab of
+#' the input spreadsheet. This is *not* intended to be used on the iData input
+#' to COINr, but rather the iData tab of the template, which is a bit different.
+#' Note COINr does many of these checks anyway, but the intention is to generate
+#' some user-friendly versions here. Called in [f_data_input()].
+#'
+#' @param iData Table imported from user input spreadsheet.
+#'
+#' @return Message as text, or `NULL` if no errors.
+#' @export
+#'
 validate_iData <- function(iData){
 
 
@@ -334,9 +350,16 @@ validate_iData <- function(iData){
 }
 
 
-# checks and messages to pass to the user for basic errors in iMeta
-# Note COINr does many of these checks anyway, but the intention is to generate
-# some user-friendly versions here
+#' Verbose check on indicator metadata tab
+#'
+#' Checks and messages to pass to the user for basic errors in metadata rows of
+#' the Data tab in the input template. Called in [f_data_input()].
+#'
+#' @param iMeta Table imported from user input spreadsheet.
+#'
+#' @return Message as text, or `NULL` if no errors.
+#' @export
+#'
 validate_iMeta <- function(iMeta){
 
   if(!is.data.frame(iMeta)){

@@ -1,9 +1,20 @@
 # Results back end functions
 
+#' Get results tables for all scenarios
+#'
+#' Returns a list of results tables for all scenarios (aggregation methods).
+#' Note that the aggregation methods are hard-coded here: will have to be updated
+#' if we add new methods.
+#'
+#' @param coin The coin
+#'
+#' @return A list of data frames
+#' @export
+#'
 f_get_scenarios <- function(coin){
 
   current_agg_method <- coin$Log$Aggregate$f_ag
-  agg_methods <- c("a_amean", "a_gmean")
+  agg_methods <- c("a_amean", "a_gmean", "a_hmean")
   stopifnot(!is.null(current_agg_method),
             current_agg_method %in% agg_methods)
 
@@ -30,11 +41,21 @@ f_get_scenarios <- function(coin){
 
 }
 
-# translates from aggregation function name to display name
+
+#' Get aggregation method names
+#'
+#' Helper translating from COINr function names to full names.
+#'
+#' @param f_ag Function name of aggregation method.
+#'
+#' @return String
+#' @export
+#'
 get_aggregation_name <- function(f_ag){
   switch(f_ag,
          "a_amean" = "Arithmetic mean",
          "a_gmean" = "Geometric mean",
+         "a_hmean" = "Harmonic mean",
          stop("Aggregation method type not recognised")
   )
 }
@@ -43,6 +64,25 @@ get_aggregation_name <- function(f_ag){
 # your data and built the MVI coin. Also optionally you have analysed and
 # possibly removed indicators, but taken no further steps.
 #
+
+
+#' Calculate index results
+#'
+#' Calculates results following data treatment, normalisation and aggregation.
+#'
+#' This function is invoked when the user arrives at the "Results" tab. It is
+#' also used to recalculate results. Additionally generates the "severity" (1-5)
+#' scores.
+#'
+#' @param coin The coin
+#' @param agg_method An aggregation method (function accessible by COINr)
+#' @param only_aggregate Logical: if `TRUE` just applies the aggregation step,
+#' to save calculation time. This is used if only the aggregation method is changed,
+#' or for reweighting.
+#'
+#' @return Updated coin
+#' @export
+#'
 f_build_index <- function(coin, agg_method = "a_amean", only_aggregate = FALSE){
 
   stopifnot(is.coin(coin))
@@ -86,7 +126,18 @@ f_build_index <- function(coin, agg_method = "a_amean", only_aggregate = FALSE){
   coin
 }
 
-#
+
+#' Make severity data set
+#'
+#' Calculates the severity scores (1-5 scale) based on the aggregated data set,
+#' and adds as a new data set called "Severity". Then uses this new data set
+#' to calculate an additional results table.
+#'
+#' @param coin The coin
+#'
+#' @return Updated coin
+#' @export
+#'
 f_make_severity_level_dset <- function(coin){
 
   iData <- COINr::get_dset(coin, "Aggregated")
@@ -105,9 +156,17 @@ f_make_severity_level_dset <- function(coin){
 
 }
 
-# function which converts a data frame either of dset or results, to the 1-5
-# severity scale
-# Note this is only applied to levels > 1, i.e. not the indicator level.
+#' Convert data set to severity scale
+#'
+#' Converts an iData-formatted data set to the 1-5 severity scale.
+#' Note this is only applied to levels > 1, i.e. not the indicator level.
+#'
+#' @param coin The coin
+#' @param iData iData-format data frame
+#'
+#' @return Modified iData data frame, converted to severity categories
+#' @export
+#'
 f_dset_to_severity <- function(coin, iData){
 
   agg_codes <- get_indicator_codes(coin, "Aggregate", with_levels = FALSE,
@@ -125,9 +184,18 @@ f_dset_to_severity <- function(coin, iData){
 
 }
 
-# Outputs an interactive results table suitable for HTML documents and the app.
-# set type = "scores" or "ranks".
-#
+#' Interactive results table
+#'
+#' Returns a DT table for displaying results. Can toggle between scoes and ranks,
+#' and displaying "severity" (1-5).
+#'
+#' @param coin The coin
+#' @param type Either "scores" or "ranks".
+#' @param as_discrete If `TRUE`, displays the "severity" scores.
+#'
+#' @return A DT table
+#' @export
+#'
 f_display_results_table <- function(coin, type = "scores", as_discrete = FALSE){
 
   if(as_discrete){
@@ -179,15 +247,38 @@ f_display_results_table <- function(coin, type = "scores", as_discrete = FALSE){
 }
 
 
-
-
-
 # Plots an interactive choropleth map of the index or any indicator, using supplied shape
 # files.
 #
 # shp_path is currently at "shp/gtm_admbnda_adm2_ocha_conred_20190207.shp"
 #
 #
+
+#' Choropleth map of indicator/aggregate
+#'
+#' Uses leaflet and stored geometry files to plot any selected indicator or
+#' aggregate as a choropleth map, for a selected country.
+#'
+#' This function relies on geometry files that are stored inside the A2SIT package.
+#' It will therefore not work if the country selected by `ISO3` does not have
+#' available geometry.
+#'
+#' To see which countries currently have available geometry, run: [get_cached_countries()].
+#'
+#' The function merges the selected indicator with the geometry file, using the
+#' uCodes. At this point in the app, it should have been checked that the user's
+#' uCodes correspond exactly with those in the geometry file.
+#'
+#' To change colours and styling, look in the source code of this function.
+#'
+#' @param coin The coin
+#' @param iCode iCode of indicator/aggregate to plot
+#' @param ISO3 Country of the data to plot
+#' @param as_discrete If `TRUE`, plots severity categories.
+#'
+#' @return Leaflet map object
+#' @export
+#'
 f_plot_map <- function(coin, iCode, ISO3, as_discrete = TRUE){
 
   available_ISO3s <- get_cached_countries()
@@ -220,7 +311,8 @@ f_plot_map <- function(coin, iCode, ISO3, as_discrete = TRUE){
   }
 
   # merge into shape df
-  admin2_geom <- base::merge(admin2_geom, df_plot, by.x = "adm2_source_code", by.y = "uCode")
+  admin2_geom <- merge(admin2_geom, df_plot, by.x = "adm2_source_code", by.y = "uCode") |>
+    sf::st_as_sf()
 
   # Colours and labels ------------------------------------------------------
 
@@ -269,14 +361,45 @@ f_plot_map <- function(coin, iCode, ISO3, as_discrete = TRUE){
 
 }
 
-# generates sorted results tables and attaches back to the coin
-#' Add results table to coin
+
+#' Save map as image
+#'
+#' First saves widget as html file using htmlwidgets. Then uses the webshot
+#' package to save it as image.
+#'
+#' @param plt Leaflet map object
+#' @param file_name File path to save to, with file extension. The extension must
+#' be one of .png, .pdf, .jpeg or .html
+#'
+#' @return File saved at specified path
+#' @export
+f_save_map <- function(plt, file_name = "map.png"){
+
+  stopifnot(inherits(plt, "leaflet"))
+
+  is_html <- endsWith(file_name, ".html")
+
+  if(is_html){
+    htmlwidgets::saveWidget(plt, file = file_name)
+  } else {
+    html_path <- paste0(tempdir(), "\\temp_map.html")
+    htmlwidgets::saveWidget(plt, file = html_path)
+    webshot::webshot(html_path, file = file_name)
+    unlink(html_path)
+  }
+
+}
+
+#' Add results tables to coin
+#'
+#' Adds both a scores and ranks results table to the coin.
 #'
 #' @param coin Coin
 #'
+#' @return Updated coin
+#'
 #' @importFrom COINr is.coin
 #'
-#' @noRd
 f_generate_results <- function(coin){
 
   stopifnot(is.coin(coin),
@@ -314,18 +437,29 @@ f_generate_results <- function(coin){
 #'
 #' Regenerates results based on specified weights and aggregation method.
 #'
+#' The weights `w` can either be a named list with names as iCodes and values
+#' the new weights, OR as a data frame with columns "iCode" and "Weight" with
+#' codes and corresponding weights.
+#' In both cases a subset of weight-code pairs can be specified.
+#' E.g. `list("Salud" = 0.5, Amenazas = 0.8)`.
+#'
+#' OR set `w = "equal"` for equal weights everywhere, or `w = "original"` to use the
+#' weights that were input with the input data.
+#'
+#' Remember that weights are relative within aggregation groups.
+#'
 #' @param coin The coin
 #' @param w can either be a named list with names as iCodes and values
 #' as the new weights, OR as a data frame with columns "iCode" and "Weight" with
 #' codes and corresponding weights.
-#' @param agg_method One of `c("a_amean", "a_gmean")` currently supported.
+#' @param agg_method One of `c("a_amean", "a_gmean", "a_hmean")` currently supported.
 #'
 #' @return Updated coin
 #' @export
 f_rebuild_index <- function(coin, w = NULL, agg_method){
 
   stopifnot(is.coin(coin),
-            agg_method %in% c("a_amean", "a_gmean"))
+            agg_method %in% c("a_amean", "a_gmean", "a_hmean"))
 
   if(is.null(coin$Data$Aggregated)){
     stop("Can't find results in the coin. Did you forget to build the index first?", call. = FALSE)
@@ -407,7 +541,20 @@ f_rebuild_index <- function(coin, w = NULL, agg_method){
 
 }
 
-# returns a unit summary based on the severity level. For use in the map panel.
+# .
+
+#' Unit summary using severity level
+#'
+#' Returns a unit summary based on the severity level. For use in the map panel
+#' This works like [COINr::get_unit_summary()] but for the severity category.
+#'
+#' @param coin The coin
+#' @param usel Selected unit (uCode)
+#' @param Level Level at which to return scores
+#'
+#' @return A data frame
+#' @export
+#'
 get_unit_summary_sev <- function(coin, usel, Level){
 
   iCodes <- get_codes_at_level(coin, Level)
@@ -431,6 +578,9 @@ get_unit_summary_sev <- function(coin, usel, Level){
 #' country. Some of the files returned are heavy, and the server also seems to
 #' fail or time out every now and then. Also, some admin2 codes are not in the
 #' expected format.
+#'
+#' This function also optionally tries to simplify the geometry using the sf
+#' package, this doesn't always work though.
 #'
 #' @param ISO3 ISO3 code of country
 #' @param simplify Logical: whether to simplify or not
@@ -477,12 +627,19 @@ f_get_admin2_boundaries <- function(ISO3, simplify = TRUE, dTolerance = 500){
 
 #' Retrieve and store geometry for countries
 #'
-#' Queries the UNHCR API to get Admin2 layer for the specified countries, then
-#' simplifies the geometry and stores in inst/geom. To enable quick retrieval
+#' This function is intended for use in collecting the geometry for multiple
+#' countries in one go, then storing it within the package so it can be used
+#' for mapping and generating templates.
+#'
+#' The function queries the UNHCR API to get Admin2 layer for the specified countries, then
+#' tries to simplify the geometry and stores in inst/geom. To enable quick retrieval
 #' of maps. This is intended to just be run occasionally.
 #'
+#' Note that at the moment, this doesn't *guarantee* sensible geometry files because
+#' there are sometimes issues with duplicate Admin2 codes, missing names and so on.
+#'
 #' @param ISO3s Character vector of ISO3s to get maps for
-#' @param overwrite if TRUE overwrites any existing files
+#' @param overwrite if `TRUE` overwrites any existing files
 #'
 #' @export
 cache_admin2_geometry <- function(ISO3s, overwrite = FALSE){

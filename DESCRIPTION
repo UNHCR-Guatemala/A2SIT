@@ -4,48 +4,55 @@ Version: 0.2.0
 Authors@R: 
     person("William", "Becker", , "william.becker@bluefoxdata.eu", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-6467-4472"))
-Description: This package is the container for a shiny app which allows non R-users to build their own Severity Index using their own data. Aside from containing the shiny app, the back end code is all accessible, and can be used for other purposes.
+Description: This package is the container for a shiny app which allows
+    non R-users to build their own Severity Index using their own data.
+    Aside from containing the shiny app, the back end code is all
+    accessible, and can be used for other purposes.
 License: MIT + file LICENSE
-Encoding: UTF-8
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+URL: https://github.com/UNHCR-Guatemala/A2SIT
+BugReports: https://github.com/UNHCR-Guatemala/A2SIT/issues
+Depends: 
+    R (>= 4.1.0)
 Imports: 
+    bsplus,
+    cicerone,
     COINr (>= 1.1.4),
-    DT,
-    htmltools,
     config,
+    DT,
     golem,
+    grDevices,
+    htmltools,
+    htmlwidgets,
     iCOINr (>= 0.2.6),
     leaflet,
+    openxlsx,
     plotly,
+    RColorBrewer,
     readxl,
     sf,
     shiny,
     shinydashboard,
     shinydashboardPlus,
-    shinyWidgets,
-    utils,
-    RColorBrewer,
-    openxlsx,
     shinyjs,
+    shinyWidgets,
     stats,
-    fresh,
-    bsplus,
-    cicerone,
-    mapview
-Remotes: 
-    bluefoxr/iCOINr,
-    bluefoxr/COINr
+    unhcrshiny (>= 0.1.0),
+    utils,
+    webshot
 Suggests: 
     knitr,
     rmarkdown,
     spelling,
     testthat (>= 3.0.0)
+VignetteBuilder: 
+    knitr
+Remotes: 
+    bluefoxr/COINr,
+    bluefoxr/iCOINr,
+    edouard-legoupil/unhcrshiny
 Config/testthat/edition: 3
-VignetteBuilder: knitr
+Encoding: UTF-8
 Language: en-US
-URL: https://github.com/UNHCR-Guatemala/A2SIT
-BugReports: https://github.com/UNHCR-Guatemala/A2SIT/issues
-Depends: 
-    R (>= 4.1.0)
 LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3

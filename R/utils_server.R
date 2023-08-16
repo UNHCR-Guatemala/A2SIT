@@ -24,7 +24,17 @@ get_inclusion_status <- function(l_analysis, isel){
   l_analysis$FlaggedStats$Status[l_analysis$FlaggedStats$iCode == isel]
 }
 
-# HTML summary of a selected indicator
+#' HTML summary of a selected indicator
+#'
+#' Used in the analysis tab.
+#'
+#' @param coin_full The full coin with no indicators removed
+#' @param coin The coin
+#' @param isel A selected indicator (iCode)
+#'
+#' @return A text summary, as html.
+#' @export
+#'
 get_indicator_info <- function(coin_full, coin, isel){
 
   df_stats <- coin$Analysis$Raw$Stats
@@ -111,6 +121,7 @@ get_indicator_codes <- function(coin, code_types = "all",
 }
 
 # function that returns the present weights in the sliders in the UI
+# This must be used in a reactive environment.
 get_slider_weights <- function(input, icodes){
 
   l_input <- isolate(reactiveValuesToList(input))[icodes]
@@ -137,7 +148,10 @@ get_plot_dset <- function(coin, iCode){
   if (icode_level == 1) "Raw" else "Aggregated"
 }
 
-# a shortcut function for building GTM coin, for debugging
+#' Shortcut function for building GTM coin, for debugging
+#'
+#' @return coin
+#' @export
 f_build_GTM_coin <- function(){
   coin <- f_data_input("./inst/A2SIT_data_input_template_GTM.xlsx", "GTM")
   f_build_index(coin)

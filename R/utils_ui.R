@@ -1,11 +1,31 @@
-# slider for weights
+
+#' Weights slider
+#'
+#' Thin wrapper for sliderinput.
+#'
+#' @param id ID for slider
+#' @param label Label
+#' @param value initial value
+#'
+#' @return HTML code for slider
+#' @export
+#'
 weights_slider <- function(id, label = NULL, value = 1) {
   if(is.null(label)) label <- id
   sliderInput(id, label = label, min = 0, max = 1, value = value, step = NULL, ticks = FALSE)
 }
 
-# generates a dropdown menu of countries where we have available admin2 geometry
-# stored in inst/geom. Adds flags.
+#' Generate country dropdown menu
+#'
+#' Generates a dropdown menu of countries where we have available admin2 geometry
+#' stored in inst/geom. Adds flags.
+#'
+#' @param id ID to assign
+#' @param label Label
+#'
+#' @return HTML
+#' @export
+#'
 country_dropdown <- function(id, label){
 
   # A2SIT::country_codes already has codes plus flag URLs for all countries, we just
@@ -32,7 +52,17 @@ country_dropdown <- function(id, label){
 
 }
 
-# shortcut for adding tooltip to a shiny input
+#' Shortcut for adding tooltip to a shiny input
+#'
+#' This can be piped onto the end of a Shiny input. See examples in UI functions.
+#'
+#' @param tag The object to add the tooltip to
+#' @param popover_text Text to display
+#' @param placement Where to display
+#'
+#' @return Input, now with popover
+#' @export
+#'
 add_input_pop <- function(tag, popover_text, placement = "top"){
 
   tag |>
@@ -44,7 +74,22 @@ add_input_pop <- function(tag, popover_text, placement = "top"){
 
 }
 
-# shortcut for adding an info icon to a box title
+
+#' Add help icon to box title
+#'
+#' Shortcut for adding an info icon to a box title. This is used in the "title"
+#' argument of a Shinydashboard box.
+#'
+#' @param title The box title text
+#' @param popover_text Text to display in the popover
+#' @param placement Where to show the popover text
+#' @param px_from_right Position from the right side of the box. This will need to
+#' be adjusted depending on the other content in the box, e.g. if there is a collapsible
+#' icon, sidebar icon, etc. See examples in app.
+#'
+#' @return HTML to be inserted in box title
+#' @export
+#'
 box_pop_title <- function(title, popover_text, placement = "top", px_from_right = 10){
 
   p(title,
@@ -54,14 +99,24 @@ box_pop_title <- function(title, popover_text, placement = "top", px_from_right 
 
 }
 
-# TO FINISH
-add_modal <- function(tag, message_to_add){
-  bsplus::shiny_iconlink() |>
-    bsplus::bs_attach_modal(id_modal = "modal_equation")
-}
+# # TO FINISH
+# add_modal <- function(tag, message_to_add){
+#   bsplus::shiny_iconlink() |>
+#     bsplus::bs_attach_modal(id_modal = "modal_equation")
+# }
 
 
-# function that creates a help pop up window for each page
+#' Help pop up window
+#'
+#' Function that creates a help pop up window for each page. This function
+#' generates the icon, the thing that is displayed is controlled by `id_modal`.
+#' This is called in the app server function.
+#'
+#' @param id_modal ID of modal to display
+#'
+#' @return HTML
+#' @export
+#'
 header_help_icon <- function(id_modal){
 
   tags$li(class = "dropdown",
@@ -75,6 +130,8 @@ header_help_icon <- function(id_modal){
 
 
 # Modal help --------------------------------------------------------------
+# Each function here is used to to display a single modal help page, which are
+# stored in ./inst/md-help. These are called in the main server function.
 
 welcome_modal <- function(){
   bsplus::bs_modal(

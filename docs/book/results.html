@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.475">
+<meta name="generator" content="quarto-1.3.353">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -17,7 +17,7 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
 </style>
@@ -68,11 +68,16 @@ ul.task-list li input[type="checkbox"] {
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
-    <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Exploring results</span></h1>
-      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
-        <i class="bi bi-chevron-right"></i>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./layout.html">Using the app</a></li><li class="breadcrumb-item"><a href="./results.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Exploring results</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
       </button>
     </div>
   </nav>
@@ -80,122 +85,143 @@ ul.task-list li input[type="checkbox"] {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Admin2 Severity Index Tool</a> 
     </div>
       </div>
-      <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="mt-2 flex-shrink-0 align-items-center">
         <div class="sidebar-search">
         <div id="quarto-search" class="" title="Search"></div>
         </div>
-      </div>
+        </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link">Welcome</a>
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./intro.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">What is A2SIT?</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./summary.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Summary</span></a>
+  <a href="./about.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">What is A2SIT?</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">Using the app</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Using the app</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./data_input.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Data input</span></a>
+  <a href="./layout.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">App layout</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./analysis.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Indicator analysis</span></a>
+  <a href="./data_input.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Data input</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./results.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Exploring results</span></a>
+  <a href="./analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Indicator analysis</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./profiles.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Region profiles</span></a>
+  <a href="./results.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Exploring results</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./scenarios.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Scenarios</span></a>
+  <a href="./profiles.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Region profiles</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./unit_comparison.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Region comparisons</span></a>
+  <a href="./scenarios.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Scenarios</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./unit_comparison.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Region comparisons</span></span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">Methodology</a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Methodology</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./meth_overview.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Overview</span></a>
+  <a href="./meth_overview.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Overview</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./data_processing.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Data processing</span></a>
+  <a href="./data_processing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Data processing</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./aggregation_weighting.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Aggregation and weighing</span></a>
+  <a href="./aggregation_weighting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Aggregation and weighting</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./technical_implementation.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Technical implementation</span></a>
+  <a href="./technical_implementation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Technical implementation</span></span></a>
   </div>
 </li>
       </ul>
   </li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./references.html" class="sidebar-item-text sidebar-link">References</a>
-  </div>
-</li>
     </ul>
     </div>
 </nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#calculation-of-results" id="toc-calculation-of-results" class="nav-link active" data-scroll-target="#calculation-of-results"><span class="header-section-number">5.1</span> Calculation of results</a></li>
+  <li><a href="#map-and-table" id="toc-map-and-table" class="nav-link" data-scroll-target="#map-and-table"><span class="header-section-number">5.2</span> Map and table</a></li>
+  <li><a href="#bar-chart" id="toc-bar-chart" class="nav-link" data-scroll-target="#bar-chart"><span class="header-section-number">5.3</span> Bar chart</a></li>
+  <li><a href="#scenarios" id="toc-scenarios" class="nav-link" data-scroll-target="#scenarios"><span class="header-section-number">5.4</span> Scenarios</a></li>
+  <li><a href="#export" id="toc-export" class="nav-link" data-scroll-target="#export"><span class="header-section-number">5.5</span> Export</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Exploring results</span></h1>
+<h1 class="title"><span id="sec-results" class="quarto-section-identifier"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Exploring results</span></span></h1>
 </div>
 
 
@@ -210,9 +236,56 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<p>Content</p>
+<p>The results tab allows you to explore the results of the index, as maps, tables and bar charts. It also gives the option to select different scenarios.</p>
+<section id="calculation-of-results" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="calculation-of-results"><span class="header-section-number">5.1</span> Calculation of results</h2>
+<p>When you first click on the Results tab, behind the scenes the app runs a series of calculations which result in the index scores, and all the other aggregate scores. This is done automatically so there is no need for any user input. The calculation follows recognised international methodology<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, and the steps are as follows:</p>
+<ol type="1">
+<li>Treat any outliers</li>
+<li>Normalise indicators onto a 1-100 scale</li>
+<li>Aggregate using the weighted arithmetic mean, using the weights specified in your input spreadsheet.</li>
+</ol>
+<p>Note that the aggregate scores are scaled in two different ways: either using the 1-100 scale, or they are rescaled onto a categorical 1-5 scale. Both scales can be viewed in the app. The detailed explanation of these steps is left for <a href="data_processing.html"><span>Chapter&nbsp;10</span></a> and <a href="aggregation_weighting.html"><span>Chapter&nbsp;11</span></a>.</p>
+</section>
+<section id="map-and-table" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="map-and-table"><span class="header-section-number">5.2</span> Map and table</h2>
+<p><img src="figs/results_1.png" class="img-fluid" style="width:100.0%"></p>
+<p>In the main “Results” box, the top level of the index is plotted on the map, with colour shading representing the index scores. The map is interactive, allowing you to pan and zoom using by clicking and dragging, or scrolling with the mouse wheel.</p>
+<p>Hovering over each region gives further details about the region, including its score and rank. Clicking on a region will open a box in the bottom left with more details, including its scores and ranks for the aggregation level below the index, as well as its overall score and rank. Clicking on the “Go to profile” link here will go to an even more detailed profile of that region, which is explained later in <a href="profiles.html"><span>Chapter&nbsp;6</span></a>.</p>
+<p>You can change which indicator or aggregate is plotted on the map using the uppermost dropdown menu in the top right of this box. You can also select whether to view the scores as a 1-5 (categorical) scale or on the 1-100 scale (raw values at the indicator level).</p>
+<p>In the same “Results” box you can also select the “Table” tab to see the results as a table.</p>
+<p><img src="figs/results_2.png" class="img-fluid" style="width:100.0%"></p>
+<p>The table is colour-formatted to help highlight high and low values. The table rows are sorted by the highest index score downwards, and the columns are sorted from the highest level downwards. You can sort the table by different columns by clicking on the column headers, and search for particular units using the search box.</p>
+</section>
+<section id="bar-chart" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="bar-chart"><span class="header-section-number">5.3</span> Bar chart</h2>
+<p><img src="figs/results_3.png" class="img-fluid" style="width:100.0%"></p>
+<p>Underneath the Results box, there is a bar chart of the same indicator/aggregate shown on the map. Use the “gear” icon in the top right for more options: by default only the top 50 regions are shown but you can select the bottom 50, or all. The checkbox selects whether to break down scores into their components on the bar chart - these are the underlying indicators aggregates at the level immediately below. Clicking on a bar here will also give details about that region in the box in the bottom left of the map.</p>
+</section>
+<section id="scenarios" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="scenarios"><span class="header-section-number">5.4</span> Scenarios</h2>
+<p>By default the index is calculated using the arithmetic mean, which implies that low (high) scores in one indicator are perfectly compensated by high (low) scores in another. Optionally, in the “Adjust” box, select “Scenario 2” which uses the geometric mean: in this case lower scores in one indicator are less compensated by higher scores in others, or “Scenario 3” which implies even less compensation. Click “Recalculate” to see the new results. More details on the aggregation methods are given in <a href="aggregation_weighting.html"><span>Chapter&nbsp;11</span></a>.</p>
+<p><img src="figs/results_4.png" class="img-fluid" style="width:40.0%"></p>
+<p>Importantly, the scenario selected here will be used as the “main” results in the rest of the app, including in the “Profiles” and “Region comparison” tabs. All scenarios can additionally be compared in one place in the “Scenarios” tab, which is explained in <a href="scenarios.html"><span>Chapter&nbsp;7</span></a>.</p>
+<p>Clicking on the ‘gear’ icon in the top right of this box opens the option to adjust weights. If this is enabled, you can interactively adjust weights for the highest level of the index (below the index). <em>Please note however, this feature is not well-tested.</em> Additionally, in general equal weights are strongly recommended unless there is a specific reason to weight otherwise. If weight adjustments are required, it is probably better to do this in the input Excel file.</p>
+</section>
+<section id="export" class="level2" data-number="5.5">
+<h2 data-number="5.5" class="anchored" data-anchor-id="export"><span class="header-section-number">5.5</span> Export</h2>
+<p>The Export box contains options for exporting the results to Excel or R, or to download map images.</p>
+<p><img src="figs/results_5.png" class="img-fluid" style="width:40.0%"></p>
+<p>The map is downloadable in various formats by selecting the file format (either png, jpeg, pdf or html) and clicking the “Click to download” link. Capturing the map images is unfortunately not perfect and you may have to experiment a little to get the best results. An alternative, which can offer more control, may be to download the map as an HTML file, then open it in a separate tab, and save the image there using the “print to pdf” functionality in your browser, or to simply take a screenshot (in the latter case, you can maximise the window with F11 and take a screenshot of the full window using Windows’ “snipping” tool, for example).</p>
+<p>Finally the “Export results” section can be used to download the results as they stand either to Excel or as a file that can be read by R.</p>
+<p>If downloaded to Excel, the file will contain a number of tabs showing the results on both the 1-100 scale and the categorical 1-5 scale, for all scenarios. It also records the analysis tables, and metadata such as the weights and index structure.</p>
+<p>If downloaded to R, the file can be loaded into R and will contain the “coin”, which is an object encapsulating a composite indicator and used by the COINr package, which is the basis of the A2SIT app calculations. See <a href="https://bluefoxr.github.io/COINr/articles/coins.html">COINr documentation</a> for more details on how to work with coins.</p>
 
 
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>Specifically the <a href="https://publications.jrc.ec.europa.eu/repository/handle/JRC47008">JRC/OECD Handbook on Composite Indicators</a>, and guidance from the European Commission’s <a href="https://knowledge4policy.ec.europa.eu/composite-indicators_en">Competence Centre on Composite Indicators and Scoreboards</a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -242,9 +315,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -309,6 +396,92 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {

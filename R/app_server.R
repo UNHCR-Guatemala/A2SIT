@@ -1,3 +1,11 @@
+#' App server function
+#'
+#' This is called by `run_app()`.
+#'
+#' @param input Shiny inputs
+#' @param output Shiny outputs
+#' @param session SHiny session
+#'
 #' @import shiny
 app_server <- function(input, output, session) {
 

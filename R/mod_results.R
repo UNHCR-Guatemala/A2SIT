@@ -30,26 +30,29 @@ results_UI <- function(id) {
       tags$style("
         #controls {
           background-color: #ffffff;
-          opacity: 0.5;
-        }
-        #controls:hover{
           opacity: 0.9;
         }
         #unit_summary {
           background-color: #ffffff;
           font-size: 12px;
-          opacity: 0.7;
-        }
-        #unit_summary:hover{
           opacity: 0.9;
+        }
+        #download_block {
+          display: inline-block;
+          padding: 1rem 1rem;
         }"),
 
+      # MAP/BAR BOX
       shinydashboard::tabBox(
         title = "Results",
         id = NS(id, "tabset1"), width = 9, side = "right",
         tabPanel(
           title = "Map",
+
+          # Map
           leaflet::leafletOutput(NS(id, "map"), height = "60vh"),
+
+          # Map control panel
           absolutePanel(
             id = "controls",
             class = "panel panel-default",
@@ -60,12 +63,10 @@ results_UI <- function(id) {
                         choices = NULL, width = "100%"),
             selectInput(NS(id, "as_discrete"), label = NULL,
                         choices = list("1-5 scale" = TRUE, "1-100 scale" = FALSE), width = "100%"),
-            div(
-              downloadLink(NS(id, "download_map"), label = "Download map"),
-              style = "text-align: right;"
-            ),
             style = "z-index: 20; padding: 10px; font-size: 0.8em;",
           ),
+
+          # Unit summary panel
           absolutePanel(
             id = "unit_summary",
             class = "panel panel-default",
@@ -80,13 +81,16 @@ results_UI <- function(id) {
             style = "z-index: 20; padding-top: 10px; padding-left: 10px; padding-right: 10px;",
           )
         ),
+
+        # Results Table
         tabPanel("Table", DT::dataTableOutput(NS(id, "results_table")))
       ),
 
+      # ADJUST BOX
       shinydashboardPlus::box(
         title = box_pop_title(
           title = "Adjust",
-          popover_text = "Select a scenario and click 'Recalculate'. See 'gear' icon in the top right for advanced options.",
+          popover_text = "Select a scenario and click 'Recalculate'. The 'gear' icon in the top right allows weight adjustment but this is not recommended.",
           placement = "bottom", px_from_right = 40
         ),
         width = 3, status = "warning",
@@ -101,8 +105,9 @@ results_UI <- function(id) {
         ),
         uiOutput(NS(id, "weight_sliders")),
         selectInput(NS(id, "agg_method"), label = "Scenarios",
-                    choices = list("Scenario 1: Arithmetic mean" = "a_amean",
-                                   "Scenario 2: Geometric mean" = "a_gmean"),
+                    choices = list("Scenario 1: High compensation" = "a_amean",
+                                   "Scenario 2: Medium compensation" = "a_gmean",
+                                   "Scenario 3: Low compensation" = "a_hmean"),
                     width = "100%") |>
           add_input_pop("The formula used to aggregate indicators at each level. Please click the main help icon in the upper right for more information."),
         shinyWidgets::actionBttn(
@@ -111,6 +116,8 @@ results_UI <- function(id) {
           style = "jelly",
           color = "success", icon = icon("calculator"), size = "sm"
         )#,
+
+        # Spare old code from custom scenario saving (currently disabled)
         # hr(),
         #
         # textInput(inputId = NS(id,"scenario_name"), label = "Save scenario for comparison", placeholder = "Enter a name"),
@@ -120,9 +127,39 @@ results_UI <- function(id) {
         #   style = "jelly",
         #   color = "success", icon = icon("floppy-disk"), size = "sm"
         # )
-      )
-    ),
 
+      ), # end adjust box
+
+      # EXPORT BOX
+      shinydashboardPlus::box(
+        title = box_pop_title(
+          title = "Export",
+          popover_text = "Export the map as an image file and export the results to Excel or R.",
+          placement = "bottom", px_from_right = 20
+        ),
+        width = 3, status = "success",
+
+        h4(icon("download"), " Download map"),
+        div(style = "display: flex; justify-content: space-between;",
+            downloadLink(NS(id, "download_map"), label = "Click to download", style = "text-align: right;"),
+            selectInput(NS(id, "download_map_filetype"), label = NULL,
+                        choices = c("png", "pdf", "jpeg", "html"),
+                        width = "40%")
+        ),
+
+        h4(icon("file-export"), " Export results"),
+        "Download results either as an Excel spreadsheet or R data file.",
+        br(),br(),
+        div(style = "display: flex; justify-content: space-between;",
+            downloadButton("export_button_excel", "Excel", style = "width: 45%;"),
+            downloadButton("export_button_R", "R", style = "width: 45%;")
+        )
+
+      )
+
+    ), # end fluidrow
+
+    # BAR CHART
     fluidRow(
       shinydashboardPlus::box(
         id = NS(id, "bar_box"), title = "",
@@ -187,6 +224,7 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, r_
     })
 
     top_icodes <- reactive({
+      req(coin())
       maxlevel <- coin()$Meta$maxlev
       get_codes_at_level(coin(), maxlevel - 1)
     })
@@ -246,15 +284,9 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, r_
 
     # download map
     output$download_map <- downloadHandler(
-      filename = "A2SIT_map.png",
-
+      filename = function(){paste0("A2SIT_map.", input$download_map_filetype)},
       content = function(file) {
-        mapview::mapshot(
-          x = user_map(),
-          file = file,
-          cliprect = "viewport",
-          selfcontained = FALSE
-        )
+        f_save_map(plt = user_map(), file_name = file)
       }
     )
 
@@ -348,7 +380,7 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, r_
     # unit info: header
     output$unit_name <- renderText({
       if(is.null(r_shared$usel)){
-        "Select a region..."
+        "Click on a region on the map to see details about it."
       } else {
         COINr::ucodes_to_unames(coin(), r_shared$usel)
       }

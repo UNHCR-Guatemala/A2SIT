@@ -1,9 +1,7 @@
 #' Export to excel
 #'
-#' Simplified export to Excel with some formatting
-#' Note if we change the index structure, the conditional formatting will need
-#' to be adjusted.
-#'
+#' Simplified export to Excel. Exports the coin contents, plus scenarios, to
+#' an Excel spreadsheet.
 #'
 #' @param coin The coin, with results present.
 #' @param l_scen List of scenario data frames
@@ -50,14 +48,14 @@ f_export_to_excel <- function(coin, l_scen, fname = "index_export.xlsx"){
   # Data sets
   l <- c(l, coin$Data)
 
-  # colours
-  tab_colours <- list(
-    Results = "green",
-    Structure = "orange",
-    Analysis = "blue",
-    Weights = "yellow",
-    Other = "grey"
-  )
+  # # colours
+  # tab_colours <- list(
+  #   Results = "green",
+  #   Structure = "orange",
+  #   Analysis = "blue",
+  #   Weights = "yellow",
+  #   Other = "grey"
+  # )
 
   openxlsx::write.xlsx(l, file = fname)
 

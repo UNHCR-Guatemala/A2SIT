@@ -21,7 +21,7 @@ Reads a formatted Excel file found at \code{file_path} and outputs a constructed
 On reading the Excel file, this function does the following:
 \itemize{
 \item Data is split into data and metadata and tidied
-\item Metadata is merged with hard-coded index structure
+\item Metadata is read from structure tab
 \item Any indicators with no data at all are removed
 \item Any resulting aggregation groups with no "children" are removed
 \item A coin is assembled using COINr and this is the function output
@@ -29,7 +29,8 @@ On reading the Excel file, this function does the following:
 
 If indicators/groups are removed, a message is sent to the console.
 
-The Excel file is required to be in a fairly strict format: an example is given at
-\code{inst/data_module-input.xlsx}. This template is still a work in progress
-and can be modified in the app phase following further feedback.
+The Excel file is required to be in a fairly strict format: templates are downloaded
+through the app or using \code{\link[=f_generate_input_template]{f_generate_input_template()}}.
+
+User errors are trapped as much as possible with hopefully-helpful error messages.
 }

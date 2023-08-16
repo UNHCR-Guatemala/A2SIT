@@ -1,4 +1,12 @@
-# formatter for strengths and weaknesses
+#' Formatter for strengths and weaknesses
+#'
+#' Tidies up formatting of numbers
+#'
+#' @param X Output from [COINr::get_str_weak()]
+#'
+#' @return Tidied table
+#' @export
+#'
 format_sw <-  function(X){
 
   # round values depending on size of number
@@ -12,7 +20,18 @@ format_sw <-  function(X){
 
 }
 
-# data frame of score, ranks etc for specific unit
+#
+
+#' Data frame of score, ranks etc for specific unit
+#'
+#' This is like [COINr::get_unit_summary()] but with some additions.
+#'
+#' @param coin The coin
+#' @param usel A uCode found within the coin
+#'
+#' @return Data frame
+#' @export
+#'
 f_indicator_df <- function(coin, usel){
 
   # get indicator table for selected unit
@@ -39,7 +58,18 @@ f_indicator_df <- function(coin, usel){
 
 }
 
-# display formatted indicator table for a selected unit
+# display
+
+#' Interactive indicator table for a selected unit
+#'
+#' A DT table for a selected unit
+#'
+#' @param coin The coin
+#' @param usel A uCode found within the coin
+#'
+#' @return A DT table
+#' @export
+#'
 f_indicator_table <- function(coin, usel){
 
   df_out <- f_indicator_df(coin, usel)
@@ -71,7 +101,7 @@ f_indicator_table <- function(coin, usel){
       rownames = FALSE,
       selection = "none",
       filter = 'top'
-      # extensions = 'RowGroup',
+      # extensions = 'RowGroup', # this was for grouping rows, see DT documentation...
       # options = list(
       #   rowGroup = list(dataSrc = 0),
       #   columnDefs = list(
@@ -92,6 +122,17 @@ f_indicator_table <- function(coin, usel){
 
 }
 
+#' Comparison table for two units
+#'
+#' A data frame with scores, ranks, severity, for all levels.
+#'
+#' @param coin The coin
+#' @param usel1 A unit, referenced by its uCode
+#' @param usel2 A unit, referenced by its uCode
+#'
+#' @return A data frame
+#' @export
+#'
 f_compare_units_df <- function(coin, usel1, usel2){
 
   df1 <- f_indicator_df(coin, usel1)
@@ -118,6 +159,19 @@ f_compare_units_df <- function(coin, usel1, usel2){
 
 }
 
+#' Interactive unit comparison table
+#'
+#' Calls [f_compare_units_df()], then just shows the columns specified by `using`.
+#' This is in order not to have too much info in the table. Returns DT table.
+#'
+#' @param coin The coin
+#' @param usel1 A unit, referenced by its uCode
+#' @param usel2 A unit, referenced by its uCode
+#' @param using One of `c("Ranks", "Scores", "Severity")`
+#'
+#' @return A DT table with highlighting
+#' @export
+#'
 f_compare_units_table <- function(coin, usel1, usel2, using){
 
   stopifnot(using %in% c("Ranks", "Scores", "Severity"))
@@ -179,6 +233,18 @@ f_compare_units_table <- function(coin, usel1, usel2, using){
 
 }
 
+#' Radar plot for a group
+#'
+#' Thin wrapper for [iCOINr::iplot_radar()]: just makes sure to return `NULL` if
+#' less than 3 indicators in group.
+#'
+#' @param coin The coin
+#' @param usel Selected unit (uCode)
+#' @param plot_group iCode of group to plot
+#'
+#' @return Radar plot, using plotly
+#' @export
+#'
 f_plot_radar <- function(coin, usel, plot_group){
 
   icode_level <- get_level_of_icode(coin, plot_group)
@@ -203,7 +269,18 @@ f_plot_radar <- function(coin, usel, plot_group){
 
 }
 
-# output a DT table for a group of indicators, for specified unit
+#' Interactive table of group scores
+#'
+#' This is the counterpart table to the radar plot. Returns a table of scores or
+#' values for a given aggregation group, including ranks and medians.
+#'
+#' @param coin The coin
+#' @param usel Selected unit (uCode)
+#' @param plot_group iCode of group to display
+#'
+#' @return A DT table
+#' @export
+#'
 f_display_group_table <- function(coin, usel, plot_group){
 
   icode_level <- get_level_of_icode(coin, plot_group)

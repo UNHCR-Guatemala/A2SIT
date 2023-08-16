@@ -9,10 +9,18 @@ cache_admin2_geometry(ISO3s, overwrite = FALSE)
 \arguments{
 \item{ISO3s}{Character vector of ISO3s to get maps for}
 
-\item{overwrite}{if TRUE overwrites any existing files}
+\item{overwrite}{if \code{TRUE} overwrites any existing files}
 }
 \description{
-Queries the UNHCR API to get Admin2 layer for the specified countries, then
-simplifies the geometry and stores in inst/geom. To enable quick retrieval
+This function is intended for use in collecting the geometry for multiple
+countries in one go, then storing it within the package so it can be used
+for mapping and generating templates.
+}
+\details{
+The function queries the UNHCR API to get Admin2 layer for the specified countries, then
+tries to simplify the geometry and stores in inst/geom. To enable quick retrieval
 of maps. This is intended to just be run occasionally.
+
+Note that at the moment, this doesn't \emph{guarantee} sensible geometry files because
+there are sometimes issues with duplicate Admin2 codes, missing names and so on.
 }
