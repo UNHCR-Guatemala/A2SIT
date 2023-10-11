@@ -196,7 +196,10 @@ analysis_server <- function(id, coin, coin_full, parent_input, r_shared) {
 
         # remove indicators and update coin + recalculate scenarios
         coin(f_remove_indicators(coin(), r_shared$isel))
-        r_shared$scenarios <- f_get_scenarios(coin())
+        if(r_shared$results_built){
+          r_shared$scenarios <- f_get_scenarios(coin())
+        }
+
 
         shinyWidgets::show_toast(
           title = "Indicator removed",
@@ -230,7 +233,9 @@ analysis_server <- function(id, coin, coin_full, parent_input, r_shared) {
 
         # replace indicator, regenerate results and scenarios
         coin(f_add_indicators(coin(), r_shared$isel))
-        r_shared$scenarios <- f_get_scenarios(coin())
+        if(r_shared$results_built){
+          r_shared$scenarios <- f_get_scenarios(coin())
+        }
 
         shinyWidgets::show_toast(
           title = "Indicator restored",
