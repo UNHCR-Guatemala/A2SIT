@@ -280,9 +280,11 @@ f_remove_indicators <- function(coin, remove_indicators = NULL){
     coin$Analysis$Raw <- ind_analysis
   }
 
-  # regenerate results and severity
-  coin <- f_generate_results(coin)
-  coin <- f_make_severity_level_dset(coin)
+  # regenerate results and severity (if results have already been calculated)
+  if(!is.null(coin$Data$Aggregated)){
+    coin <- f_generate_results(coin)
+    coin <- f_make_severity_level_dset(coin)
+  }
 
   coin
 
@@ -317,9 +319,11 @@ f_add_indicators <- function(coin, add_indicators = NULL){
     coin$Analysis$Raw <- ind_analysis
   }
 
-  # regenerate results and severity
-  coin <- f_generate_results(coin)
-  coin <- f_make_severity_level_dset(coin)
+  # regenerate results and severity (if results have already been calculated)
+  if(!is.null(coin$Data$Aggregated)){
+    coin <- f_generate_results(coin)
+    coin <- f_make_severity_level_dset(coin)
+  }
 
   coin
 
