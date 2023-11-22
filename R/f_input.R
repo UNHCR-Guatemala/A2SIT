@@ -9,6 +9,8 @@
 #' - Data is split into data and metadata and tidied
 #' - Metadata is read from structure tab
 #' - Any indicators with no data at all are removed
+#' - Any indicators with only one unique value are also removed (these cannot be normalised as they
+#' have a range of zero)
 #' - Any resulting aggregation groups with no "children" are removed
 #' - A coin is assembled using COINr and this is the function output
 #'
@@ -143,6 +145,15 @@ f_data_input <- function(file_path, ISO3){
     iData <- iData[!empty_rows, ]
   }
 
+  # remove any indicators with same values for all indicators
+  iData_ <- iData[names(iData) %nin% c("uCode", "uName")]
+  n_unique <- sapply(iData_, function(x){length(unique(x))})
+  to_remove <- names(iData_)[n_unique < 2]
+  if(length(to_remove) > 0){
+    message("Removed indicators with only one unique value: ", toString(to_remove))
+    iData <- iData[names(iData) %nin% to_remove]
+    iMeta <- iMeta[iMeta$iCode %nin% to_remove, ]
+  }
 
   # iteratively remove groups with no children, working upwards
   for (Level in 2 : max(iMeta$Level, na.rm = TRUE)){

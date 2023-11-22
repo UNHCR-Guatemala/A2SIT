@@ -23,6 +23,8 @@ On reading the Excel file, this function does the following:
 \item Data is split into data and metadata and tidied
 \item Metadata is read from structure tab
 \item Any indicators with no data at all are removed
+\item Any indicators with only one unique value are also removed (these cannot be normalised as they
+have a range of zero)
 \item Any resulting aggregation groups with no "children" are removed
 \item A coin is assembled using COINr and this is the function output
 }
