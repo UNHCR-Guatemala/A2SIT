@@ -16,7 +16,7 @@ Depends:
 Imports: 
     bsplus,
     cicerone,
-    COINr (>= 1.1.8),
+    COINr (>= 1.1.9),
     config,
     DT,
     golem,

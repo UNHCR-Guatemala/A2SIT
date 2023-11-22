@@ -115,7 +115,7 @@ profiles_server <- function(id, coin, coin_full, input, r_shared) {
       req(r_shared$results_built)
       shinydashboard::valueBox(
         get_index_score(coin(), input$selected_unit) |>
-          round(1),
+          round(2),
         "Score",
         #icon = icon("star"),
         color = "green"

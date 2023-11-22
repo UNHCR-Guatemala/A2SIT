@@ -402,7 +402,7 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, r_
       coin()$Data$Aggregated[[
         get_index_code(coin())]] |>
         mean(na.rm = TRUE) |>
-        round(1)
+        round(2)
     })
 
     # unit info: index score
@@ -418,7 +418,7 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, r_
         paste0("Overall severity = ", index_sev)
       } else {
         index_score <- get_index_score(coin(), r_shared$usel) |>
-          round(1)
+          round(2)
         paste0("Overall score = ", index_score, " (mean ", mean_index_score(), ")")
       }
 

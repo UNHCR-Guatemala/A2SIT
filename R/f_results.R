@@ -147,7 +147,7 @@ f_make_severity_level_dset <- function(coin){
   coin$Data$Severity <- iData
 
   df_results <- COINr::get_results(coin, "Severity", tab_type = "Full",
-                                   also_get = "uName", nround = 1, out2 = "df")
+                                   also_get = "uName", nround = 2, out2 = "df")
   df_results <- df_results[names(df_results) != "Rank"]
 
   coin$Results$Severity <- df_results
@@ -327,7 +327,7 @@ f_plot_map <- function(coin, iCode, ISO3, as_discrete = TRUE){
 
   labels <- paste0(
     "<strong>", admin2_geom$gis_name, "</strong><br/>",
-    round(admin2_geom$Indicator, 1), " (rank ", admin2_geom$Rank,")"
+    round(admin2_geom$Indicator, 2), " (rank ", admin2_geom$Rank,")"
   ) |>
     lapply(htmltools::HTML)
 
@@ -407,9 +407,9 @@ f_generate_results <- function(coin){
 
   # generate results tables (attached to coin, so will appear when exported to Excel)
   coin <- COINr::get_results(coin, dset = "Aggregated", tab_type = "Full",
-                             also_get = "uName", nround = 1, out2 = "coin")
+                             also_get = "uName", nround = 2, out2 = "coin")
   coin <- COINr::get_results(coin, dset = "Aggregated", tab_type = "Full", use = "ranks",
-                             also_get = "uName", nround = 1, out2 = "coin")
+                             also_get = "uName", nround = 2, out2 = "coin")
 
   coin
 
