@@ -275,11 +275,18 @@ f_display_results_table <- function(coin, type = "scores", as_discrete = FALSE){
 #' @param iCode iCode of indicator/aggregate to plot
 #' @param ISO3 Country of the data to plot
 #' @param as_discrete If `TRUE`, plots severity categories.
+#' @param bin_colours Vector of colours to use on discrete palette if `as_discrete = TRUE`
+#' @param poly_opacity Opacity for polygons: value between 0 and 1
+#' @param line_colour Colour for lines
+#' @param line_weight Weight for lines
+#' @param line_type Type for lines: value from 1-4.
 #'
 #' @return Leaflet map object
 #' @export
 #'
-f_plot_map <- function(coin, iCode, ISO3, as_discrete = TRUE){
+f_plot_map <- function(coin, iCode, ISO3, as_discrete = TRUE, bin_colours = NULL,
+                       poly_opacity = 0.7, line_colour = "white", line_weight = 2,
+                       line_type = "3"){
 
   available_ISO3s <- get_cached_countries()
 
@@ -322,7 +329,11 @@ f_plot_map <- function(coin, iCode, ISO3, as_discrete = TRUE){
   pal <- if(as_discrete){
     leaflet::colorFactor(palette, levels = 1:5)
   } else {
-    leaflet::colorNumeric(palette, domain = iValues)
+    if(is.null(bin_colours)){
+      leaflet::colorNumeric(palette, domain = iValues)
+    } else {
+      leaflet::colorBin(bin_colours, domain = iValues, bins = length(bin_colours), pretty = FALSE)
+    }
   }
 
   labels <- paste0(
@@ -338,16 +349,16 @@ f_plot_map <- function(coin, iCode, ISO3, as_discrete = TRUE){
     leaflet::addProviderTiles("CartoDB.Positron") |>
     leaflet::addPolygons(layerId = ~adm2_source_code,
                          fillColor = ~pal(Indicator),
-                         weight = 2,
+                         weight = line_weight,
                          opacity = 1,
-                         color = "white",
-                         dashArray = "3",
-                         fillOpacity = 0.7,
+                         color = line_colour,
+                         dashArray = line_type,
+                         fillOpacity = poly_opacity,
                          highlightOptions = leaflet::highlightOptions(
-                           weight = 5,
+                           weight = line_weight + 2,
                            color = "#666",
                            dashArray = "",
-                           fillOpacity = 0.7,
+                           fillOpacity = poly_opacity,
                            bringToFront = TRUE),
                          label = labels,
                          labelOptions = leaflet::labelOptions(
@@ -355,7 +366,7 @@ f_plot_map <- function(coin, iCode, ISO3, as_discrete = TRUE){
                            textsize = "15px",
                            direction = "auto")) |>
     leaflet::addLegend(pal = pal, values = ~Indicator, opacity = 0.7, title = NULL,
-                       position = "bottomright")
+                       position = "bottomright", labFormat = leaflet::labelFormat(digits = 1))
 
   mp
 

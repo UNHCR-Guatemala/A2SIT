@@ -4,7 +4,17 @@
 \alias{f_plot_map}
 \title{Choropleth map of indicator/aggregate}
 \usage{
-f_plot_map(coin, iCode, ISO3, as_discrete = TRUE)
+f_plot_map(
+  coin,
+  iCode,
+  ISO3,
+  as_discrete = TRUE,
+  bin_colours = NULL,
+  poly_opacity = 0.7,
+  line_colour = "white",
+  line_weight = 2,
+  line_type = "3"
+)
 }
 \arguments{
 \item{coin}{The coin}
@@ -14,6 +24,16 @@ f_plot_map(coin, iCode, ISO3, as_discrete = TRUE)
 \item{ISO3}{Country of the data to plot}
 
 \item{as_discrete}{If \code{TRUE}, plots severity categories.}
+
+\item{bin_colours}{Vector of colours to use on discrete palette if \code{as_discrete = TRUE}}
+
+\item{poly_opacity}{Opacity for polygons: value between 0 and 1}
+
+\item{line_colour}{Colour for lines}
+
+\item{line_weight}{Weight for lines}
+
+\item{line_type}{Type for lines: value from 1-4.}
 }
 \value{
 Leaflet map object
