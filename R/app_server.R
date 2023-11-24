@@ -35,6 +35,7 @@ app_server <- function(input, output, session) {
   profiles_server("id_profiles", coin, coin_full, input, r_shared)
   scenarios_server("id_scenarios", coin, input, r_shared)
   compare_units_server("id_compare_units", coin, input, r_shared)
+  map_server("id_map", coin, input, r_shared)
 
   # Exports -----------------------------------------------------------------
 
