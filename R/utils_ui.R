@@ -195,3 +195,18 @@ compare_units_modal <- function(){
     size = "large"
   )
 }
+
+#' Text input for map colour
+#'
+#' Thin wrapper for textInput().
+#'
+#' @param id ID for slider
+#' @param label Label
+#' @param value initial value
+#'
+#' @return HTML code for slider
+#' @export
+#'
+colour_input <- function(id, initial_colour) {
+  textInput(id, label = NULL, placeholder = "HEX code", width = "50%", value = initial_colour)
+}
