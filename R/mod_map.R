@@ -13,22 +13,26 @@ map_UI <- function(id) {
         width = 25,
         startOpen = TRUE,
         background = "#80808060",
+
         h3("Map controls"),
         p("Click the gear icon above to close/open this panel"),
         selectInput(NS(id, "plot_icode"), label = "Indicator to plot",
-                    choices = NULL, width = "90%"),
-        h4("Colours"),
-        numericInput(NS(id, "n_colours"), label = "Number of colours", 4, min = 2, max = 10, step = 1),
+                    choices = NULL, width = "95%"),
+        #h4("Colours"),
+        numericInput(NS(id, "n_colours"), label = "Number of colours", 4, min = 2, max = 10, step = 1, width = "50%"),
         uiOutput(NS(id, "mapcolour_dropdowns")),
 
-        h4("Styling"),
+        #h4("Styling"),
         numericInput(NS(id, "map_opacity"), label = "Opacity", value = 0.7, min = 0.1, max = 1, step = 0.1, width = "50%"),
+
         textInput(NS(id, "map_linecolour"), label = "Line colour", placeholder = "HEX code", width = "50%", value = "white"),
         numericInput(NS(id, "map_lineweight"), label = "Line weight", value = 2, min = 0.5, max = 5, step = 0.5, width = "50%"),
+
         selectInput(NS(id, "map_linetype"), label = "Line type",
-                    choices = list(Solid = 1, Dot = 2, Dash = 4)),
+                          choices = list(Solid = 1, Dot = 2, Dash = 4),  width = "50%"),
 
         actionButton(NS(id, "plot_map_button"), label = "Plot"),
+
         tags$style("z-index: 2000")
 
       ),
@@ -38,7 +42,7 @@ map_UI <- function(id) {
 
 }
 
-map_server <- function(id, coin, input, r_shared) {
+map_server <- function(id, coin, parent_input, r_shared) {
 
   moduleServer(id, function(input, output, session) {
 
@@ -49,7 +53,24 @@ map_server <- function(id, coin, input, r_shared) {
                         choices = get_indicator_codes(coin(), with_levels = TRUE))
     })
 
-    # create map
+    # reactive for triggering map build
+    make_map <- reactiveVal(NULL)
+
+    # # auto-launch tour the first time a user visits this tab
+    # observe({
+    #   req(parent_input$tab_selected == "full_map")
+    #   req(colours_ready())
+    #   req(r_shared$new_to_map_tab)
+    #   make_map(make_map() + 1)
+    #   r_shared$new_to_map_tab <- FALSE
+    # })
+
+    # update from button
+    observeEvent(input$plot_map_button,{
+      make_map(input$plot_map_button)
+    })
+
+    # plot map
     current_map <- reactive({
       req(coin())
       req(results_exist(coin()))
@@ -69,17 +90,21 @@ map_server <- function(id, coin, input, r_shared) {
         poly_opacity = input$map_opacity,
         line_colour = input$map_linecolour,
         line_weight = input$map_lineweight,
-        line_type = as.character(input$map_linetype)
+        line_type = as.character(input$map_linetype),
+        legendposition = "bottomleft"
       )
     }) |>
-      bindEvent(input$plot_map_button)
+      bindEvent(make_map())
 
     # Plot map
     output$map <- leaflet::renderLeaflet({
       current_map()
     })
 
-    # render the weight sliders. has to be done server-side because depends on
+    # # reactive which tells that ready to build map
+    # colours_ready <- reactiveVal(FALSE)
+
+    # render the colour inputs. has to be done server-side because depends on
     # user input.
     output$mapcolour_dropdowns <- renderUI({
 

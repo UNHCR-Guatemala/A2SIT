@@ -27,6 +27,7 @@ app_ui <- function() {
 
       h3("Build", style = "padding-left: 10px;"),
       p("Build your index and view the results.", style = "padding-left: 12px; color: #696969;"),
+      p("Complete these steps first.", style = "padding-left: 12px; color: #696969;"),
       shinydashboard::menuItem(span("1. Welcome", id = "welcome_sb_link"), tabName = "welcome", icon = icon("house")),
       shinydashboard::menuItem(span("2. Upload", id = "upload_sb_link"), tabName = "upload", icon = icon("upload")),
       shinydashboard::menuItem(span("3. Analyse", id = "analyse_sb_link"), tabName = "analyse", icon = icon("magnifying-glass-chart")),
@@ -59,6 +60,7 @@ app_ui <- function() {
     profiles_modal(),
     scenarios_modal(),
     compare_units_modal(),
+    full_map_modal(),
 
     # some themeing (to improve)
     #includeCSS(system.file("app", "www", "custom.css", package = "A2SIT")),
