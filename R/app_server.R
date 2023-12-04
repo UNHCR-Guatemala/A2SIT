@@ -23,12 +23,14 @@ app_server <- function(input, output, session) {
     results_built = FALSE, # whether results (up to aggregation) built
     scenarios = NULL, # list of saved scenarios for comparison
     l_analysis = NULL,
-    l_analysis_f = NULL
+    l_analysis_f = NULL,
+    new_to_welcome_tab = TRUE,
+    new_to_map_tab = TRUE
   )
 
   # Modules -----------------------------------------------------------------
 
-  welcome_server("id_welcome", session)
+  welcome_server("id_welcome", session, input, r_shared)
   input_server("id_input", coin, coin_full, r_shared)
   analysis_server("id_analysis", coin, coin_full, input, r_shared)
   results_server("id_results", coin, coin_full, input, session, r_shared)
