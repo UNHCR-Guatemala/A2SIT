@@ -142,14 +142,35 @@ f_make_severity_level_dset <- function(coin){
 
   iData <- COINr::get_dset(coin, "Aggregated")
 
-  iData <- f_dset_to_severity(coin, iData)
+  if(is.null(iData)){
+    stop("Aggregated data set not found when attempting to generate severity scores.")
+  }
 
-  coin$Data$Severity <- iData
+  # convert to severity scores
+  iData_s <- f_dset_to_severity(coin, iData)
+  # add to coin
+  coin$Data$Severity <- iData_s
 
+  # make results table based on severity
   df_results <- COINr::get_results(coin, "Severity", tab_type = "Full",
                                    also_get = "uName", nround = 2, out2 = "df")
+
+  # remove rank column which is based on severity
   df_results <- df_results[names(df_results) != "Rank"]
 
+  # make rank column, but based on aggregated dset
+  iData$Rank <- rank(-1*iData[[get_index_code(coin)]],
+                           na.last = "keep", ties.method = "min")
+  # merge onto severity
+  df_results <- base::merge(df_results, iData[c("uCode", "Rank")], by = "uCode")
+
+  # rearrange cols
+  first_cols <- c("uCode", "uName", "Rank")
+  df_results <- df_results[c(first_cols, setdiff(names(df_results), first_cols))]
+  # sort by rank
+  df_results <- df_results[order(df_results$Rank), ]
+
+  # put table in coin
   coin$Results$Severity <- df_results
 
   coin
@@ -229,7 +250,7 @@ f_display_results_table <- function(coin, type = "scores", as_discrete = FALSE){
 
   # generate colours ----
   breaks <- seq(min_all, max_all, length.out = 12)[2:11]
-  colour_func <- grDevices::colorRampPalette(c("#DCE9FF", "#0072BC"))
+  colour_func <- grDevices::colorRampPalette(table_colours())
   colour_palette <- colour_func(length(breaks) + 1)
 
   # Create table
@@ -286,7 +307,7 @@ f_display_results_table <- function(coin, type = "scores", as_discrete = FALSE){
 #'
 f_plot_map <- function(coin, iCode, ISO3, as_discrete = TRUE, bin_colours = NULL,
                        poly_opacity = 0.7, line_colour = "white", line_weight = 2,
-                       line_type = "3"){
+                       line_type = "3", legendposition = "bottomright"){
 
   available_ISO3s <- get_cached_countries()
 
@@ -366,7 +387,7 @@ f_plot_map <- function(coin, iCode, ISO3, as_discrete = TRUE, bin_colours = NULL
                            textsize = "15px",
                            direction = "auto")) |>
     leaflet::addLegend(pal = pal, values = ~Indicator, opacity = 0.7, title = NULL,
-                       position = "bottomright", labFormat = leaflet::labelFormat(digits = 1))
+                       position = legendposition, labFormat = leaflet::labelFormat(digits = 1))
 
   mp
 
