@@ -1,6 +1,7 @@
 input_UI <- function(id) {
 
   shinydashboard::tabItem(
+    shinyjs::useShinyjs(),
     tabName = "upload",
     tags$style(type='text/css', '#id_input-data_message {white-space: pre-wrap;}'),
     column(
@@ -22,15 +23,29 @@ input_UI <- function(id) {
           h4("1. Select your country"),
           country_dropdown(NS(id, "ISO3"), "Country") |>
             add_input_pop("If your country is not on this list please contact us."),
-          hr(),
+          shinyWidgets::prettySwitch(NS(id, "enable_map_upload"), label = "Shape file upload", value = FALSE),
 
-          h4("2. Download country template"),
-          p("Download the template for the selected country:"),
-          downloadButton(NS(id, "download_country_template"), "Download country template"),
-          hr(),
+          # map upload: this bit is hidden unless switch is on
+          p("Upload a valid GEOJSON or JSON file specifying the regions you wish to map.", id = NS(id, "shape_upload_text")),
+          col_8(
+            fileInput(NS(id, "shape_file"), NULL, buttonLabel = "Browse...", accept = c("json", "geojson")),
+            style='padding:0px;'
+          ),
+          col_4(actionButton(NS(id, "load_shape_click"), "Load")),
+          selectInput(NS(id, "uCode_col"), "Field name of region codes", choices = NULL),
+          selectInput(NS(id, "uName_col"), "Field name of region names", choices = NULL),
 
-          h4("3. Upload your data"),
-          p("Upload your compiled template here and click the 'Load' button."),
+          col_12(
+            hr(),
+            h4("2. Download country template"),
+            p("Download the template for the selected country:"),
+            downloadButton(NS(id, "download_country_template"), "Download country template"),
+            hr(),
+
+            h4("3. Upload your data"),
+            p("Upload your compiled template here and click the 'Load' button."),
+            style='padding:0px;'
+          ),
 
           col_8(
             fileInput(NS(id, "xlsx_file"), NULL, buttonLabel = "Browse...", accept = c("xls", "xlsx")) |>
@@ -76,18 +91,59 @@ input_server <- function(id, coin, coin_full, r_shared) {
 
   moduleServer(id, function(input, output, session) {
 
+    # show/hide map upload controls
+    observeEvent(input$enable_map_upload, {
+      shinyjs::toggle("shape_file")
+      shinyjs::toggle("load_shape_click")
+      shinyjs::toggle("uCode_col")
+      shinyjs::toggle("uName_col")
+      shinyjs::toggle("shape_upload_text")
+
+      if(input$enable_map_upload){
+        shinyjs::hide("ISO3")
+      } else {
+        shinyjs::show("ISO3")
+      }
+    })
+
+    df_geom <- reactiveVal(NULL)
+
+    # upload shape files
+    observeEvent(input$load_shape_click, {
+      req(input$shape_file)
+      df_geom(geojson_to_sf(input$shape_file$datapath))
+
+      # TO FINISH: add df_geom check and fix function
+      # Also in general need to ensure user geom will pass through app without
+      # causing a problem: in particular make sure that ISO3 shared reactive
+      # being NULL is not an issue.
+
+      r_shared$ISO3 <- NULL
+    })
+
+    # update column dropdowns
+    observe({
+      req(df_geom())
+      updateSelectInput(inputId = "uCode_col", choices = names(df_geom()))
+      updateSelectInput(inputId = "uName_col", choices = names(df_geom()))
+    })
+
     # update shared reactive for other modules
     observeEvent(input$ISO3, {
+      req(!r_shared$user_geom)
       r_shared$ISO3 <- input$ISO3
     })
 
     # Download template
     output$download_country_template <- downloadHandler(
       filename = function() {
-        paste0("A2SIT_data_input_template_", input$ISO3, ".xlsx")
+        paste0("A2SIT_data_input_template_", r_shared$ISO3, ".xlsx")
       },
       content = function(file) {
-        f_generate_input_template(input$ISO3, file)
+        f_generate_input_template(
+          input$ISO3, df_geom = df_geom(),
+          uCode_col = input$uCode_col, uName_col = input$uName_col,
+          to_file_name = file)
       }
     )
 
@@ -97,7 +153,7 @@ input_server <- function(id, coin, coin_full, r_shared) {
       req(input$xlsx_file)
 
       data_message <- utils::capture.output({
-        coin(f_data_input(input$xlsx_file$datapath, input$ISO3))
+        coin(f_data_input(input$xlsx_file$datapath, r_shared$ISO3))
       }, type = "message")
 
       if(is.null(coin())){
