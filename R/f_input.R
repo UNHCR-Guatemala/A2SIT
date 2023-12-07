@@ -27,12 +27,14 @@
 #' @return coin-class object
 #'
 #' @export
-f_data_input <- function(file_path, ISO3){
+f_data_input <- function(file_path, ISO3, df_geom){
 
   # Checks ----
 
-  valid_ISOs <- get_cached_countries()
-  stopifnot(ISO3 %in% valid_ISOs)
+  if(!is.null(ISO3)){
+    valid_ISOs <- get_cached_countries()
+    stopifnot(ISO3 %in% valid_ISOs)
+  }
 
   # Settings ----
 
@@ -76,6 +78,9 @@ f_data_input <- function(file_path, ISO3){
 
   # check that uCodes correspond to admin2 codes in the geometry file
   # get geom
+
+  # TO FINISH HERE - add check for df_geom input
+
   admin2_geom <- system.file("geom", paste0(ISO3,".RDS"), package = "A2SIT") |>
     readRDS()
 
@@ -252,17 +257,41 @@ f_print_coin <- function(coin){
 #' @param ISO3 Valid ISO3 code with geometry available in inst/geom
 #' @param to_file_name Where to write to
 #' @export
-f_generate_input_template <- function(ISO3, to_file_name = NULL){
+f_generate_input_template <- function(ISO3 = NULL, df_geom = NULL, to_file_name = NULL,
+                                      uCode_col = NULL, uName_col = NULL){
 
-  stopifnot(ISO3 %in% get_cached_countries())
+  if(!is.null(df_geom)){
 
-  if(is.null(to_file_name)){
-    to_file_name <- paste0("A2SIT_data_input_template_", ISO3, ".xlsx")
+    # use user-input geometry
+    df_ISO3 <- df_geom
+
+    stopifnot(uCode_col %in% names(df_ISO3),
+              uName_col %in% names(df_ISO3))
+
+    names(df_ISO3)[names(df_ISO3) == uCode_col] <- "adm2_source_code"
+    names(df_ISO3)[names(df_ISO3) == uName_col] <- "gis_name"
+
+    if(is.null(to_file_name)){
+      to_file_name <- "A2SIT_data_input_template.xlsx"
+    }
+
+  } else if (!is.null(ISO3)){
+
+    # used cached geometry based on ISO3 code
+
+    stopifnot(ISO3 %in% get_cached_countries())
+
+    if(is.null(to_file_name)){
+      to_file_name <- paste0("A2SIT_data_input_template_", ISO3, ".xlsx")
+    }
+
+    # load table for selected country
+    df_ISO3 <- system.file("geom", paste0(ISO3,".RDS"), package = "A2SIT") |>
+      readRDS()
+
+  } else {
+    stop("Either ISO3 or df_geom need to be supplied...")
   }
-
-  # load table for selected country
-  df_ISO3 <- system.file("geom", paste0(ISO3,".RDS"), package = "A2SIT") |>
-    readRDS()
 
   # get cols of interest and sort
   df_write <- data.frame(
