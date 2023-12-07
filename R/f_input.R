@@ -330,6 +330,10 @@ validate_iData <- function(iData){
     return("Missing values found in 'Name' column - please correct.")
   }
 
+  if("Rank" %in% names(iData)){
+    return("Reserved column name 'Rank' found. Please rename this indicator code.")
+  }
+
 
   # Data cols ---------------------------------------------------------------
 
