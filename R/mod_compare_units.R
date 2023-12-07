@@ -24,7 +24,6 @@ compare_units_UI <- function(id) {
         placement = "top"
       ),
       width = 12,
-      p("In the table below, in each row the region with the most severe value is highlighted."),
       DT::DTOutput(NS(id, "df_indicators"))
     ),
 

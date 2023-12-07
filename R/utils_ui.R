@@ -195,33 +195,3 @@ compare_units_modal <- function(){
     size = "large"
   )
 }
-
-full_map_modal <- function(){
-  bsplus::bs_modal(
-    id = "full_map_modal",
-    title = "Map builder",
-    body = includeMarkdown(system.file("md-help", "full_map.md", package = "A2SIT")),
-    size = "large"
-  )
-}
-
-#' Text input for map colour
-#'
-#' Thin wrapper for textInput().
-#'
-#' @param initial_colour Initial colour value
-#' @param id ID for slider
-#'
-#' @return HTML code for slider
-#' @export
-#'
-colour_input <- function(id, initial_colour) {
-  textInput(id, label = NULL, placeholder = "HEX code", width = "50%", value = initial_colour)
-}
-
-
-# these are the colours used for conditional formatting in tables
-table_colours <- function(){
-  c("#FFFFFF", "#d98d9b")
-}
-

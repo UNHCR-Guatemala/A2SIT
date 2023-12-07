@@ -23,7 +23,7 @@ Imports:
     grDevices,
     htmltools,
     htmlwidgets,
-    iCOINr (>= 0.2.9),
+    iCOINr (>= 0.2.6),
     leaflet,
     openxlsx,
     plotly,
