@@ -9,6 +9,8 @@
 #' @import shiny
 app_server <- function(input, output, session) {
 
+  # set max file upload to 30MB
+  options(shiny.maxRequestSize=30*1024^2)
 
   # Shared variables --------------------------------------------------------
 
@@ -25,7 +27,8 @@ app_server <- function(input, output, session) {
     l_analysis = NULL,
     l_analysis_f = NULL,
     new_to_welcome_tab = TRUE,
-    new_to_map_tab = TRUE
+    new_to_map_tab = TRUE,
+    user_geom = FALSE
   )
 
   # Modules -----------------------------------------------------------------
