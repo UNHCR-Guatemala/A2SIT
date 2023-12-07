@@ -97,7 +97,7 @@ f_style_comparison_table <- function(df_merged, comp_with){
 
   # generate colours
   breaks <- seq(min_all, max_all, length.out = 12)[2:11]
-  main_colours <- c("#FFFFFF", "#8EBEFF")
+  main_colours <- table_colours()
   # reverse for ranks
   if(comp_with == "Ranks") main_colours <- rev(main_colours)
   colour_func <- grDevices::colorRampPalette(main_colours)

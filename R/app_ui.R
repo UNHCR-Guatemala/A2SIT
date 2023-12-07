@@ -24,13 +24,26 @@ app_ui <- function() {
     minified = TRUE, collapsed = FALSE, width = "17%",
     shinydashboard::sidebarMenu(
       id = "tab_selected",
-      shinydashboard::menuItem(span("Welcome", id = "welcome_sb_link"), tabName = "welcome", icon = icon("house")),
-      shinydashboard::menuItem(span("Upload", id = "upload_sb_link"), tabName = "upload", icon = icon("upload")),
-      shinydashboard::menuItem(span("Analyse", id = "analyse_sb_link"), tabName = "analyse", icon = icon("magnifying-glass-chart")),
-      shinydashboard::menuItem(span("Results", id = "results_sb_link"), tabName = "results", icon = icon("square-poll-vertical")),
+
+      h3("Build", style = "padding-left: 10px;"),
+      p("Build your index and view the results.", style = "padding-left: 12px; color: #696969;"),
+      p("Complete these steps first.", style = "padding-left: 12px; color: #696969;"),
+      shinydashboard::menuItem(span("1. Welcome", id = "welcome_sb_link"), tabName = "welcome", icon = icon("house")),
+      shinydashboard::menuItem(span("2. Upload", id = "upload_sb_link"), tabName = "upload", icon = icon("upload")),
+      shinydashboard::menuItem(span("3. Analyse", id = "analyse_sb_link"), tabName = "analyse", icon = icon("magnifying-glass-chart")),
+      shinydashboard::menuItem(span("4. Results", id = "results_sb_link"), tabName = "results", icon = icon("square-poll-vertical")),
+
+      br(),
+      hr(),
+      br(),
+
+      h3("Explore", style = "padding-left: 10px;"),
+      p("Post-processing and advanced options.", style = "padding-left: 12px; color: #696969;"),
       shinydashboard::menuItem(span("Profiles", id = "profiles_sb_link"), tabName = "profiles", icon = icon("location-dot")),
       shinydashboard::menuItem(span("Compare scenarios", id = "scenarios_sb_link"), tabName = "scenarios", icon = icon("circle-half-stroke")),
-      shinydashboard::menuItem(span("Compare regions", id = "compare_sb_link"), tabName = "compare_units", icon = icon("code-compare"))
+      shinydashboard::menuItem(span("Compare regions", id = "compare_sb_link"), tabName = "compare_units", icon = icon("code-compare")),
+      shinydashboard::menuItem(span("Map builder", id = "map_sb_link"), tabName = "full_map", icon = icon("map"))
+
     )
   )
 
@@ -47,6 +60,7 @@ app_ui <- function() {
     profiles_modal(),
     scenarios_modal(),
     compare_units_modal(),
+    full_map_modal(),
 
     # some themeing (to improve)
     #includeCSS(system.file("app", "www", "custom.css", package = "A2SIT")),
@@ -75,7 +89,8 @@ app_ui <- function() {
       results_UI("id_results"),
       profiles_UI("id_profiles"),
       compare_units_UI("id_compare_units"),
-      scenarios_UI("id_scenarios")
+      scenarios_UI("id_scenarios"),
+      map_UI("id_map")
     )
   )
 

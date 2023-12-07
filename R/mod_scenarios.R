@@ -28,7 +28,7 @@ scenarios_UI <- function(id) {
         ),
 
         textOutput(NS(id, "no_scen_text")),
-
+        p("Scenarios are columns in the table, sorted by the first scenario in descending ranks."),
         DT::DTOutput(NS(id, "comp_table"))
       ),
 
@@ -118,7 +118,7 @@ scenarios_server <- function(id, coin, input, r_shared) {
 
     # if no scenarios some text
     output$no_scen_text <- renderText({
-      "No scenarios have been saved yet. Go to the Results tab and use the 'save scenario' dialogue to save and name scenarios first."
+      "No scenarios have been generated yet. Go to the Results tab and use the 'save scenario' dialogue to save and name scenarios first."
     })
 
     # metadata table
