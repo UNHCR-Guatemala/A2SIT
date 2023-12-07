@@ -13,7 +13,8 @@ f_plot_map(
   poly_opacity = 0.7,
   line_colour = "white",
   line_weight = 2,
-  line_type = "3"
+  line_type = "3",
+  legendposition = "bottomright"
 )
 }
 \arguments{
@@ -34,6 +35,8 @@ f_plot_map(
 \item{line_weight}{Weight for lines}
 
 \item{line_type}{Type for lines: value from 1-4.}
+
+\item{legendposition}{Legend position argument passed to Leaflet}
 }
 \value{
 Leaflet map object

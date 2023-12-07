@@ -209,9 +209,8 @@ full_map_modal <- function(){
 #'
 #' Thin wrapper for textInput().
 #'
+#' @param initial_colour Initial colour value
 #' @param id ID for slider
-#' @param label Label
-#' @param value initial value
 #'
 #' @return HTML code for slider
 #' @export

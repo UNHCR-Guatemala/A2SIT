@@ -301,6 +301,7 @@ f_display_results_table <- function(coin, type = "scores", as_discrete = FALSE){
 #' @param line_colour Colour for lines
 #' @param line_weight Weight for lines
 #' @param line_type Type for lines: value from 1-4.
+#' @param legendposition Legend position argument passed to Leaflet
 #'
 #' @return Leaflet map object
 #' @export
