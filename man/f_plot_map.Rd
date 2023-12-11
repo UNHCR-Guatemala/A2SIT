@@ -35,6 +35,8 @@ f_plot_map(
 \item{line_weight}{Weight for lines}
 
 \item{line_type}{Type for lines: value from 1-4.}
+
+\item{legendposition}{Legend position argument passed to Leaflet}
 }
 \value{
 Leaflet map object

@@ -9,9 +9,7 @@ colour_input(id, initial_colour)
 \arguments{
 \item{id}{ID for slider}
 
-\item{label}{Label}
-
-\item{value}{initial value}
+\item{initial_colour}{Initial colour value}
 }
 \value{
 HTML code for slider
