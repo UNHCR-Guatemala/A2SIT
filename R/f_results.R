@@ -735,7 +735,7 @@ get_cached_countries <- function(){
 # For full selection see https://leaflet-extras.github.io/leaflet-providers/preview/index.html
 get_leaflet_map_providers <- function(){
 
-  full_list <- leaflet::providers
+  full_list <- leaflet::providers |> as.character()
 
   esri <- full_list[startsWith(full_list, "Esri.World")]
   carto <- full_list[startsWith(full_list, "CartoDB")]
