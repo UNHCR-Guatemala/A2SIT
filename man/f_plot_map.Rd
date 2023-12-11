@@ -7,14 +7,17 @@
 f_plot_map(
   coin,
   iCode,
-  ISO3,
+  df_geom,
+  uCode_col = NULL,
+  uName_col = NULL,
   as_discrete = TRUE,
   bin_colours = NULL,
   poly_opacity = 0.7,
   line_colour = "white",
   line_weight = 2,
   line_type = "3",
-  legendposition = "bottomright"
+  legendposition = "bottomright",
+  map_base = NULL
 )
 }
 \arguments{
@@ -22,7 +25,8 @@ f_plot_map(
 
 \item{iCode}{iCode of indicator/aggregate to plot}
 
-\item{ISO3}{Country of the data to plot}
+\item{df_geom}{Geometry data frame of "sf" class specifying map polygons. Must
+match uCodes found in coin.}
 
 \item{as_discrete}{If \code{TRUE}, plots severity categories.}
 

@@ -4,7 +4,7 @@
 \alias{f_data_input}
 \title{Data input}
 \usage{
-f_data_input(file_path, ISO3)
+f_data_input(file_path, ISO3, df_geom, uCode_col)
 }
 \arguments{
 \item{file_path}{path to the excel file where we have the raw data}

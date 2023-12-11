@@ -186,7 +186,7 @@ results_UI <- function(id) {
 
 }
 
-results_server <- function(id, coin, coin_full, parent_input, parent_session, r_shared) {
+results_server <- function(id, coin, coin_full, parent_input, parent_session, r_shared, df_geom) {
 
   moduleServer(id, function(input, output, session) {
 
@@ -262,9 +262,14 @@ results_server <- function(id, coin, coin_full, parent_input, parent_session, r_
       req(coin())
       req(results_exist(coin()))
       req(input$plot_icode)
+      req(df_geom())
 
-      f_plot_map(coin(), ISO3 = r_shared$ISO3,
-                 iCode = input$plot_icode, as_discrete = as.logical(input$as_discrete))
+      f_plot_map(
+        coin(),
+        uCode_col = r_shared$uCode_col,
+        uName_col = r_shared$uName_col,
+        df_geom = df_geom(),
+        iCode = input$plot_icode, as_discrete = as.logical(input$as_discrete))
     })
 
     # Plot map

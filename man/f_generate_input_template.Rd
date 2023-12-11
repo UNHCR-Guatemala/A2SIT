@@ -4,14 +4,27 @@
 \alias{f_generate_input_template}
 \title{Generate Excel template for input data, for specified country}
 \usage{
-f_generate_input_template(ISO3, to_file_name = NULL)
+f_generate_input_template(
+  df_geom = NULL,
+  to_file_name = NULL,
+  uCode_col = NULL,
+  uName_col = NULL,
+  with_fake_data = FALSE
+)
 }
 \arguments{
-\item{ISO3}{Valid ISO3 code with geometry available in inst/geom}
+\item{df_geom}{Data frame of "sf" class which contains geometry for mapping the data,
+and associated codes and names of each geographical area (region/country).}
 
-\item{to_file_name}{Where to write to}
+\item{to_file_name}{Where to write the template file to.}
+
+\item{uCode_col}{Column name in \code{df_geom} to use as uCodes in COINr. Must contain
+unique codes, not starting with number.}
+
+\item{uName_col}{Column name in \code{df_geom} to use as uNames in COINr (could also
+be same as \code{uCode_col}).}
 }
 \description{
 Writes codes and names of Admin2 regions to an Excel template, for a specified
-country.
+country. Takes an sf-class data frame and extracts codes and names from it.
 }

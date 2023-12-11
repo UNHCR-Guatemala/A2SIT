@@ -30,19 +30,20 @@ map_UI <- function(id) {
 
         selectInput(NS(id, "map_linetype"), label = "Line type",
                           choices = list(Solid = 1, Dot = 2, Dash = 4),  width = "50%"),
+        selectInput(NS(id, "map_base"), label = "Map base tiles", choices = get_leaflet_map_providers(), width = "70%"),
 
         actionButton(NS(id, "plot_map_button"), label = "Plot"),
 
         tags$style("z-index: 2000")
 
       ),
-      leaflet::leafletOutput(NS(id, "map"), height = "80vh", width = "100%")
+      leaflet::leafletOutput(NS(id, "map"), height = "95vh", width = "100%")
     )
   )
 
 }
 
-map_server <- function(id, coin, parent_input, r_shared) {
+map_server <- function(id, coin, parent_input, r_shared, df_geom) {
 
   moduleServer(id, function(input, output, session) {
 
@@ -56,15 +57,6 @@ map_server <- function(id, coin, parent_input, r_shared) {
     # reactive for triggering map build
     make_map <- reactiveVal(NULL)
 
-    # # auto-launch tour the first time a user visits this tab
-    # observe({
-    #   req(parent_input$tab_selected == "full_map")
-    #   req(colours_ready())
-    #   req(r_shared$new_to_map_tab)
-    #   make_map(make_map() + 1)
-    #   r_shared$new_to_map_tab <- FALSE
-    # })
-
     # update from button
     observeEvent(input$plot_map_button,{
       make_map(input$plot_map_button)
@@ -75,6 +67,7 @@ map_server <- function(id, coin, parent_input, r_shared) {
       req(coin())
       req(results_exist(coin()))
       req(input$plot_icode)
+      req(df_geom())
 
       l_input <- reactiveValuesToList(input)
       colour_ids <- paste0("colour_", 1:input$n_colours)
@@ -83,7 +76,9 @@ map_server <- function(id, coin, parent_input, r_shared) {
 
       f_plot_map(
         coin = coin(),
-        ISO3 = r_shared$ISO3,
+        df_geom = df_geom(),
+        uCode_col = r_shared$uCode_col,
+        uName_col = r_shared$uName_col,
         iCode = input$plot_icode,
         as_discrete = FALSE,
         bin_colours = bin_colours,
@@ -91,7 +86,8 @@ map_server <- function(id, coin, parent_input, r_shared) {
         line_colour = input$map_linecolour,
         line_weight = input$map_lineweight,
         line_type = as.character(input$map_linetype),
-        legendposition = "bottomleft"
+        legendposition = "bottomleft",
+        map_base = input$map_base
       )
     }) |>
       bindEvent(make_map())
