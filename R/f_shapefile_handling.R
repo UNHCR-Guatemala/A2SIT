@@ -81,7 +81,7 @@ sample_geom_column <- function(df_geom, col_selected, max_length = 30){
     return("Empty column selected")
   }
 
-  str_out <- head(str_out, 3) |> toString(max_length)
+  str_out <- utils::head(str_out, 3) |> toString(max_length)
   str_out <- paste0("Sample: ", str_out)
 
   str_out

@@ -303,6 +303,10 @@ f_display_results_table <- function(coin, type = "scores", as_discrete = FALSE){
 #' @param line_weight Weight for lines
 #' @param line_type Type for lines: value from 1-4.
 #' @param legendposition Legend position argument passed to Leaflet
+#' @param uCode_col Column name of `df_geom` which corresponds to `uCode` in COINr
+#' @param uName_col Column name of `df_geom` which corresponds to `uName` in COINr
+#' @param map_base String specifying the base map tiles to use. Some valid inputs here
+#' can be found by calling `get_leaflet_map_providers()`.
 #'
 #' @return Leaflet map object
 #' @export
@@ -727,7 +731,11 @@ get_cached_countries <- function(){
 #ISO3s_2get <- c("ARG", "BLZ", "BRA", "BOL", "CHL", "COL", "CRI", "DOM", "ECU", "SLV", "GTM", "GUY", "HND", "MEX", "PAN", "PRY", "PER", "URY", "VEN")
 #Argentina,  Belize, Brazil, Bolivia, Chile, Colombia, Costa Rica, Dominican Republic, Ecuador, El Salvador, Guatemala, Guyana, Honduras, Mexico, Panama, Paraguay, Peru, Uruguay, Venezuela.
 
+# A selection of Leaflet map providers to use as options in the app.
+# For full selection see https://leaflet-extras.github.io/leaflet-providers/preview/index.html
 get_leaflet_map_providers <- function(){
+
+  full_list <- leaflet::providers
 
   esri <- full_list[startsWith(full_list, "Esri.World")]
   carto <- full_list[startsWith(full_list, "CartoDB")]

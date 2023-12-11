@@ -23,6 +23,10 @@ unique codes, not starting with number.}
 
 \item{uName_col}{Column name in \code{df_geom} to use as uNames in COINr (could also
 be same as \code{uCode_col}).}
+
+\item{with_fake_data}{Logical: if \code{TRUE} the input template will also contain
+randomly-generated input data which can be used as a quick demo and for testing
+uploads of new shape files.}
 }
 \description{
 Writes codes and names of Admin2 regions to an Excel template, for a specified

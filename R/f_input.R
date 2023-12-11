@@ -23,17 +23,23 @@
 #'
 #' @param file_path path to the excel file where we have the raw data
 #' @param ISO3 ISO3 code of country to which the data belongs, e.g. `"GTM"`
+#' @param df_geom sf-class geometry data frame (used to cross check input codes)
+#' @param uCode_col Column name of `df_geom` which is used as unit codes.
 #'
 #' @return coin-class object
 #'
 #' @export
-f_data_input <- function(file_path, ISO3, df_geom, uCode_col){
+f_data_input <- function(file_path, df_geom, ISO3 = NULL, uCode_col = NULL){
 
   # Checks ----
 
   if(!is.null(ISO3)){
     valid_ISOs <- get_cached_countries()
     stopifnot(ISO3 %in% valid_ISOs)
+  }
+
+  if(is.null(uCode_col)){
+    uCode_col <- "adm2_source_code"
   }
 
   # Settings ----
@@ -255,6 +261,9 @@ f_print_coin <- function(coin){
 #' @param uName_col Column name in `df_geom` to use as uNames in COINr (could also
 #' be same as `uCode_col`).
 #' @param to_file_name Where to write the template file to.
+#' @param with_fake_data Logical: if `TRUE` the input template will also contain
+#' randomly-generated input data which can be used as a quick demo and for testing
+#' uploads of new shape files.
 #'
 #' @export
 f_generate_input_template <- function(df_geom = NULL, to_file_name = NULL,
@@ -334,7 +343,7 @@ populate_with_fake_data <- function(df_write){
     n_ind <- sample(3, 1)
     i_indexes <- 1:n_ind + i_index
 
-    cols2add <- matrix(runif(n_ind*n_unit), nrow = n_unit, ncol = n_ind) |>
+    cols2add <- matrix(stats::runif(n_ind*n_unit), nrow = n_unit, ncol = n_ind) |>
       as.data.frame()
     names(cols2add) <- paste0("ind_", i_indexes)
 

@@ -28,6 +28,10 @@ f_plot_map(
 \item{df_geom}{Geometry data frame of "sf" class specifying map polygons. Must
 match uCodes found in coin.}
 
+\item{uCode_col}{Column name of \code{df_geom} which corresponds to \code{uCode} in COINr}
+
+\item{uName_col}{Column name of \code{df_geom} which corresponds to \code{uName} in COINr}
+
 \item{as_discrete}{If \code{TRUE}, plots severity categories.}
 
 \item{bin_colours}{Vector of colours to use on discrete palette if \code{as_discrete = TRUE}}
@@ -41,6 +45,9 @@ match uCodes found in coin.}
 \item{line_type}{Type for lines: value from 1-4.}
 
 \item{legendposition}{Legend position argument passed to Leaflet}
+
+\item{map_base}{String specifying the base map tiles to use. Some valid inputs here
+can be found by calling \code{get_leaflet_map_providers()}.}
 }
 \value{
 Leaflet map object

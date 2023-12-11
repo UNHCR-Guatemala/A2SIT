@@ -4,12 +4,16 @@
 \alias{f_data_input}
 \title{Data input}
 \usage{
-f_data_input(file_path, ISO3, df_geom, uCode_col)
+f_data_input(file_path, df_geom, ISO3 = NULL, uCode_col = NULL)
 }
 \arguments{
 \item{file_path}{path to the excel file where we have the raw data}
 
+\item{df_geom}{sf-class geometry data frame (used to cross check input codes)}
+
 \item{ISO3}{ISO3 code of country to which the data belongs, e.g. \code{"GTM"}}
+
+\item{uCode_col}{Column name of \code{df_geom} which is used as unit codes.}
 }
 \value{
 coin-class object
