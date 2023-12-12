@@ -37,6 +37,7 @@ The next columns to the right are the data columns: this is where you should pas
 3.  Try to fill in data for every Admin2 code. Admin2 codes with no indicator data will be deleted by the app.
 4.  Do not input data for rows where there are no Admin2 codes.
 5.  Make sure each indicator has at least some data available. Indicators with no data can still be input into the app, but they will be automatically removed.
+6. Any indicators with only one unique value will also be removed. For example, an indicator which has the same value for every unit contributes nothing and causes numerical problems in the app, so is removed.
 
 The best way to see what the correctly-formatted input data looks like is to simply [download the example data set](https://github.com/UNHCR-Guatemala/A2SIT/raw/main/inst/A2SIT_data_input_template_GTM.xlsx).
 

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.353">
+<meta name="generator" content="quarto-1.3.433">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -57,7 +57,8 @@ ul.task-list li input[type="checkbox"] {
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 
@@ -76,7 +77,7 @@ ul.task-list li input[type="checkbox"] {
       <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./layout.html">Using the app</a></li><li class="breadcrumb-item"><a href="./data_input.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Data input</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
-      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
@@ -268,6 +269,7 @@ ul.task-list li input[type="checkbox"] {
 <li>Try to fill in data for every Admin2 code. Admin2 codes with no indicator data will be deleted by the app.</li>
 <li>Do not input data for rows where there are no Admin2 codes.</li>
 <li>Make sure each indicator has at least some data available. Indicators with no data can still be input into the app, but they will be automatically removed.</li>
+<li>Any indicators with only one unique value will also be removed. For example, an indicator which has the same value for every unit contributes nothing and causes numerical problems in the app, so is removed.</li>
 </ol>
 <p>The best way to see what the correctly-formatted input data looks like is to simply <a href="https://github.com/UNHCR-Guatemala/A2SIT/raw/main/inst/A2SIT_data_input_template_GTM.xlsx">download the example data set</a>.</p>
 <p>The row immediately above the indicator data contains the <strong>indicator code</strong>. These should be short <em>unique</em> codes which identify the indicator. Ideally these should be about 8 characters long or less, have <em>no spaces</em>, and should <em>start with a letter</em> (not a number). Examples could be “GDPpc”, “Migrants”, “Gini”. These will be used in some plots in the app, so it will help you if they are descriptive.</p>

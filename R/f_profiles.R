@@ -80,7 +80,7 @@ f_indicator_table <- function(coin, usel){
 
   # generate colours ----
   breaks <- seq(min_rank, max_rank, length.out = 12)[2:11]
-  colour_func <- grDevices::colorRampPalette(c("#0072BC", "#DCE9FF"))
+  colour_func <- grDevices::colorRampPalette(rev(table_colours()))
   colour_palette <- colour_func(length(breaks) + 1)
 
   # same now for severity
@@ -89,7 +89,7 @@ f_indicator_table <- function(coin, usel){
 
   # generate colours ----
   breaks_sev <- seq(min_sev, max_sev, length.out = 5)
-  colour_func <- grDevices::colorRampPalette(c("#DCE9FF", "#0072BC"))
+  colour_func <- grDevices::colorRampPalette(table_colours())
   colour_palette_sev <- colour_func(length(breaks_sev) + 1)
 
   # convert level to factor so filters display properly
@@ -209,7 +209,7 @@ f_compare_units_table <- function(coin, usel1, usel2, using){
   dfc <- cbind(dfc, compare_cols)
 
   # highlight colours
-  styles <- c("white", "#8EBEFF")
+  styles <- table_colours()
 
   DT::datatable(
     dfc,

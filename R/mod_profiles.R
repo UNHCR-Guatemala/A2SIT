@@ -115,7 +115,7 @@ profiles_server <- function(id, coin, coin_full, input, r_shared) {
       req(r_shared$results_built)
       shinydashboard::valueBox(
         get_index_score(coin(), input$selected_unit) |>
-          round(1),
+          round(2),
         "Score",
         #icon = icon("star"),
         color = "green"
@@ -227,7 +227,7 @@ profiles_server <- function(id, coin, coin_full, input, r_shared) {
         dset = "Raw",
         topN = 5,
         withcodes = FALSE,
-        unq_discard = 0.2,
+        unq_discard = NULL, #0.2,
         with_units = FALSE,
         sig_figs = NULL)$Strengths |>
         format_sw()
@@ -242,7 +242,7 @@ profiles_server <- function(id, coin, coin_full, input, r_shared) {
         dset = "Raw",
         topN = 5,
         withcodes = FALSE,
-        unq_discard = 0.2,
+        unq_discard = NULL, #0.2,
         with_units = FALSE,
         sig_figs = NULL)$Weaknesses |>
         format_sw()

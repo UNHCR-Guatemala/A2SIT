@@ -28,4 +28,4 @@ The distribution plot shows the statistical distribution of the indicator select
 
 **Scatter plot**
 
-The scatter plot allows plotting any indicator against any other. The x-axis indicator is selected by selecting an row in the analysis table. The y-axis indicator is controlled by clicking the "gear" icon in the top right and using the drop-down menu. Here you can also optionally add a linear trend line and toggle log axes (the latter option useful for skewed indicators).
+The scatter plot allows plotting any indicator against any other. The x-axis indicator is selected by selecting an row in the analysis table. The y-axis indicator is controlled by clicking the "gear" icon in the top right and using the drop-down menu. Here you can also optionally add a linear trend line and toggle log axes (the latter option useful for skewed indicators), as well as adding correlation values and p-values.
