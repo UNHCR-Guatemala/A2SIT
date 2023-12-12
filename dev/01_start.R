@@ -8,6 +8,8 @@
 ##
 ## Add information about the package that will contain your app
 
+library(markdown)
+
 golem::fill_desc(
   pkg_name = "A2SIT", # The Name of the package containing the App
   pkg_title = "A2SIT", # The Title of the package containing the App

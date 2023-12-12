@@ -2653,6 +2653,34 @@
         "Archs": "x64"
       }
     },
+    "markdown": {
+      "Source": "CRAN",
+      "Repository": "https://cran.rstudio.com",
+      "description": {
+        "Package": "markdown",
+        "Type": "Package",
+        "Title": "Render Markdown with 'commonmark'",
+        "Version": "1.12",
+        "Authors@R": "c(\n   person(\"Yihui\", \"Xie\", role = c(\"aut\", \"cre\"), email = \"xie@yihui.name\", comment = c(ORCID = \"0000-0003-0645-5666\")),\n   person(\"JJ\", \"Allaire\", role = \"aut\"),\n   person(\"Jeffrey\", \"Horner\", role = \"aut\"),\n   person(\"Henrik\", \"Bengtsson\", role = \"ctb\"),\n   person(\"Jim\", \"Hester\", role = \"ctb\"),\n   person(\"Yixuan\", \"Qiu\", role = \"ctb\"),\n   person(\"Kohske\", \"Takahashi\", role = \"ctb\"),\n   person(\"Adam\", \"November\", role = \"ctb\"),\n   person(\"Nacho\", \"Caballero\", role = \"ctb\"),\n   person(\"Jeroen\", \"Ooms\", role = \"ctb\"),\n   person(\"Thomas\", \"Leeper\", role = \"ctb\"),\n   person(\"Joe\", \"Cheng\", role = \"ctb\"),\n   person(\"Andrzej\", \"Oles\", role = \"ctb\"),\n   person(given = \"Posit Software, PBC\", role = c(\"cph\", \"fnd\"))\n   )",
+        "Description": "Render Markdown to full and lightweight HTML/LaTeX documents with\n    the 'commonmark' package. It also supports features that are missing in\n    'commonmark', such as raw HTML/LaTeX blocks, LaTeX math, superscripts,\n    subscripts, footnotes, element attributes, appendices, and fenced 'Divs'.\n    With additional JavaScript and CSS, it can also create HTML slides and\n    articles.",
+        "Depends": "R (>= 2.11.1)",
+        "Imports": "utils, commonmark (>= 1.9.0), xfun (>= 0.38)",
+        "Suggests": "knitr, rmarkdown (>= 2.18), yaml, RCurl",
+        "License": "MIT + file LICENSE",
+        "URL": "https://github.com/rstudio/markdown",
+        "BugReports": "https://github.com/rstudio/markdown/issues",
+        "VignetteBuilder": "knitr",
+        "RoxygenNote": "7.2.3",
+        "Encoding": "UTF-8",
+        "NeedsCompilation": "no",
+        "Packaged": "2023-12-05 14:26:48 UTC; yihui",
+        "Author": "Yihui Xie [aut, cre] (<https://orcid.org/0000-0003-0645-5666>),\n  JJ Allaire [aut],\n  Jeffrey Horner [aut],\n  Henrik Bengtsson [ctb],\n  Jim Hester [ctb],\n  Yixuan Qiu [ctb],\n  Kohske Takahashi [ctb],\n  Adam November [ctb],\n  Nacho Caballero [ctb],\n  Jeroen Ooms [ctb],\n  Thomas Leeper [ctb],\n  Joe Cheng [ctb],\n  Andrzej Oles [ctb],\n  Posit Software, PBC [cph, fnd]",
+        "Maintainer": "Yihui Xie <xie@yihui.name>",
+        "Repository": "CRAN",
+        "Date/Publication": "2023-12-06 00:20:02 UTC",
+        "Built": "R 4.3.2; ; 2023-12-07 00:51:01 UTC; windows"
+      }
+    },
     "memoise": {
       "Source": "CRAN",
       "Repository": "https://cran.rstudio.com",
@@ -5177,6 +5205,12 @@
     }
   },
   "files": {
+    ".github/ISSUE_TEMPLATE/bug_report.md": {
+      "checksum": "53c6b2ce53de0f7af4c1629f93b6c8b4"
+    },
+    ".github/ISSUE_TEMPLATE/feature_request.md": {
+      "checksum": "3ac21a7bae1a4affe4fbbd53bdaf8507"
+    },
     ".github/ISSUE_TEMPLATE/Template issue.md": {
       "checksum": "b036cab7f67c55d06e49ff72139f46b3"
     },
@@ -5211,7 +5245,7 @@
       "checksum": "308012df3fa962ae61c7114806331a72"
     },
     "A2SIT_Doc/data_input.qmd": {
-      "checksum": "73abb455785af27a90e346f3174388b1"
+      "checksum": "29211000c1754208e2e2e52287704de5"
     },
     "A2SIT_Doc/data_processing.qmd": {
       "checksum": "32818dda294ec5ac06f22ce39fa76abd"
@@ -5358,10 +5392,10 @@
       "checksum": "543f579f8585d56cab4182d2219bd68c"
     },
     "DESCRIPTION": {
-      "checksum": "31d0ef3132b4a74c0e6bdda1bff919a4"
+      "checksum": "3cccf799ed33f075bfad6186e7ba06fb"
     },
     "dev/01_start.R": {
-      "checksum": "38a95cfa1df4a7b94c6bb89b21e83ae5"
+      "checksum": "d7837be3f66f2252555e84d1add3f4d5"
     },
     "dev/02_dev.R": {
       "checksum": "d6dbb4daefc0f118eb9e75501f875ed7"
@@ -5385,25 +5419,25 @@
       "checksum": "19c5e8f3cefcfa77ce68a69acb8f0c89"
     },
     "docs/book/about.html": {
-      "checksum": "1c745eb50ca6733bee6ab2d18e254fe1"
+      "checksum": "9a0db47335acb1baaadf5c8480e1063a"
     },
     "docs/book/aggregation_weighting.html": {
-      "checksum": "5e6e8255d2ae03695b76779ce529ca65"
+      "checksum": "fb3257c0de34d3908b55b7aa03968d91"
     },
     "docs/book/aggregation_weighting_files/figure-html/unnamed-chunk-1-1.png": {
       "checksum": "29c4e0d029fe70d5cef8e22d85481661"
     },
     "docs/book/aggregation_weighting_files/figure-html/unnamed-chunk-2-1.png": {
-      "checksum": "fb137e34cdc2d3b8f967bcbd9bd479c8"
+      "checksum": "1925cd005751bbf0c8506a0f7ee66f1c"
     },
     "docs/book/analysis.html": {
-      "checksum": "c85b41c96421084d24eacaca53b71cef"
+      "checksum": "710e2b917cbd5b240da7733c76ed991d"
     },
     "docs/book/data_input.html": {
-      "checksum": "1196d0dfb86e332c1618eddbfabd6f7e"
+      "checksum": "0325023942faa91a813059acca714ce7"
     },
     "docs/book/data_processing.html": {
-      "checksum": "22cb57c530b6b9a4a58fd210f59b7f0c"
+      "checksum": "94bdf74d2ffc286460410042da011b46"
     },
     "docs/book/data_processing_files/figure-html/unnamed-chunk-1-1.png": {
       "checksum": "ceb1b4c3f79506d2b07f49fbb0488c53"
@@ -5505,34 +5539,34 @@
       "checksum": "bffe6cba171f98859fffd479b0863220"
     },
     "docs/book/index.html": {
-      "checksum": "a18c5be705bd6d9da19686a1ee502342"
+      "checksum": "e54c0ec8411b4c7a8c326cb95dc342e3"
     },
     "docs/book/intro.html": {
       "checksum": "122ea37fccc45f5a67963a931c32a9fc"
     },
     "docs/book/layout.html": {
-      "checksum": "8a205c0d81a7c5e148c6baf8c375664f"
+      "checksum": "dfc4122f31afb785728401cf2f0a3993"
     },
     "docs/book/meth_overview.html": {
-      "checksum": "b0331703ad0979d40d56cceb3fb3d5d8"
+      "checksum": "63cfc11bb2843e662b907d932c11d932"
     },
     "docs/book/meth_overview_files/figure-html/unnamed-chunk-1-1.png": {
       "checksum": "ceb1b4c3f79506d2b07f49fbb0488c53"
     },
     "docs/book/profiles.html": {
-      "checksum": "bf56f91f07641e0a7cf6128296f6443a"
+      "checksum": "cc0d5b206c0c5802ab4839eaa6bd9775"
     },
     "docs/book/references.html": {
       "checksum": "6066eea8f426e6494c948bf16e8129a5"
     },
     "docs/book/results.html": {
-      "checksum": "d6b2f5b6da30f0abd3f78e806eba6603"
+      "checksum": "6f60d2f2a4dc8f7a04459aefea7c15f6"
     },
     "docs/book/scenarios.html": {
-      "checksum": "7f437a927e20917ae0f8f37b10716ed3"
+      "checksum": "c30c9e8765a0a4e947f3e5fbc81c9ca1"
     },
     "docs/book/search.json": {
-      "checksum": "d961ac2b16c4832156b79373d78b0882"
+      "checksum": "2992389908011dcaf5bae4cb9eb691df"
     },
     "docs/book/site_libs/bootstrap/bootstrap-icons.css": {
       "checksum": "08f8c9cd5208dccdb9ddd8c9a95e3f92"
@@ -5586,10 +5620,10 @@
       "checksum": "e443dc515f398b6b4715f746353334f0"
     },
     "docs/book/technical_implementation.html": {
-      "checksum": "549c38db4b421b2f1be4b6fd02954250"
+      "checksum": "25e7c2f1ac3b552ee983785e9be4b2af"
     },
     "docs/book/unit_comparison.html": {
-      "checksum": "9da81d37e9d27db6d16f2ab2ac41b565"
+      "checksum": "287e80ad5587f13c5a172845ce0f3c50"
     },
     "docs/bootstrap-toc.css": {
       "checksum": "93bf0acfc81ad231b1ba73a8bd2310fe"
@@ -5751,10 +5785,13 @@
       "checksum": "527366745d6bde4f9531bbcb1d364ba7"
     },
     "inst/md-help/analysis.md": {
-      "checksum": "7645d147f6fdea4a882c5fdbdf68c63a"
+      "checksum": "48b0abb57fc9a083a5dc7b0733199c6a"
     },
     "inst/md-help/compare_units.md": {
       "checksum": "f57d03cee9fadaf7e84d27c0af27795a"
+    },
+    "inst/md-help/full_map.md": {
+      "checksum": "d28de12f03780264f1a3d36248b3355e"
     },
     "inst/md-help/input.md": {
       "checksum": "1e60c60fb44602d6d188005599ac9dd2"
@@ -5801,6 +5838,9 @@
     "man/cache_admin2_geometry.Rd": {
       "checksum": "db197873c65ce00fe7519c997873cc32"
     },
+    "man/colour_input.Rd": {
+      "checksum": "c91b91dd72fa0032d5606e5bfd9ca981"
+    },
     "man/country_codes.Rd": {
       "checksum": "360ada7147e9c7494b4907449cd27deb"
     },
@@ -5829,7 +5869,7 @@
       "checksum": "dcf07981a211eb8e06fc9f9c278a9a45"
     },
     "man/f_data_input.Rd": {
-      "checksum": "358bf207e9c6a01b12ba87b590e19b3d"
+      "checksum": "4dfe33b92a10af98ec7012bfb2e859e0"
     },
     "man/f_df_for_scat.Rd": {
       "checksum": "937072e03dfe9fade8d2f94ec6998795"
@@ -5886,7 +5926,7 @@
       "checksum": "aee5c973ab9048192ed6a747d4598cb1"
     },
     "man/f_plot_map.Rd": {
-      "checksum": "d7251a8fe52bd1d6b5a4a74932ddc3e7"
+      "checksum": "815a492278daaff41e0adcd6d2ece42f"
     },
     "man/f_plot_radar.Rd": {
       "checksum": "077865f52dcb669f8d2a0da3339fb157"
@@ -5979,7 +6019,7 @@
       "checksum": "22c368f765e686ace291292289dd7a59"
     },
     "NAMESPACE": {
-      "checksum": "469f85d5b0a42ebfadaf48561ffdc4be"
+      "checksum": "9995d87f34765fb564d332efdd530dca"
     },
     "NEWS.md": {
       "checksum": "04fcb98e37d8359b4267e541a644c214"
@@ -5988,10 +6028,10 @@
       "checksum": "a8ae62c1b1300b203ca12d71f4e40d5f"
     },
     "R/app_server.R": {
-      "checksum": "e5be8fcbee2002d89b2f928fc690d68d"
+      "checksum": "91539125d829f57c9bf25fd273dfc450"
     },
     "R/app_ui.R": {
-      "checksum": "4cd1a3688f2a3bb0b228e20375dcc16c"
+      "checksum": "e89fa134640bfc9d8e024c2d8660990c"
     },
     "R/data.R": {
       "checksum": "d21ca0997db7447dd7577145dd117fec"
@@ -6000,43 +6040,46 @@
       "checksum": "5fd14229c9c994db12e6316f81b3208f"
     },
     "R/f_compare.R": {
-      "checksum": "5dab36ca369d49ae9901b4d0857458e8"
+      "checksum": "7cf4eea46308c8735dbe238272bd0653"
     },
     "R/f_export.R": {
       "checksum": "6d82f174fd1aae2a2e57efaafc5979a5"
     },
     "R/f_input.R": {
-      "checksum": "83ef855858eff5c3a2725dffda23da4b"
+      "checksum": "a5ae772ca27b7558c927ac281ff26ef2"
     },
     "R/f_profiles.R": {
-      "checksum": "38eb233f830c2db18929bb8cbc3c400f"
+      "checksum": "9e9b4c719e8052ab3a1d6d2f18c4046a"
     },
     "R/f_results.R": {
-      "checksum": "be834441f0c686922add8e7635d5dbc1"
+      "checksum": "07358b5958b26ad56a921f7fa3f38da0"
     },
     "R/golem_utils_ui.R": {
       "checksum": "e0b7c9c2f032eb0c4962c5b447f02620"
     },
     "R/mod_analysis.R": {
-      "checksum": "5a1a75de473a6be1cb7e17553fc97317"
+      "checksum": "f6d015da93e686d800489181fd7d250a"
     },
     "R/mod_compare_units.R": {
-      "checksum": "f9b8b53486aef3ebcc9c764fada3e2b4"
+      "checksum": "aacdca5d4637002e939567434bc2b6b9"
     },
     "R/mod_input.R": {
       "checksum": "d38b11eaabbf20fdbd8ef6bb1d9fc4c7"
     },
+    "R/mod_map.R": {
+      "checksum": "dbd2f38dba1d537e888f2ae3d5d6f265"
+    },
     "R/mod_profiles.R": {
-      "checksum": "dafbf58d997d0fcd3304f213f3d5544c"
+      "checksum": "2c51a055c7d84ca428dde773ff2d91de"
     },
     "R/mod_results.R": {
-      "checksum": "0ce9eea57aae378e159abd1f1fe1c1e6"
+      "checksum": "ee17cc801aa74a66a230f306d0e09a7a"
     },
     "R/mod_scenarios.R": {
-      "checksum": "5547b4d52e2c2f8f45f32d889de741e1"
+      "checksum": "edb00deae38ed7f20d214eb96f26e275"
     },
     "R/mod_welcome.R": {
-      "checksum": "fd52779daf90481f8e70f27cbb7a6475"
+      "checksum": "f07e16cbc071dd9b6b85ee23e883a1fc"
     },
     "R/run_app.R": {
       "checksum": "4e66fd8e88c5bce46699fd81c56d704b"
@@ -6054,7 +6097,7 @@
       "checksum": "77618954f687ae779fffbe2da80f2c99"
     },
     "R/utils_ui.R": {
-      "checksum": "58f76a6e976fb51a8e088172b736bd6c"
+      "checksum": "d3dbaf9874d3f917befef5c0a88975f7"
     },
     "R/welcome_tour.R": {
       "checksum": "7da2ba9936b2fa212b4b28dac91bf209"
