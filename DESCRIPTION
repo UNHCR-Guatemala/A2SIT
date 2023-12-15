@@ -41,6 +41,7 @@ Imports:
     webshot
 Suggests: 
     knitr,
+    markdown,
     rmarkdown,
     spelling,
     testthat (>= 3.0.0)
