@@ -44,7 +44,8 @@ input_UI <- function(id) {
             h4("2. Download country template"),
             p("Download the template for the selected country:"),
             downloadButton(NS(id, "download_country_template"), "Download country template"),
-            shinyWidgets::prettySwitch(NS(id, "gen_fake_data"), label = "With fake data", value = FALSE, inline = TRUE),
+            br(),br(),
+            shinyWidgets::prettySwitch(NS(id, "gen_fake_data"), label = "Populate with fake data", value = FALSE),
             hr(),
 
             h4("3. Upload your data"),
