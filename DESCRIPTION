@@ -38,7 +38,7 @@ Imports:
     stats,
     unhcrshiny (>= 0.1.0),
     utils,
-    webshot
+    webshot2
 Suggests: 
     knitr,
     markdown,

@@ -417,7 +417,16 @@ f_save_map <- function(plt, file_name = "map.png"){
   } else {
     html_path <- paste0(tempdir(), "\\temp_map.html")
     htmlwidgets::saveWidget(plt, file = html_path)
-    webshot::webshot(html_path, file = file_name)
+
+    # Have to convert backslashes to forward slashes otherwise webshot breaks
+    # To be seen how this behaves on different platforms.
+    if(grepl("\\\\", html_path)){
+      html_path <- gsub("\\\\", "/", html_path)
+    }
+
+    # NOTE: webshot2 used for capture here because doesn't depend on phantomJS.
+    # Although, this apparently only works for Chromium-based browsers.
+    webshot2::webshot(html_path, file = file_name, vwidth = 1600, vheight = 900, quiet = TRUE)
     unlink(html_path)
   }
 
