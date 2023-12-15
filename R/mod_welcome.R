@@ -77,16 +77,11 @@ welcome_server <- function(id, parent_session, parent_input, r_shared) {
       req(parent_input$tab_selected == "welcome")
       if(r_shared$new_to_welcome_tab){
 
-        shinyWidgets::sendSweetAlert(
-          session = session,
-          title = "Welcome", html = TRUE,
-
-          text = tags$div(
-            "Welcome to the A2SIT app. If this is your first time here, please take the ",
-            actionLink(NS(id, "launch_tour"), label = "quick tour.")
-          ),
-          btn_labels = "Close",
-          type = "info"
+        showNotification(
+          ui = "Welcome to the A2SIT app. If this is your first time here, please take the quick tour.",
+          action = actionLink(NS(id, "launch_tour"), label = "Take tour"),
+          duration = 10,
+          type = "message"
         )
         # set so that tour not launched if return to this tab
         r_shared$new_to_welcome_tab <- FALSE
