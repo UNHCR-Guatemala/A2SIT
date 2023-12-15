@@ -104,6 +104,7 @@ results_UI <- function(id) {
             value = FALSE)
         ),
         uiOutput(NS(id, "weight_sliders")),
+        "Adjust the degree of compensation between indicators when calculating index scores.",
         selectInput(NS(id, "agg_method"), label = "Scenarios",
                     choices = list("Scenario 1: High compensation" = "a_amean",
                                    "Scenario 2: Medium compensation" = "a_gmean",
@@ -139,6 +140,7 @@ results_UI <- function(id) {
         ),
         width = 3, status = "success",
 
+        "Export the map as an image file and export the results to Excel or R.",
         h4(icon("download"), " Download map"),
         div(style = "display: flex; justify-content: space-between;",
             downloadLink(NS(id, "download_map"), label = "Click to download", style = "text-align: right;"),

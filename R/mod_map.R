@@ -20,6 +20,7 @@ map_UI <- function(id) {
                     choices = NULL, width = "95%"),
         #h4("Colours"),
         numericInput(NS(id, "n_colours"), label = "Number of colours", 4, min = 2, max = 10, step = 1, width = "50%"),
+        "Note: the first colour corresponds to the lowest scores.",
         uiOutput(NS(id, "mapcolour_dropdowns")),
 
         #h4("Styling"),
