@@ -26,14 +26,24 @@ map_UI <- function(id) {
         #h4("Styling"),
         numericInput(NS(id, "map_opacity"), label = "Opacity", value = 0.7, min = 0.1, max = 1, step = 0.1, width = "50%"),
 
-        textInput(NS(id, "map_linecolour"), label = "Line colour", placeholder = "HEX code", width = "50%", value = "white"),
-        numericInput(NS(id, "map_lineweight"), label = "Line weight", value = 2, min = 0.5, max = 5, step = 0.5, width = "50%"),
+        fluidRow(
+          col_6(textInput(NS(id, "map_linecolour"), label = "Line colour", placeholder = "HEX code", width = "90%", value = "white")),
+          col_6(numericInput(NS(id, "map_lineweight"), label = "Line weight", value = 2, min = 0.5, max = 5, step = 0.5, width = "90%"))
+        ),
 
         selectInput(NS(id, "map_linetype"), label = "Line type",
                           choices = list(Solid = 1, Dot = 2, Dash = 4),  width = "50%"),
         selectInput(NS(id, "map_base"), label = "Map base tiles", choices = get_leaflet_map_providers(), width = "70%"),
 
         actionButton(NS(id, "plot_map_button"), label = "Plot"),
+        hr(),
+
+        fluidRow(
+          col_6(downloadButton(NS(id, "download_map"), label = "Download map")),
+          col_6(selectInput(NS(id, "download_map_filetype"), label = NULL,
+                            choices = c("png", "jpeg", "html"),
+                            width = "80%"))
+        ),
 
         tags$style("z-index: 2000")
 
@@ -119,23 +129,23 @@ map_server <- function(id, coin, parent_input, r_shared, df_geom) {
 
     })
 
-    # # user map (for download)
-    # user_map <- reactive({
-    #   leaflet::setView(
-    #     current_map(),
-    #     lng = input$map_center$lng,
-    #     lat = input$map_center$lat,
-    #     zoom = input$map_zoom
-    #   )
-    # })
-    #
-    # # download map
-    # output$download_map <- downloadHandler(
-    #   filename = function(){paste0("A2SIT_map.", input$download_map_filetype)},
-    #   content = function(file) {
-    #     f_save_map(plt = user_map(), file_name = file)
-    #   }
-    # )
+    # user map (for download)
+    user_map <- reactive({
+      leaflet::setView(
+        current_map(),
+        lng = input$map_center$lng,
+        lat = input$map_center$lat,
+        zoom = input$map_zoom
+      )
+    })
+
+    # download map
+    output$download_map <- downloadHandler(
+      filename = function(){paste0("A2SIT_map.", input$download_map_filetype)},
+      content = function(file) {
+        f_save_map(plt = user_map(), file_name = file)
+      }
+    )
 
   })
 
