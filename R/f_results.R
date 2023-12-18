@@ -426,7 +426,7 @@ f_save_map <- function(plt, file_name = "map.png"){
 
     # NOTE: webshot2 used for capture here because doesn't depend on phantomJS.
     # Although, this apparently only works for Chromium-based browsers.
-    webshot2::webshot(html_path, file = file_name, vwidth = 1600, vheight = 900, quiet = TRUE)
+    webshot2::webshot(html_path, file = file_name, quiet = TRUE, vwidth = 2000, vheight = 1300)
     unlink(html_path)
   }
 
