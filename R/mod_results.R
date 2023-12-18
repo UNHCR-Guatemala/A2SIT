@@ -145,7 +145,7 @@ results_UI <- function(id) {
         div(style = "display: flex; justify-content: space-between;",
             downloadLink(NS(id, "download_map"), label = "Click to download", style = "text-align: right;"),
             selectInput(NS(id, "download_map_filetype"), label = NULL,
-                        choices = c("png", "pdf", "jpeg", "html"),
+                        choices = c("png", "jpeg", "html"),
                         width = "40%")
         ),
 
