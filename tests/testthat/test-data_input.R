@@ -3,7 +3,7 @@ test_that("f_data_input", {
   f_path <- system.file("A2SIT_data_input_template_GTM.xlsx", package = "A2SIT")
 
   # correct spec
-  df_geom <- readRDS(system.file("geom", "GTM.rds", package = "A2SIT"))
+  df_geom <- readRDS(system.file("geom", "GTM.RDS", package = "A2SIT"))
   coin <- f_data_input(f_path, df_geom = df_geom)
   expect_s3_class(coin, "coin")
 
