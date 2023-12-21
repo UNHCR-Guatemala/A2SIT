@@ -23,16 +23,24 @@
 #'
 #' @param file_path path to the excel file where we have the raw data
 #' @param ISO3 ISO3 code of country to which the data belongs, e.g. `"GTM"`
+#' @param df_geom sf-class geometry data frame (used to cross check input codes)
+#' @param uCode_col Column name of `df_geom` which is used as unit codes.
 #'
 #' @return coin-class object
 #'
 #' @export
-f_data_input <- function(file_path, ISO3){
+f_data_input <- function(file_path, df_geom, ISO3 = NULL, uCode_col = NULL){
 
   # Checks ----
 
-  valid_ISOs <- get_cached_countries()
-  stopifnot(ISO3 %in% valid_ISOs)
+  if(!is.null(ISO3)){
+    valid_ISOs <- get_cached_countries()
+    stopifnot(ISO3 %in% valid_ISOs)
+  }
+
+  if(is.null(uCode_col)){
+    uCode_col <- "adm2_source_code"
+  }
 
   # Settings ----
 
@@ -74,12 +82,9 @@ f_data_input <- function(file_path, ISO3){
   names(iData)[names(iData) == ucode_name] <- "uCode"
   names(iData)[names(iData) == uname_name] <- "uName"
 
-  # check that uCodes correspond to admin2 codes in the geometry file
-  # get geom
-  admin2_geom <- system.file("geom", paste0(ISO3,".RDS"), package = "A2SIT") |>
-    readRDS()
+  # check that uCodes correspond to admin2 codes in the geometry
 
-  rogue_ucodes <- iData$uCode[iData$uCode %nin% admin2_geom$adm2_source_code]
+  rogue_ucodes <- iData$uCode[iData$uCode %nin% df_geom[[uCode_col]]]
   if(length(rogue_ucodes) > 1){
     message("One or more codes in 'adm2_source_code' column in Data tab not valid codes: ",
             toString(utils::head(rogue_ucodes)))
@@ -247,29 +252,56 @@ f_print_coin <- function(coin){
 #' Generate Excel template for input data, for specified country
 #'
 #' Writes codes and names of Admin2 regions to an Excel template, for a specified
-#' country.
+#' country. Takes an sf-class data frame and extracts codes and names from it.
 #'
-#' @param ISO3 Valid ISO3 code with geometry available in inst/geom
-#' @param to_file_name Where to write to
+#' @param df_geom Data frame of "sf" class which contains geometry for mapping the data,
+#' and associated codes and names of each geographical area (region/country).
+#' @param uCode_col Column name in `df_geom` to use as uCodes in COINr. Must contain
+#' unique codes, not starting with number.
+#' @param uName_col Column name in `df_geom` to use as uNames in COINr (could also
+#' be same as `uCode_col`).
+#' @param to_file_name Where to write the template file to.
+#' @param with_fake_data Logical: if `TRUE` the input template will also contain
+#' randomly-generated input data which can be used as a quick demo and for testing
+#' uploads of new shape files.
+#'
 #' @export
-f_generate_input_template <- function(ISO3, to_file_name = NULL){
+f_generate_input_template <- function(df_geom = NULL, to_file_name = NULL,
+                                      uCode_col = NULL, uName_col = NULL,
+                                      with_fake_data = FALSE){
 
-  stopifnot(ISO3 %in% get_cached_countries())
 
-  if(is.null(to_file_name)){
-    to_file_name <- paste0("A2SIT_data_input_template_", ISO3, ".xlsx")
+  # Prep ------------------------------------------------------------------
+
+  stopifnot(inherits(df_geom, "sf"))
+
+  if(is.null(uCode_col) || uCode_col == ""){
+    uCode_col <- "adm2_source_code"
+  }
+  if(is.null(uName_col) || uName_col == ""){
+    uName_col <- "gis_name"
   }
 
-  # load table for selected country
-  df_ISO3 <- system.file("geom", paste0(ISO3,".RDS"), package = "A2SIT") |>
-    readRDS()
+  if(is.null(to_file_name)){
+    to_file_name <- paste0("A2SIT_data_input_template.xlsx")
+  }
+
+
+  # Make template -----------------------------------------------------------
 
   # get cols of interest and sort
   df_write <- data.frame(
-    admin2Pcode = df_ISO3$adm2_source_code,
-    Name = df_ISO3$gis_name
+    admin2Pcode = df_geom[[uCode_col]],
+    Name = df_geom[[uName_col]]
   )
   df_write <- df_write[order(df_write$admin2Pcode), ]
+
+  if(with_fake_data){
+    l <- populate_with_fake_data(df_write)
+    df_write <- l$iData
+  }
+
+  names(df_write)[1:2] <- c("admin2Pcode",	"Name")
 
   # load template
   wb <- system.file("A2SIT_data_input_template.xlsx", package = "A2SIT") |>
@@ -277,10 +309,65 @@ f_generate_input_template <- function(ISO3, to_file_name = NULL){
 
   # write codes/names to wb
   openxlsx::writeData(
-    wb, sheet = "Data", x = df_write, colNames = F, startCol = 1, startRow = 6)
+    wb, sheet = "Data", x = df_write, colNames = TRUE, startCol = 1, startRow = 5)
+
+  if(with_fake_data){
+    # also write fake metadata
+    openxlsx::writeData(
+      wb, sheet = "Data", x = l$iMeta_numeric, colNames = FALSE, startCol = 3, startRow = 1)
+    openxlsx::writeData(
+      wb, sheet = "Data", x = l$iMeta_text, colNames = FALSE, startCol = 3, startRow = 3)
+  }
 
   # save
   openxlsx::saveWorkbook(wb, to_file_name, overwrite = T)
+}
+
+populate_with_fake_data <- function(df_write){
+
+  iMeta <- readxl::read_excel(
+    system.file("A2SIT_data_input_template.xlsx", package = "A2SIT"),
+    sheet = "Structure"
+  )
+
+  iCodes_l2 <- iMeta$iCode[iMeta$Level == 2]
+  n_unit <- nrow(df_write)
+
+  iMeta_rows <- data.frame(Init_weight = 1, Direction = 1, Group = iCodes_l2[1], iName = "Indicator 1")
+  iMeta_rows <- iMeta_rows[FALSE, ]
+
+  i_index <- 0
+
+  for(parent_code in iCodes_l2){
+
+    n_ind <- sample(3, 1)
+    i_indexes <- 1:n_ind + i_index
+
+    cols2add <- matrix(stats::runif(n_ind*n_unit), nrow = n_unit, ncol = n_ind) |>
+      as.data.frame()
+    names(cols2add) <- paste0("ind_", i_indexes)
+
+    df_write <- cbind(df_write, cols2add)
+
+    iMeta_add <- data.frame(
+      Init_weight = 1,
+      Direction = sample(c(-1, 1, 1, 1), n_ind),
+      Group = rep(parent_code, n_ind),
+      iName = paste0("Indicator ", i_indexes)
+    )
+
+    iMeta_rows <- rbind(iMeta_rows, iMeta_add)
+
+    i_index <- i_indexes[length(i_indexes)]
+  }
+
+  iMeta_numeric <- t(iMeta_rows[1:2]) |> as.data.frame()
+  iMeta_text <- t(iMeta_rows[3:4]) |> as.data.frame()
+
+  list(iData = df_write,
+       iMeta_numeric = iMeta_numeric,
+       iMeta_text = iMeta_text)
+
 }
 
 

@@ -294,7 +294,8 @@ f_display_results_table <- function(coin, type = "scores", as_discrete = FALSE){
 #'
 #' @param coin The coin
 #' @param iCode iCode of indicator/aggregate to plot
-#' @param ISO3 Country of the data to plot
+#' @param df_geom Geometry data frame of "sf" class specifying map polygons. Must
+#' match uCodes found in coin.
 #' @param as_discrete If `TRUE`, plots severity categories.
 #' @param bin_colours Vector of colours to use on discrete palette if `as_discrete = TRUE`
 #' @param poly_opacity Opacity for polygons: value between 0 and 1
@@ -302,25 +303,24 @@ f_display_results_table <- function(coin, type = "scores", as_discrete = FALSE){
 #' @param line_weight Weight for lines
 #' @param line_type Type for lines: value from 1-4.
 #' @param legendposition Legend position argument passed to Leaflet
+#' @param uCode_col Column name of `df_geom` which corresponds to `uCode` in COINr
+#' @param uName_col Column name of `df_geom` which corresponds to `uName` in COINr
+#' @param map_base String specifying the base map tiles to use. Some valid inputs here
+#' can be found by calling `get_leaflet_map_providers()`.
 #'
 #' @return Leaflet map object
 #' @export
 #'
-f_plot_map <- function(coin, iCode, ISO3, as_discrete = TRUE, bin_colours = NULL,
+f_plot_map <- function(coin, iCode, df_geom, uCode_col = NULL, uName_col = NULL,
+                       as_discrete = TRUE, bin_colours = NULL,
                        poly_opacity = 0.7, line_colour = "white", line_weight = 2,
-                       line_type = "3", legendposition = "bottomright"){
+                       line_type = "3", legendposition = "bottomright", map_base = NULL){
 
-  available_ISO3s <- get_cached_countries()
+  stopifnot(inherits(df_geom, "sf"))
 
-  if(ISO3 %nin% available_ISO3s){
-    stop("Cannot render map because geometry for country ", ISO3,
-         " not available in inst/geom. Run f_get_admin2_boundaries() to get",
-         " and store the required file.")
+  if(is.null(map_base)){
+    map_base <- "CartoDB.Positron"
   }
-
-  # get geom
-  admin2_geom <- system.file("geom", paste0(ISO3,".RDS"), package = "A2SIT") |>
-    readRDS()
 
   # find dset
   dset_plot <- get_plot_dset(coin, iCode)
@@ -340,7 +340,7 @@ f_plot_map <- function(coin, iCode, ISO3, as_discrete = TRUE, bin_colours = NULL
   }
 
   # merge into shape df
-  admin2_geom <- merge(admin2_geom, df_plot, by.x = "adm2_source_code", by.y = "uCode") |>
+  df_geom <- merge(df_geom, df_plot, by.x = uCode_col, by.y = "uCode") |>
     sf::st_as_sf()
 
   # Colours and labels ------------------------------------------------------
@@ -359,17 +359,17 @@ f_plot_map <- function(coin, iCode, ISO3, as_discrete = TRUE, bin_colours = NULL
   }
 
   labels <- paste0(
-    "<strong>", admin2_geom$gis_name, "</strong><br/>",
-    round(admin2_geom$Indicator, 2), " (rank ", admin2_geom$Rank,")"
+    "<strong>", df_geom[[uName_col]], "</strong><br/>",
+    round(df_geom$Indicator, 2), " (rank ", df_geom$Rank,")"
   ) |>
     lapply(htmltools::HTML)
 
 
   # Plot --------------------------------------------------------------------
 
-  mp <- leaflet::leaflet(admin2_geom) |>
-    leaflet::addProviderTiles("CartoDB.Positron") |>
-    leaflet::addPolygons(layerId = ~adm2_source_code,
+  mp <- leaflet::leaflet(df_geom) |>
+    leaflet::addProviderTiles(map_base) |>
+    leaflet::addPolygons(layerId = ~get(uCode_col),
                          fillColor = ~pal(Indicator),
                          weight = line_weight,
                          opacity = 1,
@@ -417,7 +417,16 @@ f_save_map <- function(plt, file_name = "map.png"){
   } else {
     html_path <- paste0(tempdir(), "\\temp_map.html")
     htmlwidgets::saveWidget(plt, file = html_path)
-    webshot::webshot(html_path, file = file_name)
+
+    # Have to convert backslashes to forward slashes otherwise webshot breaks
+    # To be seen how this behaves on different platforms.
+    if(grepl("\\\\", html_path)){
+      html_path <- gsub("\\\\", "/", html_path)
+    }
+
+    # NOTE: webshot2 used for capture here because doesn't depend on phantomJS.
+    # Although, this apparently only works for Chromium-based browsers.
+    webshot2::webshot(html_path, file = file_name, quiet = TRUE, vwidth = 2000, vheight = 1300)
     unlink(html_path)
   }
 
@@ -730,3 +739,15 @@ get_cached_countries <- function(){
 # Codes cached so far (or tried to...!)
 #ISO3s_2get <- c("ARG", "BLZ", "BRA", "BOL", "CHL", "COL", "CRI", "DOM", "ECU", "SLV", "GTM", "GUY", "HND", "MEX", "PAN", "PRY", "PER", "URY", "VEN")
 #Argentina,  Belize, Brazil, Bolivia, Chile, Colombia, Costa Rica, Dominican Republic, Ecuador, El Salvador, Guatemala, Guyana, Honduras, Mexico, Panama, Paraguay, Peru, Uruguay, Venezuela.
+
+# A selection of Leaflet map providers to use as options in the app.
+# For full selection see https://leaflet-extras.github.io/leaflet-providers/preview/index.html
+get_leaflet_map_providers <- function(){
+
+  full_list <- leaflet::providers |> as.character()
+
+  esri <- full_list[startsWith(full_list, "Esri.World")]
+  carto <- full_list[startsWith(full_list, "CartoDB")]
+
+  c(carto, esri, "OpenStreetMap.Mapnik")
+}

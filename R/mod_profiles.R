@@ -29,6 +29,7 @@ profiles_UI <- function(id) {
           placement = "top"
         ),
         width = 12, status = "info",
+        "Severity scores and ranks are colour coded so that a darker red indicates a higher value.",
         DT::dataTableOutput(NS(id, "df_indicators")))
     ),
     column(
@@ -46,8 +47,8 @@ profiles_UI <- function(id) {
           id = "radar_sidebar",
           icon = icon("gear"),
           width = 40,
-          selectInput(NS(id, "radar_group"), label = "Show group", choices = NULL),
-          shinyWidgets::prettySwitch(NS(id, "plot_radar"), label = "Toggle radar/table", value = TRUE)
+          selectInput(NS(id, "radar_group"), label = "Show group", choices = NULL, width = "90%"),
+          shinyWidgets::switchInput(NS(id, "plot_radar"), label = "Toggle radar/table", size = "small", width = "100%", labelWidth = "200px")
         ),
         plotly::plotlyOutput(NS(id, "radar_chart")),
         DT::dataTableOutput(NS(id, "radar_table"))

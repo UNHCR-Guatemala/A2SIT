@@ -93,11 +93,11 @@ analysis_UI <- function(id) {
           icon = icon("gear"),
           width = 40,
           p("Select an indicator - you can also type to search in this box."),
-          selectInput(NS(id, "scat_v2"), label = "Plot against", choices = c("tmp_999")),
-          shinyWidgets::prettySwitch(NS(id, "scat_trend"), label = "Trendline"),
-          shinyWidgets::prettySwitch(NS(id, "scat_logx"), label = "Log X"),
-          shinyWidgets::prettySwitch(NS(id, "scat_logy"), label = "Log Y"),
-          shinyWidgets::prettySwitch(NS(id, "scat_details"), label = "Show stats", value = FALSE)
+          selectInput(NS(id, "scat_v2"), label = "Plot against", choices = c("tmp_999"), width = "90%"),
+          shinyWidgets::switchInput(NS(id, "scat_trend"), label = "Trend-line", size = "small", width = "100%", labelWidth = "120px"),
+          shinyWidgets::switchInput(NS(id, "scat_logx"), label = "Log X", size = "small", width = "100%", labelWidth = "120px"),
+          shinyWidgets::switchInput(NS(id, "scat_logy"), label = "Log Y", size = "small", width = "100%", labelWidth = "120px"),
+          shinyWidgets::switchInput(NS(id, "scat_details"), label = "Stats", size = "small", width = "100%", labelWidth = "120px")
         ),
         plotly::plotlyOutput(NS(id, "scatter_plot"))
       )
