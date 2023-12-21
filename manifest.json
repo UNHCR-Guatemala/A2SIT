@@ -50,6 +50,29 @@
         "Built": "R 4.3.1; ; 2023-12-12 22:16:46 UTC; windows"
       }
     },
+    "AsioHeaders": {
+      "Source": "CRAN",
+      "Repository": "https://cran.rstudio.com",
+      "description": {
+        "Package": "AsioHeaders",
+        "Type": "Package",
+        "Title": "'Asio' C++ Header Files",
+        "Version": "1.22.1-2",
+        "Date": "2022-12-07",
+        "Author": "Dirk Eddelbuettel",
+        "Maintainer": "Dirk Eddelbuettel <edd@debian.org>",
+        "Description": "'Asio' is a cross-platform C++ library for network and low-level\n I/O programming that provides developers with a consistent asynchronous model\n using a modern C++ approach. It is also included in Boost but requires linking\n when used with Boost. Standalone it can be used header-only (provided a recent\n compiler). 'Asio' is written and maintained by Christopher M. Kohlhoff, and\n released under the 'Boost Software License', Version 1.0.",
+        "Copyright": "file inst/COPYRIGHTS",
+        "License": "BSL-1.0",
+        "URL": "https://github.com/eddelbuettel/asioheaders,\nhttps://dirk.eddelbuettel.com/code/asioheaders.html",
+        "BugReports": "https://github.com/eddelbuettel/asioheaders/issues",
+        "NeedsCompilation": "no",
+        "Packaged": "2022-12-08 04:04:23 UTC; edd",
+        "Repository": "CRAN",
+        "Date/Publication": "2022-12-08 08:12:34 UTC",
+        "Built": "R 4.3.1; ; 2023-10-20 00:53:51 UTC; windows"
+      }
+    },
     "BH": {
       "Source": "CRAN",
       "Repository": "https://cran.rstudio.com",
@@ -776,6 +799,35 @@
         "Repository": "CRAN",
         "Date/Publication": "2016-07-27 03:17:48",
         "Built": "R 4.3.1; ; 2023-07-19 01:40:49 UTC; windows"
+      }
+    },
+    "chromote": {
+      "Source": "CRAN",
+      "Repository": "https://cran.rstudio.com",
+      "description": {
+        "Package": "chromote",
+        "Title": "Headless Chrome Web Browser Interface",
+        "Version": "0.1.2",
+        "Authors@R": "c(\n    person(\"Winston\", \"Chang\", , \"winston@posit.co\", role = c(\"aut\", \"cre\")),\n    person(\"Barret\", \"Schloerke\", , \"barret@posit.co\", role = \"aut\",\n           comment = c(ORCID = \"0000-0001-9986-114X\")),\n    person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\"))\n  )",
+        "Description": "An implementation of the 'Chrome DevTools Protocol', for\n    controlling a headless Chrome web browser.",
+        "License": "GPL-2",
+        "URL": "https://rstudio.github.io/chromote/,\nhttps://github.com/rstudio/chromote",
+        "BugReports": "https://github.com/rstudio/chromote/issues",
+        "Imports": "curl, fastmap, jsonlite, later (>= 1.1.0), magrittr, processx,\npromises (>= 1.1.1), R6, rlang, websocket (>= 1.2.0)",
+        "Suggests": "showimage, testthat (>= 3.0.0)",
+        "Config/Needs/website": "tidyverse/tidytemplate",
+        "Config/testthat/edition": "3",
+        "Encoding": "UTF-8",
+        "Language": "en-US",
+        "RoxygenNote": "7.2.3",
+        "SystemRequirements": "Google Chrome or other Chromium-based browser.\nchromium: chromium (rpm) or chromium-browser (deb)",
+        "NeedsCompilation": "no",
+        "Packaged": "2023-08-11 20:25:41 UTC; garrick",
+        "Author": "Winston Chang [aut, cre],\n  Barret Schloerke [aut] (<https://orcid.org/0000-0001-9986-114X>),\n  Posit Software, PBC [cph, fnd]",
+        "Maintainer": "Winston Chang <winston@posit.co>",
+        "Repository": "CRAN",
+        "Date/Publication": "2023-08-11 21:43:51 UTC",
+        "Built": "R 4.3.2; ; 2023-12-19 03:27:43 UTC; windows"
       }
     },
     "cicerone": {
@@ -4961,6 +5013,62 @@
         "Built": "R 4.3.1; ; 2023-07-25 01:42:04 UTC; windows"
       }
     },
+    "webshot2": {
+      "Source": "CRAN",
+      "Repository": "https://cran.rstudio.com",
+      "description": {
+        "Package": "webshot2",
+        "Title": "Take Screenshots of Web Pages",
+        "Version": "0.1.1",
+        "Authors@R": "c(\n    person(\"Winston\", \"Chang\", , \"winston@posit.co\", role = c(\"aut\", \"cre\")),\n    person(\"Barret\", \"Schloerke\", , \"barret@posit.co\", role = \"ctb\",\n           comment = c(ORCID = \"0000-0001-9986-114X\")),\n    person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\"))\n  )",
+        "Description": "Takes screenshots of web pages, including Shiny applications\n    and R Markdown documents. 'webshot2' uses headless Chrome or Chromium\n    as the browser back-end.",
+        "License": "GPL-2",
+        "URL": "https://rstudio.github.io/webshot2/,\nhttps://github.com/rstudio/webshot2",
+        "BugReports": "https://github.com/rstudio/webshot2/issues",
+        "Depends": "R (>= 3.2)",
+        "Imports": "callr, chromote (>= 0.1.0), later, magrittr, promises",
+        "Suggests": "httpuv, rmarkdown, shiny",
+        "Encoding": "UTF-8",
+        "Language": "en-US",
+        "RoxygenNote": "7.2.3",
+        "NeedsCompilation": "no",
+        "Packaged": "2023-08-11 21:17:46 UTC; garrick",
+        "Author": "Winston Chang [aut, cre],\n  Barret Schloerke [ctb] (<https://orcid.org/0000-0001-9986-114X>),\n  Posit Software, PBC [cph, fnd]",
+        "Maintainer": "Winston Chang <winston@posit.co>",
+        "Repository": "CRAN",
+        "Date/Publication": "2023-08-11 22:00:02 UTC",
+        "Built": "R 4.3.2; ; 2023-12-19 03:40:48 UTC; windows"
+      }
+    },
+    "websocket": {
+      "Source": "CRAN",
+      "Repository": "https://cran.rstudio.com",
+      "description": {
+        "Package": "websocket",
+        "Version": "1.4.1",
+        "Title": "'WebSocket' Client Library",
+        "Description": "Provides a 'WebSocket' client interface for R.\n    'WebSocket' is a protocol for low-overhead real-time communication:\n    <https://en.wikipedia.org/wiki/WebSocket>.",
+        "Authors@R": "c(\n    person(\"Winston\", \"Chang\", role = c(\"aut\", \"cre\"), email = \"winston@rstudio.com\"),\n    person(\"Joe\", \"Cheng\", role = \"aut\", email = \"joe@rstudio.com\"),\n    person(\"Alan\", \"Dipert\", role = \"aut\"),\n    person(\"Barbara\", \"Borges\", role = \"aut\"),\n    person(family = \"RStudio\", role = \"cph\"),\n    person(\"Peter\", \"Thorson\", role = c(\"ctb\", \"cph\"), comment = \"WebSocket++ library\"),\n    person(\"René\", \"Nyffenegger\", role = c(\"ctb\", \"cph\"), comment = \"Base 64 library\"),\n    person(\"Micael\", \"Hildenborg\", role = c(\"ctb\", \"cph\"), comment = \"SHA1 library\"),\n    person(family = \"Aladdin Enterprises\", role = \"cph\", comment = \"MD5 library\"),\n    person(\"Bjoern\", \"Hoehrmann\", role = c(\"ctb\", \"cph\"), comment = \"UTF8 Validation library\"))",
+        "License": "GPL-2",
+        "Encoding": "UTF-8",
+        "ByteCompile": "true",
+        "Imports": "R6, later (>= 1.2.0)",
+        "LinkingTo": "cpp11, AsioHeaders, later",
+        "BugReports": "https://github.com/rstudio/websocket/issues",
+        "SystemRequirements": "C++11, GNU make, OpenSSL >= 1.0.2",
+        "RoxygenNote": "7.1.1",
+        "Suggests": "httpuv, testthat, knitr, rmarkdown",
+        "VignetteBuilder": "knitr",
+        "NeedsCompilation": "yes",
+        "Packaged": "2021-08-18 19:46:25 UTC; barret",
+        "Author": "Winston Chang [aut, cre],\n  Joe Cheng [aut],\n  Alan Dipert [aut],\n  Barbara Borges [aut],\n  RStudio [cph],\n  Peter Thorson [ctb, cph] (WebSocket++ library),\n  René Nyffenegger [ctb, cph] (Base 64 library),\n  Micael Hildenborg [ctb, cph] (SHA1 library),\n  Aladdin Enterprises [cph] (MD5 library),\n  Bjoern Hoehrmann [ctb, cph] (UTF8 Validation library)",
+        "Maintainer": "Winston Chang <winston@rstudio.com>",
+        "Repository": "CRAN",
+        "Date/Publication": "2021-08-18 20:30:02 UTC",
+        "Built": "R 4.3.2; x86_64-w64-mingw32; 2023-12-19 03:05:35 UTC; windows",
+        "Archs": "x64"
+      }
+    },
     "whisker": {
       "Source": "CRAN",
       "Repository": "https://cran.rstudio.com",
@@ -5392,7 +5500,7 @@
       "checksum": "543f579f8585d56cab4182d2219bd68c"
     },
     "DESCRIPTION": {
-      "checksum": "3cccf799ed33f075bfad6186e7ba06fb"
+      "checksum": "925c0d3a5952675382ebcd8c180a7620"
     },
     "dev/01_start.R": {
       "checksum": "d7837be3f66f2252555e84d1add3f4d5"
@@ -5869,7 +5977,7 @@
       "checksum": "dcf07981a211eb8e06fc9f9c278a9a45"
     },
     "man/f_data_input.Rd": {
-      "checksum": "4dfe33b92a10af98ec7012bfb2e859e0"
+      "checksum": "bfcbe191a16de162a49059045526372e"
     },
     "man/f_df_for_scat.Rd": {
       "checksum": "937072e03dfe9fade8d2f94ec6998795"
@@ -5893,7 +6001,7 @@
       "checksum": "e6d530860f9e3086c6782302a253b6d9"
     },
     "man/f_generate_input_template.Rd": {
-      "checksum": "95a9b2614aa0c6ef83d9e1f5bc65b371"
+      "checksum": "1d1af1db5f8468621b83c1492a6e2b40"
     },
     "man/f_generate_results.Rd": {
       "checksum": "9c1521e021c9b927ab6f9f154303b90b"
@@ -5926,7 +6034,7 @@
       "checksum": "aee5c973ab9048192ed6a747d4598cb1"
     },
     "man/f_plot_map.Rd": {
-      "checksum": "815a492278daaff41e0adcd6d2ece42f"
+      "checksum": "3c879c93b7b6e35894bd8dd014b8e9a0"
     },
     "man/f_plot_radar.Rd": {
       "checksum": "077865f52dcb669f8d2a0da3339fb157"
@@ -6028,7 +6136,7 @@
       "checksum": "a8ae62c1b1300b203ca12d71f4e40d5f"
     },
     "R/app_server.R": {
-      "checksum": "91539125d829f57c9bf25fd273dfc450"
+      "checksum": "7083ffdfee89a15caf2f38120f7ebe42"
     },
     "R/app_ui.R": {
       "checksum": "e89fa134640bfc9d8e024c2d8660990c"
@@ -6046,43 +6154,46 @@
       "checksum": "6d82f174fd1aae2a2e57efaafc5979a5"
     },
     "R/f_input.R": {
-      "checksum": "a5ae772ca27b7558c927ac281ff26ef2"
+      "checksum": "8b883fe3ab8032cca6567e994110f3ed"
     },
     "R/f_profiles.R": {
       "checksum": "9e9b4c719e8052ab3a1d6d2f18c4046a"
     },
     "R/f_results.R": {
-      "checksum": "07358b5958b26ad56a921f7fa3f38da0"
+      "checksum": "c08bcc6675952b5c2c2516c265032cad"
+    },
+    "R/f_shapefile_handling.R": {
+      "checksum": "c061b277fa77d7cb845c675ffd96d638"
     },
     "R/golem_utils_ui.R": {
       "checksum": "e0b7c9c2f032eb0c4962c5b447f02620"
     },
     "R/mod_analysis.R": {
-      "checksum": "f6d015da93e686d800489181fd7d250a"
+      "checksum": "b84ceaeef982efc9ad2fd211518720a3"
     },
     "R/mod_compare_units.R": {
       "checksum": "aacdca5d4637002e939567434bc2b6b9"
     },
     "R/mod_input.R": {
-      "checksum": "d38b11eaabbf20fdbd8ef6bb1d9fc4c7"
+      "checksum": "c51ccec1ed50ae8e465f80b6add33645"
     },
     "R/mod_map.R": {
-      "checksum": "dbd2f38dba1d537e888f2ae3d5d6f265"
+      "checksum": "0a4af7622100c237d92d0c1b24247e20"
     },
     "R/mod_profiles.R": {
-      "checksum": "2c51a055c7d84ca428dde773ff2d91de"
+      "checksum": "012a23e29d27f16bdfd57b93b14217ab"
     },
     "R/mod_results.R": {
-      "checksum": "ee17cc801aa74a66a230f306d0e09a7a"
+      "checksum": "977d7e1e5257ce1ff22b05ef8f011cb5"
     },
     "R/mod_scenarios.R": {
       "checksum": "edb00deae38ed7f20d214eb96f26e275"
     },
     "R/mod_welcome.R": {
-      "checksum": "f07e16cbc071dd9b6b85ee23e883a1fc"
+      "checksum": "765daa92e2e8eae2d615a5cc4c7a395e"
     },
     "R/run_app.R": {
-      "checksum": "4e66fd8e88c5bce46699fd81c56d704b"
+      "checksum": "3df26a8bdc662cec14cd284b9017eb71"
     },
     "R/ttt_disable_autoload.R": {
       "checksum": "9d8f7f20e88b559c046ec1f59fe82cba"
@@ -6118,7 +6229,7 @@
       "checksum": "d34d57f82ae1e156fb594850d28fc2ff"
     },
     "tests/testthat/test-data_input.R": {
-      "checksum": "6ccb17144c073e153e0e25ea1d62772a"
+      "checksum": "d77ee193381e83f0965a847ddb8421b5"
     },
     "tests/testthat/test-golem-recommended.R": {
       "checksum": "b1198314253a66752376a8fa6d727f16"
