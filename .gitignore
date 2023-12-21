@@ -8,3 +8,4 @@ rsconnect
 .Rprofile
 shiny_bookmarks
 A2SIT_data_input_template.xlsx
+.dockerignore
