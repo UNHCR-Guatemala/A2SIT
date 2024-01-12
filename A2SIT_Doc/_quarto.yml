@@ -6,7 +6,7 @@ book:
   title: "Admin2 Severity Index Tool"
   author:
     - name: William Becker
-      url: www.willbecker.me
+      url: http://www.willbecker.me
   date: last-modified
   chapters:
     - index.qmd
