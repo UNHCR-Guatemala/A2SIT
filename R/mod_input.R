@@ -253,6 +253,7 @@ input_server <- function(id, coin, coin_full, r_shared, df_geom) {
     output$flag <- renderUI({
 
       req(coin())
+      req(!r_shared$user_geom)
 
       c_name <- A2SIT::country_codes$CountryName[
         A2SIT::country_codes$ISO3 == input$ISO3]
