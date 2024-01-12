@@ -13,11 +13,13 @@ book:
       chapters:
         - layout.qmd
         - data_input.qmd
+        - user_geometry.qmd
         - analysis.qmd
         - results.qmd
         - profiles.qmd
         - scenarios.qmd
         - unit_comparison.qmd
+        - map_builder.qmd
     - part: "Methodology"
       chapters:
         - meth_overview.qmd

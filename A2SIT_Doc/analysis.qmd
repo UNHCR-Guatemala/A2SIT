@@ -46,9 +46,12 @@ Again, visual inspection of each indicator is highly recommended to double check
 
 ## Scatter plot
 
-![](figs/analysis_4.png){width=80%}
+![](figs/analysis_4.png){width=70%}
 
-The scatter plot allows to plot any indicator against any other. The x-axis indicator is selected by selecting an row in the analysis table. The y-axis indicator is controlled by clicking the "gear" icon in the top right and using the drop-down menu. Here you can also optionally add a linear trend line and toggle log axes (the latter option useful for skewed indicators). Hovering over points reveals details of the region and values.
+The scatter plot allows to plot any indicator against any other. The x-axis indicator is selected by selecting an row in the analysis table. The y-axis indicator is controlled by clicking the "gear" icon in the top right and using the drop-down menu. Here you can also optionally add a linear trend line and toggle log axes (the latter option useful for skewed indicators). Hovering over points reveals details of the region and values. There is also an option to report statistics: these show:
+
+- The Pearson correlation coefficient and respective p-value
+- The Spearman rank correlation and respective p-value
 
 Scatter plots are useful to assess the relationships between indicators, but can also identify outliers and help spot any errors. In the analysis table, where indicators are flagged as being collinear or negatively correlated, it is recommended to check them here to see if the relationships reveal anything unusual.
 

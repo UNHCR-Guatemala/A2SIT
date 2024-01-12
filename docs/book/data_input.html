@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.433">
+<meta name="generator" content="quarto-1.3.450">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -30,7 +30,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./analysis.html" rel="next">
+<link href="./user_geometry.html" rel="next">
 <link href="./layout.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -134,32 +134,44 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./user_geometry.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">User geometry</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./analysis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Indicator analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Indicator analysis</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./results.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Exploring results</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Exploring results</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./profiles.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Region profiles</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Region profiles</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./scenarios.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Scenarios</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Scenarios</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./unit_comparison.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Region comparisons</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Region comparisons</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./map_builder.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Map builder</span></span></a>
   </div>
 </li>
       </ul>
@@ -176,25 +188,25 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./meth_overview.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Overview</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Overview</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./data_processing.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Data processing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Data processing</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./aggregation_weighting.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Aggregation and weighting</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Aggregation and weighting</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./technical_implementation.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Technical implementation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Technical implementation</span></span></a>
   </div>
 </li>
       </ul>
@@ -243,12 +255,34 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<p>Data must be input into the A2SIT app using a formatted Excel template. The app expects the data to be in a certain format, so it is <em>very important to closely follow the instructions here</em>, otherwise you may run into errors!</p>
+<p>The aim of the Data Input tab is to upload the user’s data into the app. Data must be input into the A2SIT app using a formatted Excel template. The app expects the data to be in a certain format, so it is <em>very important to closely follow the instructions here</em>, otherwise you may run into errors!</p>
+<p>Overall, the steps to follow here are:</p>
+<ol type="1">
+<li>Select one of the supported countries from the dropdown menu</li>
+<li>Download the data template of that country as an xlsx file</li>
+<li>Populate the template with your data</li>
+<li>Upload the completed template to the app</li>
+</ol>
+<p>By default the app only supports certain countries because those are the countries for which mapping files are available. However, the app now includes the possibility to upload your own map/geometry files. This is an advanced option and is left to <a href="user_geometry.html"><span>Chapter&nbsp;4</span></a>.</p>
+<p>If you want to demo the app without uploading your own data, you can also <a href="https://github.com/UNHCR-Guatemala/A2SIT/raw/main/inst/A2SIT_data_input_template_GTM.xlsx">download the example data set</a> for Guatemala and upload it back to the app.</p>
 <section id="template" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="template"><span class="header-section-number">3.1</span> Template</h2>
 <p>The A2SIT app generates customised templates for each country. To download the template, select your country from the dropdown menu, then click the “Download country template” button.</p>
 <p><img src="figs/data_input_1.png" class="img-fluid"></p>
 <p>The dropdown menu contains all the countries currently supported by the app<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you want to quickly trial the app, you can also turn on the “Populate with fake data” switch. This adds random indicator data to the template which means it can be immediately re-uploaded to the app for testing. It may also be useful to demonstrate how the template should be compiled. <em>Please keep in mind that the data here is simply random numbers and has no meaning!</em></p>
+</div>
+</div>
 <p>The next step is to fill in the template with your data. Opening the template, you will find that it has three tabs:</p>
 <ul>
 <li>Intro: instructions on how to fill in the template</li>
@@ -350,7 +384,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn1"><p>This list represents the countries for which Admin 2 shape files are available for mapping.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>This list represents the countries for which Admin 2 shape files are available for mapping. See also <a href="user_geometry.html"><span>Chapter&nbsp;4</span></a> for how to upload your own geometry files to use the app with any data set.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
@@ -595,8 +629,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./analysis.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Indicator analysis</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./user_geometry.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">User geometry</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

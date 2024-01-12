@@ -16,7 +16,7 @@ Note that the aggregate scores are scaled in two different ways: either using th
 
 ## Map and table
 
-![](figs/results_1.png){width=100%}
+![](figs/results_1.png){width="100%"}
 
 In the main "Results" box, the top level of the index is plotted on the map, with colour shading representing the index scores. The map is interactive, allowing you to pan and zoom using by clicking and dragging, or scrolling with the mouse wheel.
 
@@ -26,13 +26,13 @@ You can change which indicator or aggregate is plotted on the map using the uppe
 
 In the same "Results" box you can also select the "Table" tab to see the results as a table.
 
-![](figs/results_2.png){width=100%}
+![](figs/results_2.png){width="100%"}
 
 The table is colour-formatted to help highlight high and low values. The table rows are sorted by the highest index score downwards, and the columns are sorted from the highest level downwards. You can sort the table by different columns by clicking on the column headers, and search for particular units using the search box.
 
 ## Bar chart
 
-![](figs/results_3.png){width=100%}
+![](figs/results_3.png){width="100%"}
 
 Underneath the Results box, there is a bar chart of the same indicator/aggregate shown on the map. Use the "gear" icon in the top right for more options: by default only the top 50 regions are shown but you can select the bottom 50, or all. The checkbox selects whether to break down scores into their components on the bar chart - these are the underlying indicators aggregates at the level immediately below. Clicking on a bar here will also give details about that region in the box in the bottom left of the map.
 
@@ -40,7 +40,7 @@ Underneath the Results box, there is a bar chart of the same indicator/aggregate
 
 By default the index is calculated using the arithmetic mean, which implies that low (high) scores in one indicator are perfectly compensated by high (low) scores in another. Optionally, in the "Adjust" box, select "Scenario 2" which uses the geometric mean: in this case lower scores in one indicator are less compensated by higher scores in others, or "Scenario 3" which implies even less compensation. Click "Recalculate" to see the new results. More details on the aggregation methods are given in @sec-aggweight.
 
-![](figs/results_4.png){width=40%}
+![](figs/results_4.png){width="40%"}
 
 Importantly, the scenario selected here will be used as the "main" results in the rest of the app, including in the "Profiles" and "Region comparison" tabs. All scenarios can additionally be compared in one place in the "Scenarios" tab, which is explained in @sec-scenarios.
 
@@ -50,11 +50,17 @@ Clicking on the 'gear' icon in the top right of this box opens the option to adj
 
 The Export box contains options for exporting the results to Excel or R, or to download map images.
 
-![](figs/results_5.png){width=40%}
+![](figs/results_5.png){width="40%"}
 
-The map is downloadable in various formats by selecting the file format (either png, jpeg, pdf or html) and clicking the "Click to download" link. Capturing the map images is unfortunately not perfect and you may have to experiment a little to get the best results. An alternative, which can offer more control, may be to download the map as an HTML file, then open it in a separate tab, and save the image there using the "print to pdf" functionality in your browser, or to simply take a screenshot (in the latter case, you can maximise the window with F11 and take a screenshot of the full window using Windows' "snipping" tool, for example).
+The map is downloadable in various formats by selecting the file format (either png, jpeg, pdf or html) and clicking the "Click to download" link[^results-2]. Capturing the map images is unfortunately not perfect and you may have to experiment a little to get the best results. An alternative, which can offer more control, may be to download the map as an HTML file, then open it in a separate tab, and save the image there using the "print to pdf" functionality in your browser, or to simply take a screenshot (in the latter case, you can maximise the window with F11 and take a screenshot of the full window using Windows' "snipping" tool, for example).
 
-Finally the "Export results" section can be used to download the results as they stand either to Excel or as a file that can be read by R. 
+[^results-2]: Map download relies on JavaScript plugins which unfortunately have been difficult to implement in the online version of the app: for this reason the download may not be functional depending on the current state of hosting and your browser.
+
+::: callout-tip
+Mapping with more customisation over the appearance is available in the Map builder tab. See @sec-map_builder for more details.
+:::
+
+Finally the "Export results" section can be used to download the results as they stand either to Excel or as a file that can be read by R.
 
 If downloaded to Excel, the file will contain a number of tabs showing the results on both the 1-100 scale and the categorical 1-5 scale, for all scenarios. It also records the analysis tables, and metadata such as the weights and index structure.
 

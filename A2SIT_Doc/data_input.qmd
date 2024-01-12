@@ -1,6 +1,17 @@
 # Data input {#sec-datainput}
 
-Data must be input into the A2SIT app using a formatted Excel template. The app expects the data to be in a certain format, so it is *very important to closely follow the instructions here*, otherwise you may run into errors!
+The aim of the Data Input tab is to upload the user's data into the app. Data must be input into the A2SIT app using a formatted Excel template. The app expects the data to be in a certain format, so it is *very important to closely follow the instructions here*, otherwise you may run into errors!
+
+Overall, the steps to follow here are:
+
+1.  Select one of the supported countries from the dropdown menu
+2.  Download the data template of that country as an xlsx file
+3.  Populate the template with your data
+4.  Upload the completed template to the app
+
+By default the app only supports certain countries because those are the countries for which mapping files are available. However, the app now includes the possibility to upload your own map/geometry files. This is an advanced option and is left to @sec-user_geom.
+
+If you want to demo the app without uploading your own data, you can also [download the example data set](https://github.com/UNHCR-Guatemala/A2SIT/raw/main/inst/A2SIT_data_input_template_GTM.xlsx) for Guatemala and upload it back to the app.
 
 ## Template
 
@@ -10,7 +21,11 @@ The A2SIT app generates customised templates for each country. To download the t
 
 The dropdown menu contains all the countries currently supported by the app[^data_input-1].
 
-[^data_input-1]: This list represents the countries for which Admin 2 shape files are available for mapping.
+[^data_input-1]: This list represents the countries for which Admin 2 shape files are available for mapping. See also @sec-user_geom for how to upload your own geometry files to use the app with any data set.
+
+::: callout-tip
+If you want to quickly trial the app, you can also turn on the "Populate with fake data" switch. This adds random indicator data to the template which means it can be immediately re-uploaded to the app for testing. It may also be useful to demonstrate how the template should be compiled. *Please keep in mind that the data here is simply random numbers and has no meaning!*
+:::
 
 The next step is to fill in the template with your data. Opening the template, you will find that it has three tabs:
 
@@ -37,7 +52,7 @@ The next columns to the right are the data columns: this is where you should pas
 3.  Try to fill in data for every Admin2 code. Admin2 codes with no indicator data will be deleted by the app.
 4.  Do not input data for rows where there are no Admin2 codes.
 5.  Make sure each indicator has at least some data available. Indicators with no data can still be input into the app, but they will be automatically removed.
-6. Any indicators with only one unique value will also be removed. For example, an indicator which has the same value for every unit contributes nothing and causes numerical problems in the app, so is removed.
+6.  Any indicators with only one unique value will also be removed. For example, an indicator which has the same value for every unit contributes nothing and causes numerical problems in the app, so is removed.
 
 The best way to see what the correctly-formatted input data looks like is to simply [download the example data set](https://github.com/UNHCR-Guatemala/A2SIT/raw/main/inst/A2SIT_data_input_template_GTM.xlsx).
 

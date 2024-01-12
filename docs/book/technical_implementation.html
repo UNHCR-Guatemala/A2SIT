@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.433">
+<meta name="generator" content="quarto-1.3.450">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Admin2 Severity Index Tool - 12&nbsp; Technical implementation</title>
+<title>Admin2 Severity Index Tool - 14&nbsp; Technical implementation</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -107,7 +107,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./meth_overview.html">Methodology</a></li><li class="breadcrumb-item"><a href="./technical_implementation.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Technical implementation</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./meth_overview.html">Methodology</a></li><li class="breadcrumb-item"><a href="./technical_implementation.html"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Technical implementation</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -167,32 +167,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./user_geometry.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">User geometry</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./analysis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Indicator analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Indicator analysis</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./results.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Exploring results</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Exploring results</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./profiles.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Region profiles</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Region profiles</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./scenarios.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Scenarios</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Scenarios</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./unit_comparison.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Region comparisons</span></span></a>
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Region comparisons</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./map_builder.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Map builder</span></span></a>
   </div>
 </li>
       </ul>
@@ -209,25 +221,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./meth_overview.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Overview</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Overview</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./data_processing.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Data processing</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Data processing</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./aggregation_weighting.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Aggregation and weighting</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Aggregation and weighting</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./technical_implementation.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Technical implementation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Technical implementation</span></span></a>
   </div>
 </li>
       </ul>
@@ -242,16 +254,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#package-overview" id="toc-package-overview" class="nav-link active" data-scroll-target="#package-overview"><span class="header-section-number">12.1</span> Package overview</a></li>
-  <li><a href="#code-overview" id="toc-code-overview" class="nav-link" data-scroll-target="#code-overview"><span class="header-section-number">12.2</span> Code overview</a></li>
-  <li><a href="#back-end" id="toc-back-end" class="nav-link" data-scroll-target="#back-end"><span class="header-section-number">12.3</span> Back-end</a>
+  <li><a href="#package-overview" id="toc-package-overview" class="nav-link active" data-scroll-target="#package-overview"><span class="header-section-number">14.1</span> Package overview</a></li>
+  <li><a href="#code-overview" id="toc-code-overview" class="nav-link" data-scroll-target="#code-overview"><span class="header-section-number">14.2</span> Code overview</a></li>
+  <li><a href="#back-end" id="toc-back-end" class="nav-link" data-scroll-target="#back-end"><span class="header-section-number">14.3</span> Back-end</a>
   <ul class="collapse">
-  <li><a href="#data-flow" id="toc-data-flow" class="nav-link" data-scroll-target="#data-flow"><span class="header-section-number">12.3.1</span> Data flow</a></li>
-  <li><a href="#mapping-and-geometry" id="toc-mapping-and-geometry" class="nav-link" data-scroll-target="#mapping-and-geometry"><span class="header-section-number">12.3.2</span> Mapping and geometry</a></li>
+  <li><a href="#data-flow" id="toc-data-flow" class="nav-link" data-scroll-target="#data-flow"><span class="header-section-number">14.3.1</span> Data flow</a></li>
+  <li><a href="#mapping-and-geometry" id="toc-mapping-and-geometry" class="nav-link" data-scroll-target="#mapping-and-geometry"><span class="header-section-number">14.3.2</span> Mapping and geometry</a></li>
   </ul></li>
-  <li><a href="#front-end" id="toc-front-end" class="nav-link" data-scroll-target="#front-end"><span class="header-section-number">12.4</span> Front-end</a></li>
-  <li><a href="#documentation" id="toc-documentation" class="nav-link" data-scroll-target="#documentation"><span class="header-section-number">12.5</span> Documentation</a></li>
-  <li><a href="#contributing" id="toc-contributing" class="nav-link" data-scroll-target="#contributing"><span class="header-section-number">12.6</span> Contributing</a></li>
+  <li><a href="#front-end" id="toc-front-end" class="nav-link" data-scroll-target="#front-end"><span class="header-section-number">14.4</span> Front-end</a></li>
+  <li><a href="#documentation" id="toc-documentation" class="nav-link" data-scroll-target="#documentation"><span class="header-section-number">14.5</span> Documentation</a></li>
+  <li><a href="#contributing" id="toc-contributing" class="nav-link" data-scroll-target="#contributing"><span class="header-section-number">14.6</span> Contributing</a></li>
   </ul>
 </nav>
     </div>
@@ -260,7 +272,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-techimp" class="quarto-section-identifier"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Technical implementation</span></span></h1>
+<h1 class="title"><span id="sec-techimp" class="quarto-section-identifier"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Technical implementation</span></span></h1>
 </div>
 
 
@@ -283,8 +295,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The back-end rests heavily on the <a href="https://bluefoxr.github.io/COINr/">COINr package</a> which is an R package for building and analysing composite indicators. However, there is a lot of additional code which is used to build on and customise COINr functions, and to provide additional functionality. The idea is to guide the user to build their own severity index with a deliberately narrow range of options along the way. In this sense, the concept lies half way between a classical data exploration/visualisation of a single composite indicator (where the user can only explore an existing index) and a generalised GUI for building composite indicators (where a user might be able to build anything they want). This is a deliberate choice to enable an easy user interface.</p>
 <p>The documentation here aims to be general and descriptive. Selected functions within the package are additionally documented using the usual R function documentation, and this can be accessed either using <code>?function_name</code> with the package loaded, or online at the package’s <a href="https://unhcr-guatemala.github.io/A2SIT/">documentation website</a>. It is not possible to give an exhaustive description of the functioning of the package since it is quite complex, but hopefully the pointers here will be helpful in guiding anyone who is interested in understanding and editing the source code.</p>
 <p>Note that the functions in the A2SIT package are highly customised for the purposes of the app, therefore even though they are accessible at the command line, many will not be hugely useful in other contexts. Probably it is more useful to use COINr directly, and the A2SIT package soruce code as examples.</p>
-<section id="package-overview" class="level2" data-number="12.1">
-<h2 data-number="12.1" class="anchored" data-anchor-id="package-overview"><span class="header-section-number">12.1</span> Package overview</h2>
+<section id="package-overview" class="level2" data-number="14.1">
+<h2 data-number="14.1" class="anchored" data-anchor-id="package-overview"><span class="header-section-number">14.1</span> Package overview</h2>
 <p>The A2SIT package is set up as a typical R package - for an overview of R package structure see the <a href="https://r-pkgs.org/">R Packages</a> book.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>fs<span class="sc">::</span><span class="fu">dir_tree</span>(<span class="st">"../"</span>, <span class="at">recurse =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -302,11 +314,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 ├── LICENSE
 ├── LICENSE.md
 ├── man
+├── manifest.json
 ├── NAMESPACE
 ├── NEWS.md
 ├── not_package
 ├── R
 ├── README.md
+├── rsconnect
 ├── shiny_bookmarks
 ├── tests
 └── vignettes</code></pre>
@@ -324,8 +338,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 <p>The remaining folders are either created by the <a href="https://thinkr-open.github.io/golem/">Golem package</a>, which has been used to help deploy the app, or are related to smaller technical things such as Shiny bookmarking (explained later). The other files in the top level directory relate to deploying the app (<code>app.R</code>), and to the package itself.</p>
 </section>
-<section id="code-overview" class="level2" data-number="12.2">
-<h2 data-number="12.2" class="anchored" data-anchor-id="code-overview"><span class="header-section-number">12.2</span> Code overview</h2>
+<section id="code-overview" class="level2" data-number="14.2">
+<h2 data-number="14.2" class="anchored" data-anchor-id="code-overview"><span class="header-section-number">14.2</span> Code overview</h2>
 <p>All code is found in the <code>/R</code> folder, as required by R package convention. The R files here aim to follow reasonably intuitive naming conventions.</p>
 <p>To begin with, the app is run by calling the <code>run_app()</code> function, which lives in the <code>run_app.R</code> file. This is the starting point of the app, and if you want to see how the code is structured you should start here and follow the trail.</p>
 <p>Consider that to run the app, if you have installed the package you will need to first call <code>library(A2SIT)</code>. If you have cloned the repo (see later in this chapter) and you are working with the source code, you will need to use <code>devtools::load_all(".")</code> to load the functions of the package into the namespace.</p>
@@ -334,8 +348,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The modules call back-end functions which live in files following a <code>f_*.R</code> naming pattern. There is one of these files for each module, except the “Welcome” module/tab.</p>
 <p>There are also a number of utility functions which are used between modules, and these live in files named as <code>utils_*.R</code>. The remaining files are either generated by Golem but not used very much, or relate to specific things which are mentioned later.</p>
 </section>
-<section id="back-end" class="level2" data-number="12.3">
-<h2 data-number="12.3" class="anchored" data-anchor-id="back-end"><span class="header-section-number">12.3</span> Back-end</h2>
+<section id="back-end" class="level2" data-number="14.3">
+<h2 data-number="14.3" class="anchored" data-anchor-id="back-end"><span class="header-section-number">14.3</span> Back-end</h2>
 <p>A first version of the back-end code for the app was encapsulated in a standalone R package called <a href="https://github.com/martinepunhcr/MVI_Guatemala">MVI_Guatemala</a>. This was developed before the front end of the app, and since the back end code had to be heavily modified and extended, it was simply copied into the present A2SIT package, rather than calling the previous package and needing to edit/maintain two packages. Therefore the previous package still exists as a kind of “legacy” version of the current package.</p>
 <p>To understand the back end structure of the app, the best place to start is in <code>app_sever.R</code>, which defines the server function of the app. Here you will find:</p>
 <ul>
@@ -344,16 +358,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Some specific components that exist outside of the modules, such as export to Excel and R, the modal help windows, and the bookmarking feature</li>
 </ul>
 <p>To understand each of these features, it is necessary to follow the functions called there. To give a little help, the modal help windows are written in markdown files which live in the <code>./inst/md-help</code> folder, and are displayed using the “bsplus” package. Shiny bookmarking uses the “server” implementation, but additionally adds the coin to the saved file. Shiny bookmarks create folders in the <code>./shiny_bookmarks</code> directory.</p>
-<section id="data-flow" class="level3" data-number="12.3.1">
-<h3 data-number="12.3.1" class="anchored" data-anchor-id="data-flow"><span class="header-section-number">12.3.1</span> Data flow</h3>
+<section id="data-flow" class="level3" data-number="14.3.1">
+<h3 data-number="14.3.1" class="anchored" data-anchor-id="data-flow"><span class="header-section-number">14.3.1</span> Data flow</h3>
 <p>The app is based around the COINr package, as mentioned previously. COINr encapsulates a composite indicator in an object called a “coin”, which can be manipulated by COINr functions and used to return information and plots. The coin is therefore the central object in the app.</p>
 <p>In the input module, the user uploads a formatted spreadsheet of data and metadata, which is read by the app and used to build a coin. This task is performed by the <code>f_data_input()</code> function. The function reads the user spreadsheet and manipulates the data so that it can be used to create a coin. It also removes any indicators/units without data, and tries to catch any user errors in formatting and return helpful error messages.</p>
 <p>The coin is then passed to the analysis module, which largely returns outputs to the user such as plots and tables. Here, users can optionally remove indicators, so this implies some small modifications to the coin.</p>
 <p>Next, the coin is passed to the results module when the user arrives there. This triggers the results to be calculated, which implies running the <code>f_build_index()</code> function, and calculating alternative scenarios via the <code>get_scenarios()</code> function.</p>
 <p>The tabs following this do not edit the coin - they simply read from it and display outputs. At any time, the coin is used to generate an Excel output using the <code>f_export_to_excel()</code> function, or to write the coin to an <code>.Rdata</code> file.</p>
 </section>
-<section id="mapping-and-geometry" class="level3" data-number="12.3.2">
-<h3 data-number="12.3.2" class="anchored" data-anchor-id="mapping-and-geometry"><span class="header-section-number">12.3.2</span> Mapping and geometry</h3>
+<section id="mapping-and-geometry" class="level3" data-number="14.3.2">
+<h3 data-number="14.3.2" class="anchored" data-anchor-id="mapping-and-geometry"><span class="header-section-number">14.3.2</span> Mapping and geometry</h3>
 <p>It is worth saying a few particular words about maps and Admin-2 codes.</p>
 <p>The A2SIT app aims to calculate scores at the Admin-2 level for a given country, AND to generate maps of the results. In order for this to work, it needs a geometry file for each country which defines the Admin-2 regions within that country. Moreover, each region should be referenced by a unique code which can be used within the app.</p>
 <p>Although in theory the geometry files are available from the UNHCR’s <a href="https://gis.unhcr.org/arcgis/rest/services/core_v2/wrl_polbnd_adm2_a_unhcr/MapServer">gis.unhcr.org sever</a>, extracting the files in the correct format has proven to be difficult. In short this is because:</p>
@@ -373,8 +387,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The objective would be to have geometry files for as many countries as possible, although as mentioned this is a work in progress. Note that even for the stored geometry files, some have duplicate codes, and/or missing names.</p>
 </section>
 </section>
-<section id="front-end" class="level2" data-number="12.4">
-<h2 data-number="12.4" class="anchored" data-anchor-id="front-end"><span class="header-section-number">12.4</span> Front-end</h2>
+<section id="front-end" class="level2" data-number="14.4">
+<h2 data-number="14.4" class="anchored" data-anchor-id="front-end"><span class="header-section-number">14.4</span> Front-end</h2>
 <p>The app is built using Shiny, specifically using <a href="https://rstudio.github.io/shinydashboard/">shinydashboard</a> and <a href="https://shinydashboardplus.rinterface.com/">shinydashboardplus</a>. These packages give the “box” layout of the app, and also enable the sidebar menu, collapsible boxes and pop-out side bars in the boxes.</p>
 <p>The UI of the app is defined in the <code>app_UI.R</code> file, where the menu items, tabs and headers/footers are specified. As mentioned previously, each tab corresponds to a Shiny module, so the UI functions can be found within the corresponding module files.</p>
 <p>The app makes quite heavy use of add-on packages for specific functions, many of which are wrappers for JavaScript libraries, among which:</p>
@@ -391,13 +405,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Notably, the appearance of the app is also controlled by the <a href="https://github.com/Edouard-Legoupil/unhcrshiny">unhcrshiny package</a>, which specifies the CSS.</p>
 <p>Apart from the main UI code which is found in <code>app_UI.R</code> and the module files for each tab, a number of auxilliary functions are found in the <code>utils_ui.R</code> file.</p>
 </section>
-<section id="documentation" class="level2" data-number="12.5">
-<h2 data-number="12.5" class="anchored" data-anchor-id="documentation"><span class="header-section-number">12.5</span> Documentation</h2>
+<section id="documentation" class="level2" data-number="14.5">
+<h2 data-number="14.5" class="anchored" data-anchor-id="documentation"><span class="header-section-number">14.5</span> Documentation</h2>
 <p>As an R package, the app is firstly documented in the usual way by documenting each function with a description, inputs and outputs, and so on. When the package is installed, this help is rendered and available in an R session by running the usual <code>?function_name</code> command. The package doesn’t however contain any vignettes; rather everything is contained in this online book. The book is built using <a href="https://quarto.org/docs/guide/">quarto</a>, and the source files are available in <code>./A2SIT_Doc</code> (this may be moved to <code>./inst</code> at some point).</p>
 <p>To edit the book, simply edit the source files which are written in Markdown. To render the book the easiest way is to open the book <code>.Rproj</code> file, which is also in <code>./A2SIT_Doc</code>, in RStudio. Then, as long as quarto is installed, you should be able to click the “Render Book” button in the “Build” tab, in the upper right of the GUI. This will rebuild the entire book. Individual pages can be built by clicking the “Render” button in the file editing pane.</p>
 </section>
-<section id="contributing" class="level2" data-number="12.6">
-<h2 data-number="12.6" class="anchored" data-anchor-id="contributing"><span class="header-section-number">12.6</span> Contributing</h2>
+<section id="contributing" class="level2" data-number="14.6">
+<h2 data-number="14.6" class="anchored" data-anchor-id="contributing"><span class="header-section-number">14.6</span> Contributing</h2>
 <p>The A2SIT package is hosted on a public GitHub repo at <a href="https://github.com/UNHCR-Guatemala/A2SIT" class="uri">https://github.com/UNHCR-Guatemala/A2SIT</a>.</p>
 <p>To flag a bug, or suggest a new feature, <a href="https://github.com/UNHCR-Guatemala/A2SIT/issues">open an issue</a>.</p>
 <p>If you wish to contribute code to the A2SIT package, you should:</p>
@@ -649,7 +663,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./aggregation_weighting.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Aggregation and weighting</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Aggregation and weighting</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

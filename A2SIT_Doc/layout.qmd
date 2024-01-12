@@ -27,7 +27,23 @@ Depending on the size of your screen, the main window can sometimes become clutt
 
 Clicking on any element in the sidebar will take you to the corresponding tab. Keep in mind that you need to upload your data first before any of the remaining tabs will have any content. The app is built to analyse *your* data, so if you haven't put any data in, it doesn't have much to tell you!
 
-Start at the "Upload" tab to upload your data. Once you have completed that tab, click on the "Analyse" tab, and so on.
+The tab links in the sidebar are organised into two main groups: the "Build" group of tabs, comprising:
+
+- Welcome (the landing page of the app)
+- Upload (where you upload your data)
+- Analyse (showing indicator statistics)
+- Results (showing results on a map, table and bar chart)
+
+You should go through these tabs in order first.
+
+The next group, "Explore", is composed of:
+
+- Profiles (detailed results for each region)
+- Compare scenarios (comparison of results for different scenarios)
+- Compare regions (comparison between any two regions)
+- Map builder (a tool for customising maps)
+
+These tabs are meant to be run after the first group, and provide more advanced and detailed features.
 
 To make more space in the main window, you can minimise the sidebar by clicking the button (highlighted in the picture below): hovering over the sidebar will maximise it. Clicking the button again will restore the sidebar completely.
 
