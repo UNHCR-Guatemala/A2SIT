@@ -13,7 +13,12 @@ Of the remaining controls:
 
 - The "Opacity" input controls how opaque the overlay colours are.
 - Line colour, weight and style control the lines separating regions. Colours are input in the same way as tile colours.
+- The map base tiles can be changed to a number of available alternatives
 
 #### Saving the map
 
+The map can be saved to an image file using the "Download map" button. However, this feature may not work on all deployments and browsers.
+
 The easiest and most flexible way to save the map as an image is to use a screen capture. On Windows hold the Windows key and press `SHIFT` + `S` to capture a selected area on the screen. Alternatively press the "print screen" button on your keyboard.
+
+You should also be able to download the HTML file and save it for use in an interactive document. More details on this tab are in the [online documentation](https://unhcr-guatemala.github.io/A2SIT/book/map_builder.html)

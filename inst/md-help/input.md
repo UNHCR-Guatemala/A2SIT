@@ -4,7 +4,7 @@ The aim of the input tab is to allow you to upload your data to the app and visu
 
 **1. Select your country**
 
-The first thing to do is to select the country that you have data for from the dropdown menu. If your country is not available in the list, please contact us (*contact email to be added*) and we will do our best to add it.
+The first thing to do is to select the country that you have data for from the dropdown menu. If your country is not available in the list, please contact us (*contact email to be added*) and we will do our best to add it. As an advanced option you may also upload your own geometry file: this an advanced option - see the [online documentation](https://unhcr-guatemala.github.io/A2SIT/book/user_geometry.html).
 
 **2. Download template**
 

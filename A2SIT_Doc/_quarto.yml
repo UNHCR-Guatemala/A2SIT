@@ -4,7 +4,9 @@ project:
 
 book:
   title: "Admin2 Severity Index Tool"
-  author: "Authors"
+  author:
+    - name: William Becker
+      url: www.willbecker.me
   date: last-modified
   chapters:
     - index.qmd

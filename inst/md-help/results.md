@@ -26,3 +26,5 @@ Underneath the Results box, there is a bar chart of the same indicator/aggregate
 By default the index is calculated using the arithmetic mean, which implies that low (high) scores in one indicator are perfectly compensated by high (low) scores in another. Optionally, select "Scenario 2" which uses the geometric mean: in this case lower scores in one indicator are less compensated by higher scores in others, or "Scenario 3" which implies even less compensation. Click "Recalculate" to see the new results.
 
 Clicking on the 'gear' icon in the top right of this box opens the option to adjust weights. If this is enabled, you can interactively adjust weights for the highest level of the index (below the index).
+
+More details on this tab are available in the [online documentation](https://unhcr-guatemala.github.io/A2SIT/book/results.html).
