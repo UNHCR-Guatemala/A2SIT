@@ -323,6 +323,8 @@ f_generate_input_template <- function(df_geom = NULL, to_file_name = NULL,
   openxlsx::saveWorkbook(wb, to_file_name, overwrite = T)
 }
 
+# This function generates fake data to write to an input template, for the
+# purposes of an example.
 populate_with_fake_data <- function(df_write){
 
   iMeta <- readxl::read_excel(

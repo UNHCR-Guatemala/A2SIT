@@ -118,6 +118,14 @@ input_server <- function(id, coin, coin_full, r_shared, df_geom) {
 
     # User geom ---------------------------------------------------------------
 
+    # ensure if NOT user geometry, the df_geom column names are fixed to defaults
+    observeEvent(r_shared$user_geom, {
+      if(r_shared$user_geom){
+        r_shared$uCode_col <- "adm2_source_code"
+        r_shared$uName_col <- "gis_name"
+      }
+    })
+
     # show/hide map upload controls
     observeEvent(input$enable_map_upload, {
       shinyjs::toggle("shape_file")
@@ -176,18 +184,23 @@ input_server <- function(id, coin, coin_full, r_shared, df_geom) {
 
     # Download template
     output$download_country_template <- downloadHandler(
+
       filename = function() {
         tmpname <- if(is.null(r_shared$ISO3)) "USER" else r_shared$ISO3
         paste0("A2SIT_data_input_template_", tmpname, ".xlsx")
       },
+
       content = function(file) {
+
         # fix columns first
-        if(input$uCode_col == input$uName_col){
+        if((input$uCode_col == input$uName_col) & (input$uCode_col != "")){
           df_geom(cbind(df_geom(), uName_app = df_geom()[[input$uCode_col]]))
           r_shared$uName_col <- "uName_app"
         }
+
         # will rename
         df_geom(check_and_fix_sf(df_geom(), r_shared$uCode_col, r_shared$uName_col))
+
         # make template
         f_generate_input_template(
           df_geom = df_geom(),
